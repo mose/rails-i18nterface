@@ -4,7 +4,7 @@ This is a Rails engine created to wrap a web interface around i18n translation f
 
 It was originally created by [Peter Marklund and Joakim Westerlund @ mynewsdesk](https://github.com/mynewsdesk/translate) 
 and later adapted to rails 3.0 by [Claudius Coenen](https://github.com/ccoenen/rails-translate). 
-This version is a spinoff of Claudius Coenen's version and aims to rename, refactor and bring the functionality to rails 3.1. 
+This version is a spinoff of Claudius Coenen's version and aims to rename, refactor and bring the functionality to rails 3.1 as an Engine. 
 
 ## Usage
 
@@ -16,7 +16,7 @@ gem 'rails-i18nterface'
 In routes.rb
 
 ```ruby
-  mount RailsI18nterface::Engine => "/translate", :as => "translate_engine"
+mount RailsI18nterface::Engine => "/translate", :as => "translate_engine"
 ```
 ## License
 

@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
+    <title><%= @page_title %></title>
+    <script type="text/javascript" src="https://www.google.com/jsapi"></script>
+    <script type="text/javascript">
+      google.load("jquery", "1.6.3")
+      google.load("language", "1");
+    </script>
+    <%= stylesheet_link_tag 'translate/application' %>
+    <%= javascript_include_tag 'translate/application' %>
+  </head>
+  <body>
+		<div id="container">
+			<% if @page_title -%>
+			  <h1><%= @page_title %></h1>
+			<% end -%>
+		  <% flash.each do |key, msg| -%>
+		    <div id="<%= key %>"><%= msg %></div>
+		  <% end -%>
+		  <%= yield %>
+    </div>
+  </body>
+</html>

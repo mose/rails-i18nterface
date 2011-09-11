@@ -19,11 +19,11 @@ class RailsI18nterface::Log
 
   private
   def file
-    @file ||= Translate::File.new(file_path)    
+    @file ||= RailsI18nterface::File.new(file_path)    
   end
   
   def from_texts
-    Translate::File.deep_stringify_keys(Translate::Keys.to_deep_hash(keys.inject({}) do |hash, key|
+    RailsI18nterface::File.deep_stringify_keys(RailsI18nterface::Keys.to_deep_hash(keys.inject({}) do |hash, key|
       hash[key] = I18n.backend.send(:lookup, from_locale, key)
       hash
     end))

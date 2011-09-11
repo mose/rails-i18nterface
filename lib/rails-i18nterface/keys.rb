@@ -3,7 +3,7 @@ require 'pathname'
 class RailsI18nterface::Keys
   # Allows keys extracted from lookups in files to be cached
   def self.files
-    @@files ||= Translate::Keys.new.files
+    @@files ||= new.files
   end
   
   # Allows flushing of the files cache
@@ -23,11 +23,11 @@ class RailsI18nterface::Keys
 
   def i18n_keys(locale)
     I18n.backend.send(:init_translations) unless I18n.backend.initialized?
-    Translate::Keys.to_shallow_hash(I18n.backend.send(:translations)[locale.to_sym]).keys.sort
+    to_shallow_hash(I18n.backend.send(:translations)[locale.to_sym]).keys.sort
   end
 
   def untranslated_keys
-    Translate::Keys.translated_locales.inject({}) do |missing, locale|
+    translated_locales.inject({}) do |missing, locale|
       missing[locale] = i18n_keys(I18n.default_locale).map do |key|
         I18n.backend.send(:lookup, locale, key).nil? ? key : nil
       end.compact
@@ -37,12 +37,12 @@ class RailsI18nterface::Keys
 
   def missing_keys
     locale = I18n.default_locale; yaml_keys = {}
-    yaml_keys = Translate::Storage.file_paths(locale).inject({}) do |keys, path|
-      keys = keys.deep_merge(Translate::File.new(path).read[locale.to_s])
+    yaml_keys = RailsI18nterface::Storage.file_paths(locale).inject({}) do |keys, path|
+      keys = keys.deep_merge(RailsI18nterface::File.new(path).read[locale.to_s])
     end
     files.reject { |key, file| self.class.contains_key?(yaml_keys, key) }
   end
-
+    
   def self.translated_locales
     I18n.available_locales.reject { |locale| [:root, I18n.default_locale.to_sym].include?(locale) }        
   end
@@ -152,7 +152,7 @@ class RailsI18nterface::Keys
   end
 
   def files_to_scan
-    Dir.glob(File.join(Translate::Storage.root_dir, "{app,config,lib}", "**","*.{rb,erb,rhtml}")) +
-      Dir.glob(File.join(Translate::Storage.root_dir, "public", "javascripts", "**","*.js"))
+    Dir.glob(File.join(RailsI18nterface::Storage.root_dir, "{app,config,lib}", "**","*.{rb,erb,rhtml}")) +
+      Dir.glob(File.join(RailsI18nterface::Storage.root_dir, "public", "javascripts", "**","*.js"))
   end
 end

@@ -1,5 +1,5 @@
 module RailsI18nterface
-  class TranslateController < ActionController::Base
+  class TranslateController < ApplicationController
 
     before_filter :init_translations
     before_filter :set_locale
@@ -15,24 +15,24 @@ module RailsI18nterface
     end
     
     def update
-      I18n.backend.store_translations(@to_locale, Translate::Keys.to_deep_hash(params[:key]))
-      Translate::Storage.new(@to_locale).write_to_file
-      Translate::Log.new(@from_locale, @to_locale, params[:key].keys).write_to_file
+      I18n.backend.store_translations(@to_locale, RailsI18nterface::Keys.to_deep_hash(params[:key]))
+      RailsI18nterface::Storage.new(@to_locale).write_to_file
+      RailsI18nterface::Log.new(@from_locale, @to_locale, params[:key].keys).write_to_file
       force_init_translations # Force reload from YAML file
       flash[:notice] = "Translations stored"
       redirect_to params.slice(:filter, :sort_by, :key_type, :key_pattern, :text_type, :text_pattern).merge({:action => :index})
     end
 
     def reload
-      Translate::Keys.files = nil
+      RailsI18nterface::Keys.files = nil
       redirect_to :action => 'index'
     end
     
     private
 
     def initialize_keys
-      @files = Translate::Keys.files
-      @keys = (@files.keys.map(&:to_s) + Translate::Keys.new.i18n_keys(@from_locale)).uniq    
+      @files = RailsI18nterface::Keys.files
+      @keys = (@files.keys.map(&:to_s) + RailsI18nterface::Keys.new.i18n_keys(@from_locale)).uniq    
       @keys.reject! do |key|
         from_text = lookup(@from_locale, key)
         # When translating from one language to another, make sure there is a text to translate from.

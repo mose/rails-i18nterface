@@ -1,4 +1,4 @@
-Translate::Engine.routes.draw do
+RailsI18nterface::Engine.routes.draw do
   root :to => 'translate#index'
 
   put '/translate' => 'translate#update'

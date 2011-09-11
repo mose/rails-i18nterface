@@ -1,4 +1,4 @@
-# uI18nterface
+# RailsI18nterface 
 
 This is a Rails engine created to wrap a web interface around i18n translation files in Rails >= 3.1. 
 

@@ -23,7 +23,7 @@ class RailsI18nterface::Keys
 
   def i18n_keys(locale)
     I18n.backend.send(:init_translations) unless I18n.backend.initialized?
-    to_shallow_hash(I18n.backend.send(:translations)[locale.to_sym]).keys.sort
+    self.class.to_shallow_hash(I18n.backend.send(:translations)[locale.to_sym]).keys.sort
   end
 
   def untranslated_keys

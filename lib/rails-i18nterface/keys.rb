@@ -1,4 +1,4 @@
-require 'pathname'
+#require 'pathname'
 
 class RailsI18nterface::Keys
   # Allows keys extracted from lookups in files to be cached
@@ -152,7 +152,6 @@ class RailsI18nterface::Keys
   end
 
   def files_to_scan
-    Dir.glob(File.join(RailsI18nterface::Storage.root_dir, "{app,config,lib}", "**","*.{rb,erb,rhtml}")) +
-      Dir.glob(File.join(RailsI18nterface::Storage.root_dir, "public", "javascripts", "**","*.js"))
+    Dir.glob(File.join(RailsI18nterface::Storage.root_dir, "{app,config,lib}", "**","*.{rb,erb,rhtml,js}"))
   end
 end

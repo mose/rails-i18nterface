@@ -86,12 +86,12 @@ describe RailsI18nterface::Keys do
           }
         }
       }
-      Translate::Keys.contains_key?(hash, "").should be_false
-      Translate::Keys.contains_key?(hash, "foo").should be_true
-      Translate::Keys.contains_key?(hash, "foo.bar").should be_true
-      Translate::Keys.contains_key?(hash, "foo.bar.baz").should be_true
-      Translate::Keys.contains_key?(hash, :"foo.bar.baz").should be_true
-      Translate::Keys.contains_key?(hash, "foo.bar.baz.bla").should be_false
+      RailsI18nterface::Keys.contains_key?(hash, "").should be_false
+      RailsI18nterface::Keys.contains_key?(hash, "foo").should be_true
+      RailsI18nterface::Keys.contains_key?(hash, "foo.bar").should be_true
+      RailsI18nterface::Keys.contains_key?(hash, "foo.bar.baz").should be_true
+      RailsI18nterface::Keys.contains_key?(hash, :"foo.bar.baz").should be_true
+      RailsI18nterface::Keys.contains_key?(hash, "foo.bar.baz.bla").should be_false
     end
   end
   

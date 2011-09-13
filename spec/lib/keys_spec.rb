@@ -46,7 +46,7 @@ describe RailsI18nterface::Keys do
   describe "missing_keys" do
     before(:each) do
       @file_path = File.join(i18n_files_dir, "config", "locales", "en.yml")
-      Translate::File.new(@file_path).write({
+      RailsI18nterface::File.new(@file_path).write({
         :en => {
           :home => {
             :page_title => false,

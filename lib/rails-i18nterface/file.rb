@@ -10,7 +10,7 @@ class RailsI18nterface::File
   def write(keys)
     FileUtils.mkdir_p File.dirname(path)
     File.open(path, "w") do |file|
-      file.puts keys_to_yaml(deep_stringify_keys(keys))
+      file.puts keys_to_yaml(self.class.deep_stringify_keys(keys))
     end    
   end
   

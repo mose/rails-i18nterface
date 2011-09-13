@@ -1,9 +1,9 @@
-require File.dirname(__FILE__) + '/spec_helper'
+require 'spec_helper'
 
-describe Translate::Storage do
+describe RailsI18nterface::Storage do
   describe "write_to_file" do
     before(:each) do
-      @storage = Translate::Storage.new(:en)
+      @storage = RailsI18nterface::Storage.new(:en)
     end
   
     it "writes all I18n messages for a locale to YAML file" do
@@ -11,7 +11,7 @@ describe Translate::Storage do
       @storage.stub!(:file_path).and_return(file_path)
       file = mock(:file)
       file.should_receive(:write).with(translations)
-      Translate::File.should_receive(:new).with(file_path).and_return(file)
+      RailsI18nterface::File.should_receive(:new).with(file_path).and_return(file)
       @storage.write_to_file
     end
   

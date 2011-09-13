@@ -108,7 +108,7 @@ describe RailsI18nterface::Keys do
   
   describe "to_deep_hash" do
     it "convert shallow hash with dot separated keys to deep hash" do
-      Translate::Keys.to_deep_hash(shallow_hash).should == deep_hash
+      RailsI18nterface::Keys.to_deep_hash(shallow_hash).should == deep_hash
     end
   end
   

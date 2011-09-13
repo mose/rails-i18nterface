@@ -114,7 +114,7 @@ describe RailsI18nterface::Keys do
   
   describe "to_shallow_hash" do
     it "converts a deep hash to a shallow one" do
-      Translate::Keys.to_shallow_hash(deep_hash).should == shallow_hash
+      RailsI18nterface::Keys.to_shallow_hash(deep_hash).should == shallow_hash
     end
   end
 

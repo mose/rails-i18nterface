@@ -1,10 +1,10 @@
+require 'spec_helper'
 require 'fileutils'
-require File.dirname(__FILE__) + '/spec_helper'
 
-describe Translate::File do
+describe RailsI18nterface::File do
   describe "write" do
     before(:each) do
-      @file = Translate::File.new(file_path)
+      @file = RailsI18nterface::File.new(file_path)
     end
 
     after(:each) do
@@ -13,7 +13,7 @@ describe Translate::File do
     
     it "writes all I18n messages for a locale to YAML file" do
       @file.write(translations)
-      @file.read.should == Translate::File.deep_stringify_keys(translations)
+      @file.read.should == RailsI18nterface::File.deep_stringify_keys(translations)
     end
 
     def translations
@@ -30,7 +30,7 @@ describe Translate::File do
   
   describe "deep_stringify_keys" do
     it "should convert all keys in a hash to strings" do
-      Translate::File.deep_stringify_keys({
+      RailsI18nterface::File.deep_stringify_keys({
         :en => {
           :article => {
             :title => "One Article"

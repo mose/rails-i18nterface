@@ -102,7 +102,7 @@ describe RailsI18nterface::Keys do
     end
     
     it "returns all avaiable except :root and the default" do
-      Translate::Keys.translated_locales.should == [:sv, :no]
+      RailsI18nterface::Keys.translated_locales.should == [:sv, :no]
     end
   end
   

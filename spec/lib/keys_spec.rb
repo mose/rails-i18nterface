@@ -17,7 +17,7 @@ describe RailsI18nterface::Keys do
   
   describe "to_hash" do
     it "return a hash with I18n keys and file lists" do
-      @keys.to_hash[:'article.key3'].should == ["vendor/plugins/translate/spec/files/translate/app/models/article.rb"]      
+      @keys.to_hash[:'article.key3'].should == ["app/models/article.rb"]      
     end
   end
 

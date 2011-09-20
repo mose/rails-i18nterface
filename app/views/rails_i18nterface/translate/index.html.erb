@@ -79,9 +79,17 @@
     %>
 	  <div class="translation">    
 		<% if from_text.present? %>
-		<p class="translation-text">
-			<%= from_text %>
-		</p>
+		  <span class="translation-text">
+			  <%= from_text %>
+		  </span>
+      <span class="right">
+			  <span class="key"><%=h key %></span>
+			    <% if @files[key] %>
+				    <strong>File:</strong><%= @files[key].join("<br/>") %>
+			    <% end %>
+			    <%= link_to_function 'Auto Translate', 'javascript:void(0)', :class => 'autotranslate' %>
+			  </span>
+			</span>
 		<% end %>
 		<p class="edit-form">
 		<% if n_lines > 1 %>
@@ -91,15 +99,7 @@
 		<% end %>
 		</p>
 		<p>
-		  <em>
-			  <%= link_to_function 'Auto Translate', 'javascript:void(0)', :style => 'padding: 0; margin: 0;' %>
-			  <br/>
-			  <strong>Key:</strong><span class="key"><%=h key %></span><br/>
-			  <% if @files[key] %>
-				  <strong>File:</strong><%= @files[key].join("<br/>") %>
-			    <% end %>
-			</em>
-		</p>
+	</p>
 	</div>  
 <% end %>
   <p class="translate">

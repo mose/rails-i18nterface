@@ -55,6 +55,10 @@
   <%= render :partial => 'pagination', :locals => {:total_entries => @total_entries, :per_page => per_page} %>
 </div>
 
+    <p class="translate">
+	    <%= link_to "Export language file", translate_export_path(:locale => @to_locale) %>
+	  </p>
+
 <% if @total_entries > 0 %>
 <%= form_tag(translate_path, method: :put) do %>
   <div>

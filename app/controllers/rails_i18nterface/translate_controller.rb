@@ -13,7 +13,37 @@ module RailsI18nterface
       paginate_keys
       @total_entries = @keys.size
     end
-    
+
+  def export
+    locale = params[:locale].to_sym
+    keys = {locale => I18n.backend.send(:translations)[locale]}
+    yaml = keys_to_yaml(deep_stringify_keys(keys))
+    response.headers['Content-Disposition'] = "attachment; filename=#{locale}.yml"
+    render :text => yaml
+  end
+ 
+private
+ 
+  # Stringifying keys for prettier YAML
+  def deep_stringify_keys(hash)
+    hash.inject({}) { |result, (key, value)|
+      value = deep_stringify_keys(value) if value.is_a? Hash
+      result[(key.to_s rescue key) || key] = value
+      result
+    }
+  end
+  
+  def keys_to_yaml(keys)
+    # Using ya2yaml, if available, for UTF8 support
+    if keys.respond_to?(:ya2yaml)
+      keys.ya2yaml(:escape_as_utf8 => true)
+    else
+      keys.to_yaml
+    end
+  end    
+
+public
+
     def update
       I18n.backend.store_translations(@to_locale, RailsI18nterface::Keys.to_deep_hash(params[:key]))
       RailsI18nterface::Storage.new(@to_locale).write_to_file

@@ -76,7 +76,7 @@
 	  </p>
 	  <% @paginated_keys.each do |key| 
 	      from_text = lookup(@from_locale, key)
-	      to_text = lookup(@to_locale, key)
+	      to_text = @dbvalues[key] || lookup(@to_locale, key)
 	      line_size = 100
 	      n_lines = n_lines(from_text, line_size)
 	      field_name = "key[#{key}]"
@@ -96,6 +96,7 @@
 			</span>
 		<% end %>
 		<p class="edit-form">
+			<%= hidden_field_tag("version[#{key}]", @versions[key] || '0') %>
 		<% if n_lines > 1 %>
 			<%= text_area_tag(field_name, to_text, :size => "#{line_size}x#{n_lines}", :id => key) %>
 		<% else %>

@@ -11,40 +11,74 @@ module RailsI18nterface
       filter_by_translated_or_changed
       sort_keys
       paginate_keys
+      @versions = {}
+      @dbvalues = {}
+      (Translation.where(:locale => @to_locale) || []).each { |translation|
+        @versions[translation.key] = translation.updated_at.to_i
+        @dbvalues[translation.key] = translation.value
+      }
       @total_entries = @keys.size
     end
 
-  def export
-    locale = params[:locale].to_sym
-    keys = {locale => I18n.backend.send(:translations)[locale]}
-    yaml = keys_to_yaml(deep_stringify_keys(keys))
-    response.headers['Content-Disposition'] = "attachment; filename=#{locale}.yml"
-    render :text => yaml
-  end
- 
-private
- 
-  # Stringifying keys for prettier YAML
-  def deep_stringify_keys(hash)
-    hash.inject({}) { |result, (key, value)|
-      value = deep_stringify_keys(value) if value.is_a? Hash
-      result[(key.to_s rescue key) || key] = value
-      result
-    }
-  end
-  
-  def keys_to_yaml(keys)
-    # Using ya2yaml, if available, for UTF8 support
-    if keys.respond_to?(:ya2yaml)
-      keys.ya2yaml(:escape_as_utf8 => true)
-    else
-      keys.to_yaml
+    def export
+      locale = params[:locale].to_sym
+      #keys = {locale => I18n.backend.send(:translations)[locale]}
+      keys = {locale => {}}
+      Translation.where(:locale => @to_locale).each { |translation|
+        next if translation.value == ''
+        next if !translation.value
+        set_nested(keys[locale], translation.key.split("."), translation.value)
+      }
+      yaml = keys_to_yaml(deep_stringify_keys(keys))
+      response.headers['Content-Disposition'] = "attachment; filename=#{locale}.yml"
+      render :text => yaml
     end
-  end    
 
-public
+    def set_nested(hash, key, value)
+      if key.length == 1
+        hash[key[0]] = value
+      else
+        k = key.shift
+        set_nested(hash[k] ||= {}, key, value)
+      end
+    end
+   
+  private
+   
+    # Stringifying keys for prettier YAML
+    def deep_stringify_keys(hash)
+      hash.inject({}) { |result, (key, value)|
+        value = deep_stringify_keys(value) if value.is_a? Hash
+        result[(key.to_s rescue key) || key] = value
+        result
+      }
+    end
+    
+    def keys_to_yaml(keys)
+      # Using ya2yaml, if available, for UTF8 support
+      if keys.respond_to?(:ya2yaml)
+        keys.ya2yaml(:escape_as_utf8 => true)
+      else
+        keys.to_yaml
+      end
+    end    
+
+  public
 
     def update
+      params[:key].each { |k, v|        
+        t = Translation.where(:key => k, :locale => @to_locale).first
+        next if t.value == v
+        unless t
+          t = Translation.new
+          t.key = k
+          t.locale = @to_locale
+        end
+        if params[:version][k].to_i == t.updated_at.to_i
+          t.value = v
+        end
+        t.save
+      }
       I18n.backend.store_translations(@to_locale, RailsI18nterface::Keys.to_deep_hash(params[:key]))
       RailsI18nterface::Storage.new(@to_locale).write_to_file
       RailsI18nterface::Log.new(@from_locale, @to_locale, params[:key].keys).write_to_file

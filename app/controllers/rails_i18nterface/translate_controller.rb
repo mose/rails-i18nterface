@@ -68,12 +68,12 @@ module RailsI18nterface
     def update
       params[:key].each { |k, v|        
         t = Translation.where(:key => k, :locale => @to_locale).first
-        next if t.value == v
         unless t
           t = Translation.new
           t.key = k
           t.locale = @to_locale
         end
+        next if t.value == v
         if params[:version][k].to_i == t.updated_at.to_i
           t.value = v
         end

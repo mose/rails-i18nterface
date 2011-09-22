@@ -38,7 +38,9 @@ q:before, q:after {
 	content: '';
 	content: none;
 }
-
+pre, code {
+  font-size:1.1em;
+}
 /* remember to define focus styles! */
 :focus {
 	outline: 0;
@@ -181,14 +183,16 @@ p.translate{
 div.translation{
   margin:1em;
   margin-bottom:0;
+  clear:both;
 }
 div.translation input, div.translation textarea{
+  font-family:monospace;
+  font-size:1.1em;
 	width:98%;
 	display:inline-block;
 	padding:0.3em;
 }
 div.translation textarea{
-	height:50px;
 }
 div.translation em strong{
 	color:#333;
@@ -234,3 +238,35 @@ div#notice {
   color: #597B5C;
   background-color: #BCFFBD;
 }
+
+.long-translation {
+  padding-bottom:2em;
+  clear:both;
+}
+.long-translation .translation-text {
+  float:left;
+  width:50%;
+  padding-top:8px;
+}
+.long-translation .translation-textarea {
+  float:left;
+  width:50%;
+  height:100%;
+}
+.long-translation .translation-text,
+.long-translation .translation-textarea textarea {
+  line-height:175%;
+  font-size:11px;
+  font-family:monospace;
+}
+
+.translation input,
+.long-translation .translation-textarea textarea {
+  background-color:#ffe;
+}
+
+
+.clear {
+  clear:both;
+}
+

@@ -23,31 +23,26 @@ function htmlSafe(value) {
  * fromLang - the locale/language that represents the text parameter (e.g. en)
  * toLang - the locale/language the text should be translated to (e.g. es)
  */
-function translate(element, text, fromLang, toLang) {
-  var $element = $(element);
+function translate(key) {
+  console.log(key);
+  var text = $('#'+key+'_original').text().split("\n").join("<br>");
+  text = text.replace(/(%\{[a-z_]+\} *)/g, '<!-- $1 -->');
+  var field = $('#'+key);
   
-  google.language.translate(text.trim(), fromLang, toLang, function(result) {
-    var translatedText = (result.error) ? '' : htmlSafe(result.translation);
-    
-    if ($element.is(':input'))
-      $element.val(translatedText);
-    else
-      $element.html(translatedText);
+  google.language.translate({text:text, type: 'html'}, window.fromLang, window.toLang, function(result) {
+    var translated = (result.error) ? '' : htmlSafe(result.translation);
+    console.log(translated);
+    translated = translated.replace(/<br> ?/g,"\n");
+    translated = translated.replace(/ ?<!-- ([^-]*) --> ?/g, '$1')
+    console.log(translated);
+    field.val(translated);
   });
 }
 
 $(document).ready(function() {
-  $('div.translation a').click(function() {
-    var $parent = $(this).parents('div.translation');
-    var $input = $(':input', $parent);
-    
-    var textToTranslate = $('p.translation-text', $parent).html(); 
-    var fromLang = $('#from_locale').val();
-    var toLang = $('#to_locale').val();
-    
-    translate($input, textToTranslate, fromLang, toLang);
-  });
-  
+  window.fromLang = $('#from_locale').val();
+  window.toLang = $('#to_locale').val();
+
   $('div.translation').hover(
     function() {
       $(this)

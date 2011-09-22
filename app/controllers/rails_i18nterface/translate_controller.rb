@@ -23,7 +23,6 @@ module RailsI18nterface
     def export
       locale = params[:locale].to_sym
       keys = {locale => I18n.backend.send(:translations)[locale]}
-      #keys = {locale => {}}
       Translation.where(:locale => @to_locale).each { |translation|
         next if translation.value == ''
         next if !translation.value

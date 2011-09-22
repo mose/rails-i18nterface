@@ -28,9 +28,24 @@ module RailsI18nterface
         next if !translation.value
         set_nested(keys[locale], translation.key.split("."), translation.value)
       }
+      remove_blanks keys
       yaml = keys_to_yaml(deep_stringify_keys(keys))
       response.headers['Content-Disposition'] = "attachment; filename=#{locale}.yml"
       render :text => yaml
+    end
+
+    def remove_blanks hash
+      hash.each { |k, v|
+        if !v || v == ''
+          hash.delete k
+        end
+        if v.is_a? Hash
+          remove_blanks v
+          if v == {}
+            hash.delete k
+          end
+        end
+      }
     end
 
     def set_nested(hash, key, value)

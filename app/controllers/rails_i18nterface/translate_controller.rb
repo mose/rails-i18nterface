@@ -5,19 +5,23 @@ module RailsI18nterface
     before_filter :set_locale
     
     def index
+      load_db_translations
       initialize_keys
       filter_by_key_pattern
       filter_by_text_pattern
       filter_by_translated_or_changed
       sort_keys
       paginate_keys
+      @total_entries = @keys.size
+    end
+
+    def load_db_translations
       @versions = {}
-      @dbvalues = {}
+      @dbvalues = {@to_locale => {}}
       (Translation.where(:locale => @to_locale) || []).each { |translation|
         @versions[translation.key] = translation.updated_at.to_i
-        @dbvalues[translation.key] = translation.value
+        @dbvalues[@to_locale][translation.key] = translation.value
       }
-      @total_entries = @keys.size
     end
 
     def export
@@ -120,7 +124,7 @@ module RailsI18nterface
     end
 
     def lookup(locale, key)
-      I18n.backend.send(:lookup, locale, key)
+      (@dbvalues[locale] && @dbvalues[locale][key]) || I18n.backend.send(:lookup, locale, key)
     end
     helper_method :lookup
     

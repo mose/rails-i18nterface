@@ -76,11 +76,12 @@
 	  </p>
 	  <% @paginated_keys.each do |key| 
 	      from_text = lookup(@from_locale, key)
-	      to_text = @dbvalues[key] || lookup(@to_locale, key)
+	      to_text = lookup(@to_locale, key)
 	      line_size = 100
 	      n_lines = n_lines(from_text, line_size)
 	      field_name = "key[#{key}]"
         tid = key.split('.').join("_")
+
     %>
 	  <div class="translation">    
     	<p class="edit-form">

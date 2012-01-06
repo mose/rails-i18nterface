@@ -5,8 +5,9 @@ module RailsI18nterface
     before_filter :set_locale
     
     def index
-      load_db_translations
+      @dbvalues = {}
       initialize_keys
+      load_db_translations
       filter_by_key_pattern
       filter_by_text_pattern
       filter_by_translated_or_changed
@@ -21,7 +22,9 @@ module RailsI18nterface
       (Translation.where(:locale => @to_locale) || []).each { |translation|
         @versions[translation.key] = translation.updated_at.to_i
         @dbvalues[@to_locale][translation.key] = translation.value
+        @keys << translation.key
       }
+      @keys.uniq!
     end
 
     def export

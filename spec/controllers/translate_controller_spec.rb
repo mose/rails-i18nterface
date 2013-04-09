@@ -13,9 +13,9 @@ describe RailsI18nterface::TranslateController do
       I18n.stub!(:valid_locales).and_return([:en, :sv])
       I18n.stub!(:default_locale).and_return(:sv)
     end
-    
+
     it "shows sorted paginated keys from the translate from locale and extracted keys by default" do
-      get_page :index
+      visit '/translate'
       assigns(:from_locale).should == :sv
       assigns(:to_locale).should == :en
       assigns(:files).should == files
@@ -26,9 +26,9 @@ describe RailsI18nterface::TranslateController do
     it "can be paginated with the page param" do
       get_page :index, :page => 2
       assigns(:files).should == files
-      assigns(:paginated_keys).should == ['home.page_title']      
+      assigns(:paginated_keys).should == ['home.page_title']
     end
-    
+
     it "accepts a key_pattern param with key_type=starts_with" do
       get_page :index, :key_pattern => 'articles', :key_type => 'starts_with'
       assigns(:files).should == files
@@ -48,18 +48,18 @@ describe RailsI18nterface::TranslateController do
       assigns(:total_entries).should == 2
       assigns(:paginated_keys).should == ['articles.new.page_title']
     end
-    
+
     it "accepts a filter=translated param" do
       get_page :index, :filter => 'translated'
       assigns(:total_entries).should == 1
       assigns(:paginated_keys).should == ['vendor.foobar']
     end
-    
+
     it "accepts a filter=changed param" do
       log = mock(:log)
       old_translations = {:home => {:page_title => "Skapar ny artikel"}}
       log.should_receive(:read).and_return(Translate::File.deep_stringify_keys(old_translations))
-      Translate::Log.should_receive(:new).with(:sv, :en, {}).and_return(log)      
+      Translate::Log.should_receive(:new).with(:sv, :en, {}).and_return(log)
       get_page :index, :filter => 'changed'
       assigns(:total_entries).should == 1
       assigns(:keys).should == ["home.page_title"]
@@ -87,7 +87,7 @@ describe RailsI18nterface::TranslateController do
         }
       })
     end
-    
+
     def files
       HashWithIndifferentAccess.new({
         :'home.page_title' => ["app/views/home/index.rhtml"],
@@ -96,7 +96,7 @@ describe RailsI18nterface::TranslateController do
       })
     end
   end
-  
+
   describe "translate" do
     it "should store translations to I18n backend and then write them to a YAML file" do
       session[:from_locale] = :sv
@@ -121,7 +121,7 @@ describe RailsI18nterface::TranslateController do
       response.should be_redirect
     end
   end
-  
+
   def get_page(*args)
     get(*args)
     response.should be_success

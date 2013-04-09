@@ -55,6 +55,10 @@
   <%= render :partial => 'pagination', :locals => {:total_entries => @total_entries, :per_page => per_page} %>
 </div>
 
+    <p class="translate">
+	    <%= link_to "Export language file", translate_export_path(:locale => @to_locale) %>
+	  </p>
+
 <% if @total_entries > 0 %>
 <%= form_tag(translate_path, method: :put) do %>
   <div>
@@ -76,30 +80,50 @@
 	      line_size = 100
 	      n_lines = n_lines(from_text, line_size)
 	      field_name = "key[#{key}]"
+        tid = key.split('.').join("_")
+
     %>
 	  <div class="translation">    
-		<% if from_text.present? %>
-		<p class="translation-text">
-			<%= from_text %>
-		</p>
-		<% end %>
-		<p class="edit-form">
+    	<p class="edit-form">
+			<%= hidden_field_tag("version[#{key}]", @versions[key] || '0') %>
 		<% if n_lines > 1 %>
-			<%= text_area_tag(field_name, to_text, :size => "#{line_size}x#{n_lines}", :id => key) %>
-		<% else %>
-			<%= text_field_tag(field_name, to_text, :size => line_size, :id => key) %>
+        <span class="right">
+			    <span class="key"><%=h key %></span>
+			      <% if @files[key] %>
+				      <strong>File:</strong><%= @files[key].join("<br/>") %>
+			      <% end %>
+			      <%= link_to_function 'Auto Translate', "translate('#{tid}')", :class => 'autotranslate' %>
+			    </span>
+			  </span>
+        <div class="long-translation">
+		      <div class="translation-text">
+      			<pre id="<%= tid %>_original"><%= from_text %></pre>
+            <div class="clear"></div>
+		      </div>
+          <div class="translation-textarea">
+			      <%= text_area_tag(field_name, to_text, :rows => n_lines+1, :id => tid) %>
+            <div class="clear"></div>
+		      </div>
+          <div class="clear"></div>
+		    </div>
+    <% else %>
+		  <span class="translation-text">
+			  <code id="<%= tid %>_original"><%= from_text %></code>
+		  </span>
+      <span class="right">
+			  <span class="key" ><%=h key %></span>
+			    <% if @files[key] %>
+				    <strong>File:</strong><%= @files[key].join("<br/>") %>
+			    <% end %>
+			    <%= link_to_function 'Auto Translate', "translate('#{tid}')", :class => 'autotranslate' %>
+			  </span>
+			</span>
+	
+			<%= text_field_tag(field_name, to_text, :size => line_size, :id => tid) %>
 		<% end %>
 		</p>
 		<p>
-		  <em>
-			  <%= link_to_function 'Auto Translate', 'javascript:void(0)', :style => 'padding: 0; margin: 0;' %>
-			  <br/>
-			  <strong>Key:</strong><span class="key"><%=h key %></span><br/>
-			  <% if @files[key] %>
-				  <strong>File:</strong><%= @files[key].join("<br/>") %>
-			    <% end %>
-			</em>
-		</p>
+	</p>
 	</div>  
 <% end %>
   <p class="translate">

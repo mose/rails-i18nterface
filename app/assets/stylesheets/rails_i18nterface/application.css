@@ -38,7 +38,9 @@ q:before, q:after {
 	content: '';
 	content: none;
 }
-
+pre, code {
+  font-size:1.1em;
+}
 /* remember to define focus styles! */
 :focus {
 	outline: 0;
@@ -166,9 +168,7 @@ p.hits{
 }
 /*translation edit*/
 div.translations{
-	margin:1em;
 	padding:1em;
-	border:solid 2px #d46021;
 }
 div.translations h2{
 	margin-bottom:1em;
@@ -181,43 +181,41 @@ p.translate{
 	padding:0.7em 0.5em 0.5em 1.5em;
 }
 div.translation{
-	padding:1em;
-	border-bottom:solid 0.2em #d46021;
-	margin:0 1em 1em 1.6em;
+  margin:1em;
+  margin-bottom:0;
+  clear:both;
 }
 div.translation input, div.translation textarea{
+  font-family:monospace;
+  font-size:1.1em;
 	width:98%;
-	margin:1em 0;
 	display:inline-block;
 	padding:0.3em;
 }
 div.translation textarea{
-	height:50px;
 }
 div.translation em strong{
 	color:#333;
 	padding-right:0.5em;
 }
-p.translation em{
-	display:block;
-	font-size:0.8333em;
+.translation .right {
+  float:right;
+}
+.translation .autotranslate {
+	color:gray;
+}
+.translation .key {
+  color:silver;
 }
 div.translation a{
-	padding:1em;
 }
 div.translation input.btnDefault{
 	margin:0 0 1em;
 	width:auto;
 }
 .focus-text{
-	font-weight:bold;
 }
 div.selected{
-	margin:0 1em 1em 1em;
-	border-left:solid 0.6em #d46021;
-	border-right:solid 0.2em #d46021;
-	border-top:solid 0.2em #d46021;
-	background:#f1f1f1;
 }
 .display{display:block !important;}
 /*feedback*/
@@ -240,3 +238,35 @@ div#notice {
   color: #597B5C;
   background-color: #BCFFBD;
 }
+
+.long-translation {
+  padding-bottom:2em;
+  clear:both;
+}
+.long-translation .translation-text {
+  float:left;
+  width:50%;
+  padding-top:8px;
+}
+.long-translation .translation-textarea {
+  float:left;
+  width:50%;
+  height:100%;
+}
+.long-translation .translation-text,
+.long-translation .translation-textarea textarea {
+  line-height:175%;
+  font-size:11px;
+  font-family:monospace;
+}
+
+.translation input,
+.long-translation .translation-textarea textarea {
+  background-color:#ffe;
+}
+
+
+.clear {
+  clear:both;
+}
+

@@ -13,7 +13,7 @@ Gem::Specification.new do |s|
   s.summary     = "A rails 3.1 engine based interface for translating and writing translation files"
   s.description = "Add me please"
 
-  s.files = Dir["{app,config,db,lib}/**/*"] + ["MIT-LICENSE", "Rakefile", "README.rdoc"]
+  s.files = Dir["{app,config,db,lib}/**/*"] + ["MIT-LICENSE", "Rakefile", "README.md"]
   s.test_files = Dir["test/**/*"]
 
   s.add_dependency "rails", ">= 3.1.0"

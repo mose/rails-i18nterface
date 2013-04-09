@@ -1,0 +1,10 @@
+GEM
+  remote: http://rubygems.org/
+  specs:
+    ya2yaml (0.30)
+
+PLATFORMS
+  ruby
+
+DEPENDENCIES
+  ya2yaml

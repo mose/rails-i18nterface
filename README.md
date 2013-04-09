@@ -1,5 +1,9 @@
 # RailsI18nterface 
 
+This is a fork that has been modified to store translated messages in database and then export those into yaml file.
+
+---
+
 This is a Rails engine created to wrap a web interface around i18n translation files in Rails >= 3.1. 
 
 It was originally created by [Peter Marklund and Joakim Westerlund @ mynewsdesk](https://github.com/mynewsdesk/translate) 
@@ -18,6 +22,15 @@ In routes.rb
 ```ruby
 mount RailsI18nterface::Engine => "/translate", :as => "translate_engine"
 ```
+
+Copy migration to store translated values and migrate
+```
+rake railties:install:migrations
+rake db:migrate
+```
+
+
+
 ## License
 
 Copyright (c) 2011 Larry Sprock and Artin Boghosain

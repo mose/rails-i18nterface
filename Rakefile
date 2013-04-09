@@ -26,14 +26,12 @@ load 'rails/tasks/engine.rake'
 
 Bundler::GemHelper.install_tasks
 
-require 'rake/testtask'
-
-Rake::TestTask.new(:test) do |t|
-  t.libs << 'lib'
-  t.libs << 'spec'
-  t.pattern = 'spec/**/*_spec.rb'
-  t.verbose = false
+require "rspec/core/rake_task" # RSpec 2.0
+task :spec do
+  RSpec::Core::RakeTask.new(:spec) do |t|
+    t.rspec_opts = %w{--colour --format progress}
+    t.pattern = 'spec/**/*_spec.rb'
+  end
 end
 
-
-task :default => :test
+task :default => :spec

@@ -4,12 +4,13 @@
   show_filters << "changed" if @from_locale != @to_locale
 %>
 
-<fieldset>
-	<legend>Search filter</legend>
+<div id="searchbox">
 	<div id="show-sort">
 		<p>
 		 <label>Show:</label> <%=  simple_filter(show_filters).html_safe %>
-		</p>
+      Found <strong><%= @total_entries %></strong> messages
+      <%= link_to "Reload messages", translate_reload_path %>
+    </p>
 		<p>
 		 <label>Sort by:</label> <%= simple_filter(["key", "text"], 'sort_by').html_safe %>
 		</p>
@@ -34,30 +35,20 @@
    <p>
      <label for="text_pattern_value">Text</label>
      <%= select_tag(:text_type, options_for_select(['contains', 'equals'], params[:text_type])) %>
-     <%= text_field_tag(:text_pattern, params[:text_pattern], :size => 50, :id => "text_pattern_value", :class => "text-default") %>	     
+     <%= text_field_tag(:text_pattern, params[:text_pattern], :size => 50, :id => "text_pattern_value", :class => "text-default") %>
    </p>
-   <p>
+   <p class="submitbar">
+    <%= link_to "Export language file", translate_export_path(:locale => @to_locale), class: 'btn' %>
+    <%= link_to "clear", params.merge({:text_pattern => nil, :key_pattern => nil}), class: 'btn' %>
     <%= submit_tag "Search" %>
-    <%= link_to "clear", params.merge({:text_pattern => nil, :key_pattern => nil}) %>
     </p>
   </div>
   <% end %>
-	<p class="hits">
-	  Found <strong><%= @total_entries %></strong> messages
-	</p>
-	<p>
-	 <%= link_to "Reload messages", translate_reload_path %>
-	</p>
-</fieldset>
-
+</div>
 
 <div class="paging">
   <%= render :partial => 'pagination', :locals => {:total_entries => @total_entries, :per_page => per_page} %>
 </div>
-
-    <p class="translate">
-	    <%= link_to "Export language file", translate_export_path(:locale => @to_locale) %>
-	  </p>
 
 <% if @total_entries > 0 %>
 <%= form_tag(translate_path, method: :put) do %>
@@ -70,11 +61,11 @@
       <%= hidden_field_tag(:text_pattern, params[:text_pattern], :id => "hid_text_pattern") %>
   </div>
   <div class="translations">
-	  <h2>Translations from <%= @from_locale %> to <%= @to_locale %></h2>
     <p class="translate">
-	    <%= submit_tag "Save Translations" %>
+      Translations from <%= @from_locale %> to <%= @to_locale %>
+	    <%= submit_tag "Save Translations", style: 'float:right;' %>
 	  </p>
-	  <% @paginated_keys.each do |key| 
+	  <% @paginated_keys.each do |key|
 	      from_text = lookup(@from_locale, key)
 	      to_text = lookup(@to_locale, key)
 	      line_size = 100
@@ -83,7 +74,7 @@
         tid = key.split('.').join("_")
 
     %>
-	  <div class="translation">    
+	  <div class="translation">
     	<p class="edit-form">
 			<%= hidden_field_tag("version[#{key}]", @versions[key] || '0') %>
 		<% if n_lines > 1 %>
@@ -92,7 +83,6 @@
 			      <% if @files[key] %>
 				      <strong>File:</strong><%= @files[key].join("<br/>") %>
 			      <% end %>
-			      <%= link_to_function 'Auto Translate', "translate('#{tid}')", :class => 'autotranslate' %>
 			    </span>
 			  </span>
         <div class="long-translation">
@@ -108,31 +98,31 @@
 		    </div>
     <% else %>
 		  <span class="translation-text">
-			  <code id="<%= tid %>_original"><%= from_text %></code>
+			  <code class="keytext" id="<%= tid %>_original"><%= from_text %></code>
 		  </span>
       <span class="right">
 			  <span class="key" ><%=h key %></span>
 			    <% if @files[key] %>
 				    <strong>File:</strong><%= @files[key].join("<br/>") %>
 			    <% end %>
-			    <%= link_to_function 'Auto Translate', "translate('#{tid}')", :class => 'autotranslate' %>
 			  </span>
 			</span>
-	
+
 			<%= text_field_tag(field_name, to_text, :size => line_size, :id => tid) %>
 		<% end %>
 		</p>
 		<p>
 	</p>
-	</div>  
+	</div>
 <% end %>
   <p class="translate">
-    <%= submit_tag "Save Translations" %>
+    Translations from <%= @from_locale %> to <%= @to_locale %>
+    <%= submit_tag "Save Translations", style: 'float:right' %>
 	</p>
 </div>
 <% end %>
 <% end %>
 
-<div class="paging">
+<div class="paging clear">
   <%= render :partial => 'pagination', :locals => {:total_entries => @total_entries, :per_page => per_page} %>
 </div>

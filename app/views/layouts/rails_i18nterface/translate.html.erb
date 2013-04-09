@@ -3,23 +3,22 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
     <title><%= @page_title %></title>
-    <script type="text/javascript" src="https://www.google.com/jsapi"></script>
-    <script type="text/javascript">
-      google.load("jquery", "1.6.3")
-      google.load("language", "1");
-    </script>
     <%= stylesheet_link_tag 'rails_i18nterface/application' %>
     <%= javascript_include_tag 'rails_i18nterface/application' %>
   </head>
   <body>
 		<div id="container">
-			<% if @page_title -%>
-			  <h1><%= @page_title %></h1>
-			<% end -%>
+			<% if @page_title %>
+			  <h1>
+          <%= link_to Rails.application.class.namespace_name.underscore.humanize, '../' %> /
+          <%= link_to @page_title, root_path %></a>
+        </h1>
+			<% end %>
 		  <% flash.each do |key, msg| -%>
 		    <div id="<%= key %>"><%= msg %></div>
 		  <% end -%>
 		  <%= yield %>
     </div>
+    <%#= debug @files.inspect %>
   </body>
 </html>

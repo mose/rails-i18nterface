@@ -1,5 +1,6 @@
 module RailsI18nterface
   module TranslateHelper
+
     def simple_filter(labels, param_name = 'filter', selected_value = nil)
       selected_value ||= params[param_name]
       filter = []
@@ -17,7 +18,7 @@ module RailsI18nterface
           filter << link_to(label, link_params)
         end
       end
-      filter.join(" | ")    
+      filter.join(" | ")
     end
 
     def n_lines(text, line_size)

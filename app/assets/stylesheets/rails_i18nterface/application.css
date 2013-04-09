@@ -3,7 +3,7 @@
  * and any sub-directories. You're free to add application-wide styles to this file and they'll appear at
  * the top of the compiled file, but it's generally better to create a new file per style scope.
  *= require_self
- *= require_tree . 
+ *= require_tree .
 */
 /*reset.css*/
 /* v1.0 | 20080212 */
@@ -72,7 +72,7 @@ body{
 	color:#333;
 	font-size:75%;
 	font-family:Arial;
-	margin:2em auto;
+	margin:0;
 	line-height:1.5em;
 }
 textarea,input,select{
@@ -80,7 +80,7 @@ textarea,input,select{
 	font-size:1em;
 }
 h1{
-	color:#d46021;
+	color:#9ac;
 	font-size:2em;
 	margin-bottom:0.5em;
 }
@@ -91,60 +91,94 @@ h2{
 	padding-left:0;
 }
 a{
-	color:#2158C7;
+	color:#258;
+}
+* {
+  box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  -webkit-box-sizing: border-box;
 }
 div#container{
-	width:960px;
+	width:100%;
 	margin:0 auto;
 	font-size:1em;
 }
+div#container h1 {
+  padding: 5px 20px;
+  background-color: #000;
+  margin: 0;
+}
+div#container h1 a {
+  color: #8ac;
+  text-decoration: none;
+}
+div#container h1 a:hover {
+  color: #fff;
+}
+div#container #success {
+  padding: 5px 20px;
+  background-color: #ada;
+}
+div#container #error {
+  padding: 5px 20px;
+  background-color: #daa;
+}
+div#container #notice {
+  padding: 5px 20px;
+  background-color: #dba;
+}
+
 /*paging*/
-div.paging{
-	margin-bottom:1em;
-	text-align:left;
+div.paging {
+	text-align: left;
 }
-div.paging div{
-	border:solid 1px red;
-	margin:1em 1em 0;
-	padding:0.5em;
-	border:solid 1px #d5d6d5;
-	background:#f1f1f1;
+div.paging div {
+	padding: 2px 20px;
+	border: solid 1px #d5d6d5;
+  border-left: 0;
+	background: #f1f1f1;
+  border-radius: 0 15px 15px 0;
 }
-ul.paging{
-	display:inline-block;
+ul.paging {
+	display: block;
+  margin: 0;
 }
 ul.paging li{
-	display:block;
-	margin:0.2em 0;
-	float:left;
+	display: block;
+	margin: 0;
+	float: left;
 }
-ul.paging li.selected a{
-	color:#fff;
-	background:#2158C7;
-	font-weight:bold;
-	padding:0.5em 0.7em;
+ul.paging li.selected a {
+	color: #fff;
+	background: #258;
+	font-weight: bold;
+  width: 20px;
+	padding: 7px 10px;
+  text-decoration: none;
+  border-radius: 5px;
 }
 ul.paging li a{
-	display:inline-block;
 	line-height:1em;
 	padding:0.5em 0.5em;
+  min-width: 20px;
+  text-decoration: none;
+  font-weight: bold;
+  padding: 4px 10px;
+}
+ul.paging li a:hover {
+  background: #ccc;
+}
+ul.paging li.selected a:hover {
+  background: #000;
 }
 /*forms filter*/
-fieldset{
-	padding:1em;
-	margin:1em;
-	border:solid 2px #d46021;
-}
-legend{
-	font-size:1.2em;
-	font-weight:bold;
-	padding:0 1em;
-	padding-bottom:0.5em;
+#searchbox {
+  padding: 5px 20px;
 }
 label{
-	font-weight:bold;
+	font-weight: bold;
 }
-fieldset span{padding-right:0.5em;}
+
 div#show-sort label,
 div#languages label,
 div#filter-pattern label{
@@ -163,49 +197,90 @@ div#languages input.text-default,
 div#filter-pattern input.text-default{
 	width:200px;
 }
-p.hits{
-	margin-top:1em;
+.submitbar {
+  width: 430px;
+  text-align: right;
+}
+.btn {
+  text-decoration: none;
+  font-weight: bold;
+  color: #444;
+  padding: 2px 10px;
+  border: 1px solid #666;
+  border-radius: 4px;
+  background-color: #eee;
+  line-height: 16px;
+  box-shadow: inset -1px 1px 3px #fff, inset 1px -1px 3px #999;
+  text-shadow: -1px 1px 0px #fff;
+}
+.btn:hover {
+  box-shadow: inset -1px 1px 1px #fff, inset 1px -1px 1px #999;
+  background: #ccc;
+  color: #258;
+}
+.btn:active {
+  box-shadow: inset -1px 1px 1px #999, inset 1px -1px 1px #fff;
+}
+input[type=submit] {
+  cursor: pointer;
+  font-weight: bold;
+  font-weight: bold;
+  color: #444;
+  padding: 1px 10px;
+  border: 1px solid #666;
+  line-height: 16px;
+  border-radius: 4px;
+  background-color: #eee;
+  box-shadow: inset -1px 1px 3px #fff, inset 1px -1px 3px #999;
+  text-shadow: -1px 1px 0px #fff;
+}
+input[type=submit]:hover {
+  box-shadow: inset -1px 1px 1px #fff, inset 1px -1px 1px #999;
+  background: #ccc;
+  color: #258;
+}
+input[type=submit]:active {
+  box-shadow: inset -1px 1px 1px #999, inset 1px -1px 1px #fff;
 }
 /*translation edit*/
-div.translations{
-	padding:1em;
+div.translations {
 }
-div.translations h2{
-	margin-bottom:1em;
+p.translate {
+  border-top: solid 1px #d5d6d5;
+	border-bottom: solid 1px #d5d6d5;
+	background: #f1f1f1;
+	padding: 4px 20px;
 }
-p.translate{
-	background:red;
-	border:solid 1px #d5d6d5;
-	background:#f1f1f1;
-	margin:0.5em;
-	padding:0.7em 0.5em 0.5em 1.5em;
-}
-div.translation{
-  margin:1em;
-  margin-bottom:0;
+div.translation {
+  padding: 6px 20px;
+  margin-bottom: 6px;
+  border-bottom: solid 1px #d5d6d5;
   clear:both;
 }
-div.translation input, div.translation textarea{
-  font-family:monospace;
-  font-size:1.1em;
-	width:98%;
-	display:inline-block;
-	padding:0.3em;
+div.translation input, div.translation textarea {
+  font-family: monospace;
+  font-size: 1.1em;
+	width: 100%;
+	display: inline-block;
+	padding: 4px;
+  border: 1px solid #aaa;
+  border-radius: 3px;
 }
-div.translation textarea{
+div.translation textarea {
 }
-div.translation em strong{
+div.translation em strong {
 	color:#333;
 	padding-right:0.5em;
 }
 .translation .right {
-  float:right;
-}
-.translation .autotranslate {
-	color:gray;
+  float: right;
 }
 .translation .key {
-  color:silver;
+  color: #666;
+}
+.translation .keytext {
+  padding: 5px;
+  color: #678;
 }
 div.translation a{
 }
@@ -217,28 +292,10 @@ div.translation input.btnDefault{
 }
 div.selected{
 }
-.display{display:block !important;}
+.display{
+  display:block !important;
+}
 /*feedback*/
-div#notice, div#error {
-	font-size:1em;
-	margin:1em;
-  padding: 1em;
-	border: 1px solid red;
-}
-div#notice span, div#error span{
-	font-size:1.5em;
-}
-
-div#error {
-  background-color: #F3C6CC;
-  color: red;
-}
-div#notice {
-  border-color: #72A974;
-  color: #597B5C;
-  background-color: #BCFFBD;
-}
-
 .long-translation {
   padding-bottom:2em;
   clear:both;

@@ -15,7 +15,7 @@ describe RailsI18nterface::TranslateController do
     end
 
     it "shows sorted paginated keys from the translate from locale and extracted keys by default" do
-      visit '/translate'
+      get_page :index
       assigns(:from_locale).should == :sv
       assigns(:to_locale).should == :en
       assigns(:files).should == files

@@ -34,7 +34,7 @@
    <p>
      <label for="text_pattern_value">Text</label>
      <%= select_tag(:text_type, options_for_select(['contains', 'equals'], params[:text_type])) %>
-     <%= text_field_tag(:text_pattern, params[:text_pattern], :size => 50, :id => "text_pattern_value", :class => "text-default") %>	     
+     <%= text_field_tag(:text_pattern, params[:text_pattern], :size => 50, :id => "text_pattern_value", :class => "text-default") %>
    </p>
    <p>
     <%= submit_tag "Search" %>
@@ -74,7 +74,7 @@
     <p class="translate">
 	    <%= submit_tag "Save Translations" %>
 	  </p>
-	  <% @paginated_keys.each do |key| 
+	  <% @paginated_keys.each do |key|
 	      from_text = lookup(@from_locale, key)
 	      to_text = lookup(@to_locale, key)
 	      line_size = 100
@@ -83,7 +83,7 @@
         tid = key.split('.').join("_")
 
     %>
-	  <div class="translation">    
+	  <div class="translation">
     	<p class="edit-form">
 			<%= hidden_field_tag("version[#{key}]", @versions[key] || '0') %>
 		<% if n_lines > 1 %>
@@ -118,13 +118,13 @@
 			    <%= link_to_function 'Auto Translate', "translate('#{tid}')", :class => 'autotranslate' %>
 			  </span>
 			</span>
-	
+
 			<%= text_field_tag(field_name, to_text, :size => line_size, :id => tid) %>
 		<% end %>
 		</p>
 		<p>
 	</p>
-	</div>  
+	</div>
 <% end %>
   <p class="translate">
     <%= submit_tag "Save Translations" %>

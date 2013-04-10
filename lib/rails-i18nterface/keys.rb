@@ -5,17 +5,17 @@ class RailsI18nterface::Keys
   def self.files
     @@files ||= new.files
   end
-  
+
   # Allows flushing of the files cache
   def self.files=(files)
     @@files = files
   end
-  
+
   def files
     @files ||= extract_files
-  end  
+  end
   alias_method :to_hash, :files
-  
+
   def keys
     files.keys
   end
@@ -36,15 +36,16 @@ class RailsI18nterface::Keys
   end
 
   def missing_keys
-    locale = I18n.default_locale; yaml_keys = {}
+    locale = I18n.default_locale
+    yaml_keys = {}
     yaml_keys = RailsI18nterface::Storage.file_paths(locale).inject({}) do |keys, path|
       keys = keys.deep_merge(RailsI18nterface::File.new(path).read[locale.to_s])
     end
     files.reject { |key, file| self.class.contains_key?(yaml_keys, key) }
   end
-    
+
   def self.translated_locales
-    I18n.available_locales.reject { |locale| [:root, I18n.default_locale.to_sym].include?(locale) }        
+    I18n.available_locales.reject { |locale| [:root, I18n.default_locale.to_sym].include?(locale) }
   end
 
   # Checks if a nested hash contains the keys in dot separated I18n key.
@@ -71,9 +72,9 @@ class RailsI18nterface::Keys
       memo.is_a?(Hash) ? memo.try(:[], key) : nil
     end.nil?
   end
-  
+
   # Convert something like:
-  # 
+  #
   # {
   #  :pressrelease => {
   #    :label => {
@@ -81,9 +82,9 @@ class RailsI18nterface::Keys
   #    }
   #   }
   # }
-  # 
+  #
   # to:
-  # 
+  #
   #  {'pressrelease.label.one' => "Pressmeddelande"}
   #
   def self.to_shallow_hash(hash)
@@ -98,13 +99,13 @@ class RailsI18nterface::Keys
       shallow_hash
     end
   end
-  
+
   # Convert something like:
-  # 
+  #
   #  {'pressrelease.label.one' => "Pressmeddelande"}
-  # 
+  #
   # to:
-  # 
+  #
   # {
   #  :pressrelease => {
   #    :label => {
@@ -112,7 +113,7 @@ class RailsI18nterface::Keys
   #    }
   #   }
   # }
-  def self.to_deep_hash(hash)    
+  def self.to_deep_hash(hash)
     hash.inject({}) do |deep_hash, (key, value)|
       keys = key.to_s.split('.').reverse
       leaf_key = keys.shift
@@ -134,8 +135,11 @@ class RailsI18nterface::Keys
     files_to_scan.inject(HashWithIndifferentAccess.new) do |files, file|
       begin#hack to avoid UTF-8 error
         IO.read(file).scan(i18n_lookup_pattern).flatten.map(&:to_sym).each do |key|
-          files[key] ||= []
           path = Pathname.new(File.expand_path(file)).relative_path_from(Pathname.new(Rails.root)).to_s
+          if key[0] == '.'
+            key = extract_namespace(path) + key
+          end
+          files[key] ||= []
           files[key] << path if !files[key].include?(path)
         end
       rescue Exception => e
@@ -148,11 +152,11 @@ class RailsI18nterface::Keys
   end
 
   def i18n_lookup_pattern
-    /\b(?:I18n\.t|I18n\.translate|t)(?:\s|\():?'([a-z0-9_]+.[a-z0-9_.]+)'\)?/
+    /\b(?:I18n\.t|I18n\.translate|t)(?:\s|\():?(?:'|")(\.[a-z0-9_.]+)(?:'|")/
   end
 
   def files_to_scan
-    Dir.glob(File.join(RailsI18nterface::Storage.root_dir, "{app,config,lib}", "**","*.{rb,erb,rhtml}")) +
-      Dir.glob(File.join(RailsI18nterface::Storage.root_dir, "public", "javascripts", "**","*.js"))
+    Dir.glob(File.join(RailsI18nterface::Storage.root_dir, "{app,config,lib}", "**","*.{rb,erb,haml,slim,rhtml}")) +
+      Dir.glob(File.join(RailsI18nterface::Storage.root_dir, "public", "javascripts", "**","*.{js,coffee}"))
   end
 end

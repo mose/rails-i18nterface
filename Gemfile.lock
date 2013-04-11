@@ -133,5 +133,6 @@ DEPENDENCIES
   capybara
   combustion (~> 0.4.0)
   rails-i18nterface!
+  rspec
   rspec-rails
   sqlite3

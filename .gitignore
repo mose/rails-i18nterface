@@ -1,1 +1,7 @@
-.*
+spec/dummy/tmp/*
+spec/dummy/log/*
+spec/internal/tmp/*
+spec/internal/log/*
+Gemfile.lock
+.rvmrc
+/tmp

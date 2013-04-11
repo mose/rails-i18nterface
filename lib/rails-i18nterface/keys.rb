@@ -1,4 +1,4 @@
-require 'pathname'
+#require 'pathname'
 
 class RailsI18nterface::Keys
   # Allows keys extracted from lookups in files to be cached
@@ -27,7 +27,7 @@ class RailsI18nterface::Keys
   end
 
   def untranslated_keys
-    translated_locales.inject({}) do |missing, locale|
+    self.class.translated_locales.inject({}) do |missing, locale|
       missing[locale] = i18n_keys(I18n.default_locale).map do |key|
         I18n.backend.send(:lookup, locale, key).nil? ? key : nil
       end.compact

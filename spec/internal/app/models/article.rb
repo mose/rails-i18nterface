@@ -1,6 +1,5 @@
 class Article < ActiveRecord::Base
   def validate
-    # t('li')
     errors.add_to_base([t(:'article.key1') + "#{t('article.key2')}"])
     I18n.t 'article.key3'
     I18n.t 'article.key3'

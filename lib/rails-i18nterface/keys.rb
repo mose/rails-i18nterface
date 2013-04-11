@@ -143,9 +143,9 @@ class RailsI18nterface::Keys
           files[key] << path if !files[key].include?(path)
         end
       rescue Exception => e
-        Rails.logger.info "bug in Translation plugin, please debug, informations :"
-        Rails.logger.info file.inspect
-        Rails.logger.info i18n_lookup_pattern.inspect
+        puts "bug in Translation plugin, please debug, informations :"
+        puts file.inspect
+        puts i18n_lookup_pattern.inspect
       end
       files
     end
@@ -161,11 +161,11 @@ class RailsI18nterface::Keys
   end
 
   def i18n_lookup_pattern
-    /\b(?:I18n\.t|I18n\.translate|t)(?:\s|\():?(?:'|")(\.[a-z0-9_.]+)(?:'|")/
+    /\b(?:I18n\.t|I18n\.translate|t)(?:\s|\():?(?:'|")(\.?[a-z0-9_\.]+)(?:'|")/
   end
 
   def files_to_scan
     Dir.glob(File.join(RailsI18nterface::Storage.root_dir, "{app,config,lib}", "**","*.{rb,erb,haml,slim,rhtml}")) +
-      Dir.glob(File.join(RailsI18nterface::Storage.root_dir, "public", "javascripts", "**","*.{js,coffee}"))
+      Dir.glob(File.join(RailsI18nterface::Storage.root_dir, "{public,app/assets}", "javascripts", "**","*.{js,coffee}"))
   end
 end

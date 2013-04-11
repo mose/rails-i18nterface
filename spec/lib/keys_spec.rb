@@ -3,8 +3,8 @@ require 'spec_helper'
 describe RailsI18nterface::Keys do
   before(:each) do
     I18n.stub!(:default_locale).and_return(:en)
-    @keys = RailsI18nterface::Keys.new
     RailsI18nterface::Storage.stub!(:root_dir).and_return(i18n_files_dir)
+    @keys = RailsI18nterface::Keys.new
   end
 
   describe "to_a" do

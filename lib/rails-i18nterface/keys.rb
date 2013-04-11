@@ -143,11 +143,20 @@ class RailsI18nterface::Keys
           files[key] << path if !files[key].include?(path)
         end
       rescue Exception => e
-        logger.info "bug in Translation plugin, please debug, informations :"
-        logger.info file.inspect
-        logger.info i18n_lookup_pattern.inspect
+        Rails.logger.info "bug in Translation plugin, please debug, informations :"
+        Rails.logger.info file.inspect
+        Rails.logger.info i18n_lookup_pattern.inspect
       end
       files
+    end
+  end
+
+  def extract_namespace(path)
+    parts = path.split(/\//)
+    case parts[0]
+    when 'controller'
+      parts.shift
+      parts[-1].gsub!(/_controller\.rb$/,'')
     end
   end
 

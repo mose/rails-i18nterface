@@ -1,4 +1,4 @@
-require_relative '../spec_helper'
+require 'spec_helper'
 
 describe RailsI18nterface::Storage do
   describe "write_to_file" do

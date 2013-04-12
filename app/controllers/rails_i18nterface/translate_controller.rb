@@ -100,7 +100,9 @@ module RailsI18nterface
         end
         t.save
       }
-      I18n.backend.store_translations(@to_locale, RailsI18nterface::Keys.to_deep_hash(params[:key]))
+      if I18n.backend.respond_to? :store_translations
+        I18n.backend.store_translations(@to_locale, RailsI18nterface::Keys.to_deep_hash(params[:key]))
+      end
       RailsI18nterface::Storage.new(@to_locale).write_to_file
       RailsI18nterface::Log.new(@from_locale, @to_locale, params[:key].keys).write_to_file
       force_init_translations # Force reload from YAML file
@@ -215,7 +217,7 @@ module RailsI18nterface
     end
 
     def force_init_translations
-      I18n.backend.send(:init_translations)
+      I18n.backend.send(:init_translations) rescue false
     end
 
     def default_locale

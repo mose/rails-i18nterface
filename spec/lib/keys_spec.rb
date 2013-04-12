@@ -2,8 +2,8 @@ require 'spec_helper'
 
 describe RailsI18nterface::Keys do
   before(:each) do
-    I18n.stub!(:default_locale).and_return(:en)
-    RailsI18nterface::Storage.stub!(:root_dir).and_return(i18n_files_dir)
+    #I18n.stub!(:default_locale).and_return(:en)
+    #RailsI18nterface::Storage.stub!(:root_dir).and_return(i18n_files_dir)
     @keys = RailsI18nterface::Keys.new
   end
 
@@ -37,7 +37,8 @@ describe RailsI18nterface::Keys do
 
     it "should return a hash with keys with missing translations in each locale" do
       @keys.untranslated_keys.should == {
-        :sv => ['articles.new.page_title', 'categories.flash.created', 'empty']
+        :sv => ['articles.new.page_title', 'categories.flash.created', 'empty'],
+        :no => ["articles.new.page_title", "categories.flash.created", "empty", "home.about"]
       }
     end
   end
@@ -173,6 +174,6 @@ describe RailsI18nterface::Keys do
   end
 
   def i18n_files_dir
-    File.join(ENV['PWD'], "spec", "internal")
+    File.expand_path(File.join("..", "..", "..", "spec", "internal"), __FILE__)
   end
 end

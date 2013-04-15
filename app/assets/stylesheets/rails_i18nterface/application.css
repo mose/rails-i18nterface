@@ -98,6 +98,42 @@ a{
   -moz-box-sizing: border-box;
   -webkit-box-sizing: border-box;
 }
+/* master layout */
+#top {
+  position: fixed;
+  height: 40px;
+  width: 100%;
+}
+#searchbox {
+  position: fixed;
+  top: 35px;
+  width: 100%;
+  height: 30px;
+  padding: 5px 20px;
+  background-color: #ccc;
+  border-bottom: 2px dotted #999;
+}
+#namespaces {
+  position: fixed;
+  top: 65px;
+  width: 200px;
+  height: 100%;
+  overflow-y: scroll;
+  background-color: #ddd;
+  padding-top: 10px;
+  box-shadow: inset -5px 4px 8px #aaa;
+}
+#inside {
+  position: fixed;
+  top: 65px;
+  left: 200px;
+  bottom: 0;
+  right: 0;
+  overflow-y: auto;
+}
+
+
+/* inside layout */
 div#container{
 	width:100%;
 	margin:0 auto;
@@ -107,6 +143,9 @@ div#container h1 {
   padding: 5px 20px;
   background-color: #000;
   margin: 0;
+  height: 35px;
+  line-height: 30px;
+  vertical-align: middle;
 }
 div#container h1 a {
   color: #8ac;
@@ -114,6 +153,19 @@ div#container h1 a {
 }
 div#container h1 a:hover {
   color: #fff;
+}
+div#container h1 .right {
+  font-size: 12px;
+  display: inline-block;
+  float: right;
+  margin-left: 20px;
+}
+div#container h1 .center {
+  color: #fff;
+  font-size: 12px;
+  font-weight: normal;
+  display: inline-block;
+  float: right;
 }
 div#container #success {
   padding: 5px 20px;
@@ -127,8 +179,85 @@ div#container #notice {
   padding: 5px 20px;
   background-color: #dba;
 }
-
-/*paging*/
+/* menu namespaces */
+#namespaces ul {
+  border-top: 1px dotted #aaa;
+  border-bottom: 1px dotted #aaa;
+  margin-bottom: 1px;
+  font-weight: normal;
+}
+#namespaces ul .display {
+  width: 42px;
+  height: 10px;
+  margin-top: 3px;
+  background-color: #fff;
+  float: right;
+  position: absolute;
+  right: 0;
+  background: -moz-linear-gradient(0% 0% 0deg, rgba(255,255,255,0), rgba(255,255,255,1) 100%);
+  background: -ms-linear-gradient(0% 0% 0deg, rgba(255,255,255,0), rgba(255,255,255,1) 100%);
+  background: -webkit-gradient(linear, 0% 0%, 100% 0%, from(rgba(255,255,255,0)), to(rgba(255,255,255,1)));
+  background: gradient(0% 0% 0deg, rgba(255,255,255,0), rgba(255,255,255,1) 100%);
+}
+#namespaces ul .display:hover:before {
+  content: '';
+  width: 0;
+  height: 0;
+  border: 5px solid transparent;
+  border-left: 5px solid #999;
+  position: absolute;
+  right: 0px;
+  z-index: 1;
+}
+#namespaces > ul > li {
+  font-weight: bold;
+}
+#namespaces ul li {
+  padding-left: 12px;
+  cursor: pointer;
+  position: relative;
+}
+#namespaces ul li.item {
+  font-style: italic;
+}
+#namespaces ul li:hover {
+  background-color: #cfcfcf;
+}
+#namespaces ul li ul li:hover {
+  background-color: #c4c4c4;
+}
+#namespaces ul li ul li ul li:hover {
+  background-color: #b8b8b8;
+}
+#namespaces ul li ul li ul li ul li:hover {
+  background-color: #b0b0b0;
+}
+#namespaces ul li ul li ul li ul li ul li:hover {
+  background-color: #a4a4a4;
+}
+#namespaces ul li.item:before {
+  position: absolute;
+  content: "- ";
+  margin-left: -9px;
+  color: #777;
+}
+#namespaces ul li.dir:before {
+  position: absolute;
+  content: "";
+  width: 5px;
+  height: 0;
+  border: 5px solid transparent;
+  border-left: 5px solid #999;
+  margin-left: -9px;
+  margin-top: 4px;
+}
+#namespaces ul li ul {
+  display: none;
+}
+#namespaces ul li ul.view {
+  display: block;
+}
+/* paging */
 div.paging {
 	text-align: left;
 }
@@ -172,34 +301,14 @@ ul.paging li.selected a:hover {
   background: #000;
 }
 /*forms filter*/
-#searchbox {
-  padding: 5px 20px;
+#searchbox .sep {
+  margin-left: 40px;
 }
-label{
-	font-weight: bold;
+div#searchbox select{
+	margin-left:1.5em;
 }
-
-div#show-sort label,
-div#languages label,
-div#filter-pattern label{
-	display:inline-block;
+div#searchbox input.text-default{
 	width:100px;
-	line-height:2em;
-}
-div#show-sort select,
-div#languages select,
-div#filter-pattern select{
-	width:120px;
-	margin-right:0.5em;
-}
-div#show-sort input.text-default,
-div#languages input.text-default,
-div#filter-pattern input.text-default{
-	width:200px;
-}
-.submitbar {
-  width: 430px;
-  text-align: right;
 }
 .btn {
   text-decoration: none;

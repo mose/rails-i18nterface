@@ -5,3 +5,4 @@ spec/internal/log/*
 Gemfile.lock
 .rvmrc
 /tmp
+node_modules

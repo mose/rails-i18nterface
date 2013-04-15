@@ -1,5 +1,5 @@
 module RailsI18nterface
-  class TranslateController < ApplicationController
+  class TranslateController < RailsI18nterface::ApplicationController
 
     before_filter :init_translations
     before_filter :set_locale
@@ -8,6 +8,7 @@ module RailsI18nterface
       @dbvalues = {}
       initialize_keys
       load_db_translations
+      @deep_keys = RailsI18nterface::Keys.to_deep_hash(@keys)
       filter_by_key_pattern
       filter_by_text_pattern
       filter_by_translated_or_changed

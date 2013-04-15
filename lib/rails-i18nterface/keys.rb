@@ -6,6 +6,9 @@ class RailsI18nterface::Keys
     @@files ||= new.files
   end
 
+  def self.names
+    @@names || new.names
+  end
   # Allows flushing of the files cache
   def self.files=(files)
     @@files = files
@@ -15,6 +18,11 @@ class RailsI18nterface::Keys
     @files ||= extract_files
   end
   alias_method :to_hash, :files
+
+  def names
+    @names ||= build_namespaces
+  end
+  alias_method :to_tree, :names
 
   def keys
     files.keys
@@ -136,13 +144,18 @@ class RailsI18nterface::Keys
       begin#hack to avoid UTF-8 error
         IO.read(file).scan(i18n_lookup_pattern).flatten.map(&:to_sym).each do |key|
           path = Pathname.new(File.expand_path(file)).relative_path_from(Pathname.new(Rails.root)).to_s
+          #puts path
           if key[0] == '.'
-            key = extract_namespace(path) + key
+            key = guess_namespace(path) + key.to_s
           end
+          #puts key
+          #puts
           files[key] ||= []
           files[key] << path if !files[key].include?(path)
         end
       rescue Exception => e
+        puts e.inspect
+        puts e.backtrace
         puts "bug in Translation plugin, please debug, informations :"
         puts file.inspect
         puts i18n_lookup_pattern.inspect
@@ -151,13 +164,21 @@ class RailsI18nterface::Keys
     end
   end
 
-  def extract_namespace(path)
+  def guess_namespace(path)
     parts = path.split(/\//)
     case parts[0]
-    when 'controller'
+    when 'app'
       parts.shift
-      parts[-1].gsub!(/_controller\.rb$/,'')
+      if parts[0] == 'views'
+        parts.shift
+        parts[-1].gsub!(/\.(erb|haml|slim)$/,'')
+      end
     end
+    parts.join('.')
+  end
+
+  def build_namespaces
+    i18n_keys
   end
 
   def i18n_lookup_pattern

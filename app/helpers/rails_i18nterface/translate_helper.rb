@@ -32,5 +32,41 @@ module RailsI18nterface
       n_lines
     end
 
+    def build_namespace(h)
+      out = '<ul>'
+      dirs = {}
+      root = []
+      h.each do |k,v|
+        if v.is_a? Hash
+          dirs[k] = v
+        else
+          root << k
+        end
+      end
+      out << "<li class=\"dir\"><span class=\"display\" data-id=\"/\"></span>ROOT"
+      out << '<ul>'
+      root.each do |key|
+        out << "<li class=\"item\" data-id=\"#{key.to_s}\">#{key}</li>"
+      end
+      out << '</ul>'
+      out << '</ul>'
+      out << list_namespace('',dirs)
+    end
+
+    def list_namespace(k,h)
+      out = '<ul>'
+      k != '' && k += '.'
+      h.each do |key,val|
+        if val.is_a? Hash
+          out << "<li class=\"dir\"><span class=\"display\" data-id=\"#{k+key.to_s}\"></span>#{key}"
+          out << list_namespace(k+key.to_s,val)
+        else
+          out << "<li class=\"item\" data-id=\"#{k+key.to_s}\">#{key}"
+        end
+        out << '</li>'
+      end
+      out << '</ul>'
+    end
+
   end
 end

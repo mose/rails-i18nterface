@@ -8,17 +8,6 @@
   </head>
   <body>
 		<div id="container">
-			<% if @page_title %>
-			  <h1>
-          <%= link_to(Rails.application.class.namespace_name.underscore.humanize, '../') rescue '..' %> /
-          <%= link_to @page_title, root_path %></a>
-        </h1>
-			<% end %>
-		  <% flash.each do |key, msg| -%>
-		    <div id="<%= key %>"><%= msg %></div>
-		  <% end -%>
 		  <%= yield %>
     </div>
-    <%#= debug @files.inspect %>
-  </body>
 </html>

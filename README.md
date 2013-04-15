@@ -10,7 +10,7 @@ and later adapted to rails 3.0 by [Claudius Coenen](https://github.com/ccoenen/r
 This version is a spinoff of Claudius Coenen's version by [Larry Sprock](https://github.com/lardawge/rails-i18nterface).
 It was renamed, refactored and prepared for rails 3.1 as an Engine. Over this work
 [Michal Hantl](https://github.com/hakunin/rails-i18nterface) made a bunch of nice UI modifications
-on his fork. Since then it was mroe or less abandonned.
+on his fork. Since then it was more or less abandonned.
 
 I took over the evolution with some new features:
 
@@ -75,9 +75,9 @@ Where `[:en]` and `[:ja, :es, :fr]` could be replaced by locale list of your cho
 ## Todo
 
 * fix the code smell reported by code climate
-** extract code from the controller to a lib
-** refactor the libs in a cleaner way
-** apply rubocop and follow his law
+  * extract code from the controller to a lib
+  * refactor the libs in a cleaner way
+  * apply rubocop and follow his law
 * extend testing to refactored libs
 * change navigation to an ajax-driven reload
 

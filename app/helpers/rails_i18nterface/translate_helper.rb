@@ -43,7 +43,8 @@ module RailsI18nterface
           root << k
         end
       end
-      out << "<li class=\"dir\"><span class=\"display\" data-id=\"/\"></span>ROOT"
+      out << "<li class=\"dir\"><span class=\"display\" data-id=\".\"></span>ROOT"
+      out << " <span class=\"num\">(#{root.length})</span>"
       out << '<ul>'
       root.each do |key|
         out << "<li class=\"item\" data-id=\"#{key.to_s}\">#{key}</li>"
@@ -59,6 +60,7 @@ module RailsI18nterface
       h.each do |key,val|
         if val.is_a? Hash
           out << "<li class=\"dir\"><span class=\"display\" data-id=\"#{k+key.to_s}\"></span>#{key}"
+          out << " <span class=\"num\">(#{val.length})</span>"
           out << list_namespace(k+key.to_s,val)
         else
           out << "<li class=\"item\" data-id=\"#{k+key.to_s}\">#{key}"

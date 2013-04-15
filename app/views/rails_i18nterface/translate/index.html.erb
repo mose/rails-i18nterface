@@ -3,7 +3,7 @@
   show_filters = ["all", "untranslated", "translated"]
   show_filters << "changed" if @from_locale != @to_locale
 %>
-<%= form_tag(params, :method => :get) do %>
+<%= form_tag(params, :method => :get, :id => 'filter_form') do %>
 <%= hidden_field_tag(:filter, params[:filter]) %>
 <%= hidden_field_tag(:sort_by, params[:sort_by]) %>
 <div id="top">
@@ -83,7 +83,7 @@
           <span class="right">
   			    <span class="key"><%=h key %></span>
   			      <% if @files[key] %>
-  				      <strong>File:</strong><%= @files[key].join("<br/>") %>
+  				      <span class="file"><%= @files[key].join("</span><span>") %></span>
   			      <% end %>
   			    </span>
   			  </span>
@@ -105,7 +105,7 @@
         <span class="right">
   			  <span class="key" ><%=h key %></span>
   			    <% if @files[key] %>
-  				    <strong>File:</strong><%= @files[key].join("<br/>") %>
+  				    <span class="file"><%= @files[key].join("</span><span>") %></span>
   			    <% end %>
   			  </span>
   			</span>
@@ -128,4 +128,5 @@
   <div class="paging clear">
     <%= render :partial => 'pagination', :locals => {:total_entries => @total_entries, :per_page => per_page} %>
   </div>
+
 </div>

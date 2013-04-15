@@ -156,7 +156,11 @@ module RailsI18nterface
       @keys.reject! do |key|
         case params[:key_type]
         when "starts_with"
-          !key.starts_with?(params[:key_pattern])
+          if params[:key_pattern] == '.'
+            key.match(/\./)
+          else
+            !key.starts_with?(params[:key_pattern])
+          end
         when "contains"
           key.index(params[:key_pattern]).nil?
         else

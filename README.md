@@ -2,8 +2,9 @@
 
 [![Build Status](https://secure.travis-ci.org/mose/rails-i18nterface.png?branch=master)](http://travis-ci.org/mose/rails-i18nterface)
 [![Code Climate](https://codeclimate.com/github/mose/rails-i18nterface.png)](https://codeclimate.com/github/mose/rails-i18nterface)
+[![Gem Version](https://badge.fury.io/rb/rails-i18nterface.png)](http://badge.fury.io/rb/rails-i18nterface)
 
-This is a fork of an overhaul of a fork of a fork if rails-translate.
+This is a fork of an overhaul of a fork of a fork of rails-translate.
 
 It was originally created by [Peter Marklund and Joakim Westerlund @ mynewsdesk](https://github.com/mynewsdesk/translate)
 and later adapted to rails 3.0 by [Claudius Coenen](https://github.com/ccoenen/rails-translate).
@@ -14,12 +15,12 @@ on his fork. Since then it was more or less abandonned.
 
 I took over the evolution with some new features:
 
-* testing using combustion and rspec
+* testing using [combustion](https://github.com/pat/combustion) and [rspec](https://github.com/rspec/rspec)
 * redesign of the layout
-* navigation overhaul, spliting of the namespaces in a foldable menu
+* navigation overhaul, spliting the namespaces in a foldable menu
 * gathering of first-level translations under a ROOT container
-* gemification and release of a version 0.0.2
-* (the 0.0.1 was the original work from Larry Sprock but was not published as a gem)
+* gemification and release of a version 0.1.0
+* (the 0.0.1 was the work from Larry Sprock but was not published as a gem)
 * compatibility with rails 4 and ruby 2
 
 ![rails-i18nterface](http://mose.fr/rails-i18nterface.png)
@@ -44,7 +45,7 @@ rake db:migrate
 ### Protect access
 
 You may want to protect the translation engine to admin and create a constraint
-in your route:
+in your routes:
 ```ruby
 constraints AdminConstraint.new do
   mount RailsI18nterface::Engine => "/translate", :as => "translate_engine"

@@ -108,7 +108,7 @@ module RailsI18nterface
       RailsI18nterface::Log.new(@from_locale, @to_locale, params[:key].keys).write_to_file
       force_init_translations # Force reload from YAML file
       flash[:notice] = "Translations stored"
-      redirect_to params.slice(:filter, :sort_by, :key_type, :key_pattern, :text_type, :text_pattern).merge({:action => :index})
+      redirect_to root_path(params.slice(:filter, :sort_by, :key_type, :key_pattern, :text_type, :text_pattern))
     end
 
     def reload

@@ -1,7 +1,9 @@
 # Rails I18nterface
 
-This is a fork of a fork of an overhaul of a fork if rails-translate.
+[![Build Status](https://secure.travis-ci.org/mose/rails-i18nterface.png?branch=master)](http://travis-ci.org/mose/rails-i18nterface)
+[![Code Climate](https://codeclimate.com/github/mose/rails-i18nterface.png)](https://codeclimate.com/github/mose/rails-i18nterface)
 
+This is a fork of an overhaul of a fork of a fork if rails-translate.
 
 It was originally created by [Peter Marklund and Joakim Westerlund @ mynewsdesk](https://github.com/mynewsdesk/translate)
 and later adapted to rails 3.0 by [Claudius Coenen](https://github.com/ccoenen/rails-translate).

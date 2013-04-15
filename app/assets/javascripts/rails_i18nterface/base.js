@@ -32,14 +32,14 @@ $.domReady(function() {
   }
   var focus = getFocus();
   openNav(focus);
-  function filterThat(s,start=true) {
+  function filterThat(s,start) {
     if (start) {
       $("#key_type").val("starts_with");
     } else {
       $("#key_type").val("contains");
     }
     $("#key_pattern_value").val(s);
-    $("#filter_form").submit();
+    document.forms['filter_form'].submit();
   }
   $("#namespaces ul li").on("click", function(e) {
     e.preventDefault();

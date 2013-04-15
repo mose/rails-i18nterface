@@ -6,3 +6,4 @@ Gemfile.lock
 .rvmrc
 /tmp
 node_modules
+*.gem

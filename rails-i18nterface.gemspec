@@ -10,11 +10,12 @@ Gem::Specification.new do |s|
   s.authors     = ["Mose"]
   s.email       = ["mose@mose.com"]
   s.homepage    = "https://github.com/mose/rails-i18nterface"
-  s.summary     = "A rails 3.1 engine adding an interface for translating and writing translation files."
-  s.description = "A rails 3.1 engine adding an interface for translating and writing translation files."
+  s.summary     = "A rails 3.1 up to 4 engine for translating with a web page."
+  s.description = "A rails 3.1 up to 4 engine adding an interface for translating and writing translation files."
+  s.license     = "MIT"
 
   s.files = Dir["{app,config,db,lib}/**/*"] + ["MIT-LICENSE", "Rakefile", "README.md"]
-  s.test_files = Dir["{test,spec}/**/*"]
+  s.test_files = Dir["spec/**/*"]
 
   s.add_dependency "rails", ">= 3.1.0"
 

@@ -7,11 +7,22 @@ This is a fork of an overhaul of a fork of a fork if rails-translate.
 
 It was originally created by [Peter Marklund and Joakim Westerlund @ mynewsdesk](https://github.com/mynewsdesk/translate)
 and later adapted to rails 3.0 by [Claudius Coenen](https://github.com/ccoenen/rails-translate).
-This version is a spinoff of Claudius Coenen's version and aims to rename,
-refactor and bring the functionality to rails 3.1 as an Engine.
+This version is a spinoff of Claudius Coenen's version by [Larry Sprock](https://github.com/lardawge/rails-i18nterface).
+It was renamed, refactored and prepared for rails 3.1 as an Engine. Over this work
+[Michal Hantl](https://github.com/hakunin/rails-i18nterface) made a bunch of nice UI modifications
+on his fork. Since then it was mroe or less abandonned.
 
-It has been modified to store translated messages in database and then
-export those into yaml file.
+I took over the evolution with some new features:
+
+* testing using combustion and rspec
+* redesign of the layout
+* navigation overhaul, spliting of the namespaces in a foldable menu
+* gathering of first-level translations under a ROOT container
+* gemification and release of a version 0.0.2
+* (the 0.0.1 was the original work from Larry Sprock but was not published as a gem)
+* compatibility with rails 4 and ruby 2
+
+![rails-i18nterface](http://mose.fr/rails-i18nterface.png)
 
 ## Usage
 
@@ -55,11 +66,20 @@ according to your own context).
 
 You can configure `from_locales` and `to_locales` explicitly in your
 `environments/development.rb` by adding
+```ruby
+config.from_locales = [:en]
+config.to_locales = [:ja, :es, :fr]
+```
+Where `[:en]` and `[:ja, :es, :fr]` could be replaced by locale list of your choice.
 
-  config.from_locales = [:en]
-  config.to_locales = [:ja, :es, :fr]
+## Todo
 
-Where [:en] and [:ja, :es, :fr] could be replaced by locale list of your choice.
+* fix the code smell reported by code climate
+** extract code from the controller to a lib
+** refactor the libs in a cleaner way
+** apply rubocop and follow his law
+* extend testing to refactored libs
+* change navigation to an ajax-driven reload
 
 ## License
 

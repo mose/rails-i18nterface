@@ -395,6 +395,7 @@ div.translation em strong {
   background-color: #369;
   color: #fff;
   border-radius: 3px;
+  display: block;
 }
 .translation .key {
   color: #666;

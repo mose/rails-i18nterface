@@ -58,5 +58,21 @@ $.domReady(function() {
     filter = $(this).data("id");
     filterThat(filter,false);
   });
-
+  $(".delete").on("click", function(e) {
+    e.preventDefault();
+    e.stopPropagation();
+    key = $(this).previous().text();
+    if (confirm("Are you sure you want to delete the key "+key+" from database ?")) {
+      $.ajax({
+        url: 'delete/'+key,
+        method: 'delete',
+        success: function(resp) {
+          alert(resp);
+        },
+        error: function(resp,msg) {
+          alert("Error: "+resp.statusText);
+        }
+      })
+    }
+  });
 });

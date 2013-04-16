@@ -17,6 +17,15 @@ module RailsI18nterface
       @total_entries = @keys.size
     end
 
+    def destroy
+      term = Translation.find_by_key(params[:key])
+      if term.destroy!
+        render json: 'ok'
+      else
+        render json: 'error'
+      end
+    end
+
     def load_db_translations
       @versions = {}
       @dbvalues = {@to_locale => {}}

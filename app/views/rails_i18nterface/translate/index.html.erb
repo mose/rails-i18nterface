@@ -79,9 +79,10 @@
   	  <div class="translation">
       	<p class="edit-form">
   			<%= hidden_field_tag("version[#{key}]", @versions[key] || '0') %>
-  		<% if n_lines > 1 %>
+  		  <% if n_lines > 1 %>
           <span class="right">
   			    <span class="key"><%=h key %></span>
+            <a href="#" class="delete" title="Delete this key from database">X</a>
   			      <% if @files[key] %>
   				      <span class="file"><%= @files[key].join("</span><span class=\"file\">").html_safe %></span>
   			      <% end %>
@@ -98,21 +99,21 @@
   		      </div>
             <div class="clear"></div>
   		    </div>
-      <% else %>
-  		  <span class="translation-text">
-  			  <code class="keytext" id="<%= tid %>_original"><%= from_text %></code>
-  		  </span>
-        <span class="right">
-  			  <span class="key" ><%=h key %></span>
+        <% else %>
+    		  <span class="translation-text">
+    			  <code class="keytext" id="<%= tid %>_original"><%= from_text %></code>
+    		  </span>
+          <span class="right">
+    			  <span class="key" ><%=h key %></span>
+            <a href="#" class="delete" title="Delete this key from database">X</a>
   			    <% if @files[key] %>
   				    <span class="file"><%= @files[key].join("</span><span class=\"file\">").html_safe %></span>
   			    <% end %>
-  			  </span>
-  			</span>
+    			</span>
 
-  			<%= text_field_tag(field_name, to_text, :size => line_size, :id => tid) %>
-  		<% end %>
-  		</p>
+    			<%= text_field_tag(field_name, to_text, :size => line_size, :id => tid) %>
+    		<% end %>
+  		  </p>
   		<p>
   	</p>
   	</div>

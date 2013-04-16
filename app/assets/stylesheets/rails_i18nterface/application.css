@@ -400,6 +400,18 @@ div.translation em strong {
 .translation .key {
   color: #666;
 }
+.translation .delete {
+  padding: 0 5px;
+  text-decoration: none;
+  background-color: #999;
+  color: #fff;
+  border-radius: 10px;
+  font-size: 10px;
+  font-weight: bold;
+}
+.translation .delete:hover {
+  background-color: #900;
+}
 .translation .keytext {
   padding: 5px;
   color: #678;

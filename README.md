@@ -45,10 +45,12 @@ rake db:migrate
 ### Protect access
 
 You may want to protect the translation engine to admin and create a constraint
-in your routes:
+in your routes (note that you don't want to mount it when you launch tests):
 ```ruby
 constraints AdminConstraint.new do
-  mount RailsI18nterface::Engine => "/translate", :as => "translate_engine"
+  unless Rails.env.test?
+    mount RailsI18nterface::Engine => "/translate", :as => "translate_engine"
+  end
 end
 ```
 

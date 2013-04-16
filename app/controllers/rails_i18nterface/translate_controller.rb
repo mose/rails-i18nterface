@@ -22,6 +22,11 @@ module RailsI18nterface
       @dbvalues = {@to_locale => {}}
       (Translation.where(:locale => @to_locale) || []).each { |translation|
         @versions[translation.key] = translation.updated_at.to_i
+        yaml_value = I18n.backend.send(:lookup, @to_locale, translation.key)
+        if (yaml_value and translation.value != yaml_value)
+          translation.value = yaml_value
+          Translation.where(key: translation.key).first.update_attribute(:value, yaml_value)
+        end
         @dbvalues[@to_locale][translation.key] = translation.value
         @keys << translation.key
       }

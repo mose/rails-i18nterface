@@ -81,6 +81,8 @@ Where `[:en]` and `[:ja, :es, :fr]` could be replaced by locale list of your cho
   * apply rubocop and follow his law
 * extend testing to refactored libs
 * change navigation to an ajax-driven reload
+* add a way to gather .one and .other and .few under same translation line
+* add support for other i18n backends (gettext)
 
 ## License
 

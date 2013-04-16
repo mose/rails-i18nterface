@@ -8,20 +8,22 @@ This is a fork of an overhaul of a fork of a fork of rails-translate.
 
 It was originally created by [Peter Marklund and Joakim Westerlund @ mynewsdesk](https://github.com/mynewsdesk/translate)
 and later adapted to rails 3.0 by [Claudius Coenen](https://github.com/ccoenen/rails-translate).
-This version is a spinoff of Claudius Coenen's version by [Larry Sprock](https://github.com/lardawge/rails-i18nterface).
+This version is a spin-off of Claudius Coenen's version by [Larry Sprock](https://github.com/lardawge/rails-i18nterface).
 It was renamed, refactored and prepared for rails 3.1 as an Engine. Over this work
 [Michal Hantl](https://github.com/hakunin/rails-i18nterface) made a bunch of nice UI modifications
-on his fork. Since then it was more or less abandonned.
+on his fork. Since then it was more or less abandoned.
 
 I took over the evolution with some new features:
 
 * testing using [combustion](https://github.com/pat/combustion) and [rspec](https://github.com/rspec/rspec)
 * redesign of the layout
-* navigation overhaul, spliting the namespaces in a foldable menu
+* navigation overhaul, splitting the name-spaces in a foldable menu
 * gathering of first-level translations under a ROOT container
 * gemification and release of a version 0.1.0
 * (the 0.0.1 was the work from Larry Sprock but was not published as a gem)
 * compatibility with rails 4 and ruby 2
+
+Check the [Changelog](https://github.com/mose/rails-i18nterface/blob/master/changelog.md) for details about further changes.
 
 ![rails-i18nterface](http://mose.fr/rails-i18nterface.png)
 
@@ -65,7 +67,7 @@ end
 (this example is for devise users, but you can adjust it to return true or false
 according to your own context).
 
-### Confifuration
+### Configuration
 
 You can configure `from_locales` and `to_locales` explicitly in your
 `environments/development.rb` by adding

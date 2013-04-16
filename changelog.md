@@ -1,8 +1,10 @@
 ### v0.1.3 : 2013-04-15
 
-* fix loading of translation
-  * if you modify the yml file it will be update the database translation automatically
-  * this was required to be able to share translation accross our development team
+* fix loading of translation:
+  * if you modify the yml file it will be update the database translation automatically.
+  * this was required to be able to share translation accross our development team.
+* added a link to delete unused keys from database.
+* changed display of files where each translation was found to be less obstrusive, and revealed on rollover only.
 
 ### v0.1.2 : 2013-04-15
 

@@ -390,11 +390,36 @@ div.translation em strong {
 .translation .right {
   float: right;
 }
-.translation .right .file {
-  padding: 0 5px;
+.translation .files {
+  padding: 1px 5px;
   background-color: #369;
   color: #fff;
-  border-radius: 3px;
+  border-radius: 3px 3px 0 0;
+  float: right;
+  display: inline;
+  margin-left: 10px;
+  position: relative;
+  cursor: pointer;
+}
+
+.translation .files .count {
+  display: inline-block;
+
+}
+.translation .files .filelist {
+  display: none;
+  position: absolute;
+  top: 15px;
+  right: 0;
+  left: auto;
+  width: 300px;
+  background-color: #fff;
+  padding: 5px 10px;
+  border: 1px solid #369;
+  z-index: 1;
+  color: #000;
+}
+.translation .files:hover .filelist {
   display: block;
 }
 .translation .key {

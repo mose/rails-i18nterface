@@ -58,7 +58,7 @@ describe RailsI18nterface::TranslateController do
     it "accepts a filter=changed param" do
       log = mock(:log)
       old_translations = {:home => {:page_title => "Skapar ny artikel"}}
-      log.should_receive(:read).and_return(RailsI18nterface::File.new(nil).deep_stringify_keys(old_translations))
+      log.should_receive(:read).and_return(RailsI18nterface::Yamlfile.new(nil).deep_stringify_keys(old_translations))
       RailsI18nterface::Log.should_receive(:new).with(:sv, :en, {}).and_return(log)
       get_page :index, :filter => 'changed', use_route: 'rails-i18nterface'
       assigns(:total_entries).should == 1

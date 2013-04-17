@@ -6,7 +6,7 @@ module RailsI18nterface
 
     def index
       @dbvalues = {}
-      initialize_keys
+      @keys = initialize_keys
       load_db_translations
       @deep_keys = RailsI18nterface::Keys.to_deep_hash(@keys)
       filter_by_key_pattern
@@ -51,7 +51,7 @@ module RailsI18nterface
         set_nested(keys[locale], translation.key.split("."), translation.value)
       }
       remove_blanks keys
-      yaml = RailsI18nterface::File.new.keys_to_yaml(keys)
+      yaml = RailsI18nterface::Yamlfile.new.keys_to_yaml(keys)
       response.headers['Content-Disposition'] = "attachment; filename=#{locale}.yml"
       render :text => yaml
     end
@@ -112,8 +112,8 @@ module RailsI18nterface
 
     def initialize_keys
       @files = RailsI18nterface::Keys.files
-      @keys = (@files.keys.map(&:to_s) + RailsI18nterface::Keys.new.i18n_keys(@from_locale)).uniq
-      @keys.reject! do |key|
+      keys = (@files.keys.map(&:to_s) + RailsI18nterface::Keys.new.i18n_keys(@from_locale)).uniq
+      keys.reject! do |key|
         from_text = lookup(@from_locale, key)
         # When translating from one language to another, make sure there is a text to translate from.
         # Always exclude non string translation objects as we don't support editing them in the UI.

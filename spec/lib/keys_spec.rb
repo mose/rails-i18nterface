@@ -46,7 +46,7 @@ describe RailsI18nterface::Keys do
   describe "missing_keys" do
     before(:each) do
       @file_path = File.join(i18n_files_dir, "config", "locales", "en.yml")
-      RailsI18nterface::File.new(@file_path).write({
+      RailsI18nterface::Yamlfile.new(@file_path).write({
         :en => {
           :home => {
             :page_title => false,

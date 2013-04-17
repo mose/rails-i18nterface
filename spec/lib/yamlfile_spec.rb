@@ -1,9 +1,9 @@
 require 'spec_helper'
 
-describe RailsI18nterface::File do
+describe RailsI18nterface::Yamlfile do
   describe "write" do
     before(:each) do
-      @file = RailsI18nterface::File.new(file_path)
+      @file = RailsI18nterface::Yamlfile.new(file_path)
     end
 
     after(:each) do
@@ -12,7 +12,7 @@ describe RailsI18nterface::File do
 
     it "writes all I18n messages for a locale to YAML file" do
       @file.write(translations)
-      @file.read.should == RailsI18nterface::File.new(nil).deep_stringify_keys(translations)
+      @file.read.should == RailsI18nterface::Yamlfile.new(nil).deep_stringify_keys(translations)
     end
 
     def translations
@@ -29,7 +29,7 @@ describe RailsI18nterface::File do
 
   describe "deep_stringify_keys" do
     it "should convert all keys in a hash to strings" do
-      RailsI18nterface::File.new(nil).deep_stringify_keys({
+      RailsI18nterface::Yamlfile.new(nil).deep_stringify_keys({
         :en => {
           :article => {
             :title => "One Article"

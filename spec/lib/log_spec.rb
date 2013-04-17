@@ -19,7 +19,7 @@ describe RailsI18nterface::Log do
       File.exists?(file_path).should be_false
       @log.write_to_file
       File.exists?(file_path).should be_true
-      RailsI18nterface::File.new(file_path).read.should == RailsI18nterface::File.new(nil).deep_stringify_keys(from_texts)
+      RailsI18nterface::Yamlfile.new(file_path).read.should == RailsI18nterface::Yamlfile.new(nil).deep_stringify_keys(from_texts)
     end
 
     it "merges from texts with current texts in log file and re-writes the log file" do
@@ -27,7 +27,7 @@ describe RailsI18nterface::Log do
       I18n.backend.store_translations(:sv, {:category => "Kategori ny"})
       @log.keys = ['category']
       @log.write_to_file
-      RailsI18nterface::File.new(file_path).read['category'].should == "Kategori ny"
+      RailsI18nterface::Yamlfile.new(file_path).read['category'].should == "Kategori ny"
     end
 
     def file_path

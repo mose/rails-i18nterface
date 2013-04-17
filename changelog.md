@@ -1,6 +1,6 @@
 ### v0.1.4
 
-
+* code optimisation : refactoring, cleaning the smell one piece at a time
 
 ### v0.1.3 : 2013-04-16
 

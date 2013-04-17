@@ -11,7 +11,7 @@ describe RailsI18nterface::Storage do
       @storage.stub!(:file_path).and_return(file_path)
       file = mock(:file)
       file.should_receive(:write).with(translations)
-      RailsI18nterface::File.should_receive(:new).with(file_path).and_return(file)
+      RailsI18nterface::Yamlfile.should_receive(:new).with(file_path).and_return(file)
       @storage.write_to_file
     end
 

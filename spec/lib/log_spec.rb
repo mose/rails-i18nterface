@@ -19,7 +19,7 @@ describe RailsI18nterface::Log do
       File.exists?(file_path).should be_false
       @log.write_to_file
       File.exists?(file_path).should be_true
-      RailsI18nterface::File.new(file_path).read.should == RailsI18nterface::File.deep_stringify_keys(from_texts)
+      RailsI18nterface::File.new(file_path).read.should == RailsI18nterface::File.new(nil).deep_stringify_keys(from_texts)
     end
 
     it "merges from texts with current texts in log file and re-writes the log file" do

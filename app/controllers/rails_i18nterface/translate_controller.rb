@@ -51,7 +51,7 @@ module RailsI18nterface
         set_nested(keys[locale], translation.key.split("."), translation.value)
       }
       remove_blanks keys
-      yaml = keys_to_yaml(deep_stringify_keys(keys))
+      yaml = RailsI18nterface::File.new.keys_to_yaml(keys)
       response.headers['Content-Disposition'] = "attachment; filename=#{locale}.yml"
       render :text => yaml
     end
@@ -78,28 +78,6 @@ module RailsI18nterface
         set_nested(hash[k] ||= {}, key, value)
       end
     end
-
-  private
-
-    # Stringifying keys for prettier YAML
-    def deep_stringify_keys(hash)
-      hash.inject({}) { |result, (key, value)|
-        value = deep_stringify_keys(value) if value.is_a? Hash
-        result[(key.to_s rescue key) || key] = value
-        result
-      }
-    end
-
-    def keys_to_yaml(keys)
-      # Using ya2yaml, if available, for UTF8 support
-      if keys.respond_to?(:ya2yaml)
-        keys.ya2yaml(:escape_as_utf8 => true)
-      else
-        keys.to_yaml
-      end
-    end
-
-  public
 
     def update
       params[:key].each { |k, v|

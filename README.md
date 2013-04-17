@@ -83,6 +83,8 @@ Where `[:en]` and `[:ja, :es, :fr]` could be replaced by locale list of your cho
   * extract code from the controller to a lib
   * refactor the libs in a cleaner way
   * apply rubocop and follow his law
+* make the application thread-safe
+* remove those damn global variables
 * extend testing to refactored libs
 * change navigation to an ajax-driven reload
 * add a way to gather .one and .other and .few under same translation line

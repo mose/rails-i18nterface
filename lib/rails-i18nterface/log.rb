@@ -23,7 +23,7 @@ class RailsI18nterface::Log
   end
 
   def from_texts
-    RailsI18nterface::File.deep_stringify_keys(RailsI18nterface::Keys.to_deep_hash(keys.inject({}) do |hash, key|
+    file.deep_stringify_keys(RailsI18nterface::Keys.to_deep_hash(keys.inject({}) do |hash, key|
       hash[key] = I18n.backend.send(:lookup, from_locale, key)
       hash
     end))

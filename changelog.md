@@ -9,6 +9,7 @@ All Dates are GMT+8 (Asia/Taipei)
 
 ### v0.1.4
 
+* added experimental extraction of activerecords models and fields for the .human helpers
 * cleaning up tests to make them simpler
 * code cleaning: refactoring - extracting libs from controller
 

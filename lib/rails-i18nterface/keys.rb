@@ -2,6 +2,7 @@
 
 module RailsI18nterface
   class Keys
+
     # Allows keys extracted from lookups in files to be cached
     def self.files
       @@files ||= new.files
@@ -16,7 +17,7 @@ module RailsI18nterface
     end
 
     def files
-      @files ||= Sourcefiles.extract_files
+      @files ||= RailsI18nterface::Sourcefiles.extract_files
     end
     alias_method :to_hash, :files
 

@@ -1,3 +1,12 @@
+Rails-i18nterface Changelog
+=============================
+
+Warning
+--------
+
+All Dates are GMT+8 (Asia/Taipei)
+
+
 ### v0.1.4
 
 * cleaning up tests to make them simpler

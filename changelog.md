@@ -1,6 +1,7 @@
 ### v0.1.4
 
-* code optimisation : refactoring, cleaning the smell one piece at a time
+* cleaning up tests to make them simpler
+* code cleaning: refactoring - extracting libs from controller
 
 ### v0.1.3 : 2013-04-16
 

@@ -183,7 +183,7 @@ module RailsI18nterface
     end
 
     def per_page
-      50
+      params[:per_page] ? params[:per_page].to_i : 50
     end
     helper_method :per_page
 

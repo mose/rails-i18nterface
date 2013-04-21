@@ -7,7 +7,7 @@ Warning
 All Dates are GMT+8 (Asia/Taipei)
 
 
-### v0.1.4
+### v0.1.4 : 2013-04-21
 
 * added experimental extraction of activerecords models and fields for the .human helpers
 * cleaning up tests to make them simpler

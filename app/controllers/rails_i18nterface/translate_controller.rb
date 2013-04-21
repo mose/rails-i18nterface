@@ -1,6 +1,8 @@
 module RailsI18nterface
   class TranslateController < RailsI18nterface::ApplicationController
 
+    include Utils
+
     before_filter :init_translations
     before_filter :set_locale
 
@@ -46,37 +48,13 @@ module RailsI18nterface
       locale = params[:locale].to_sym
       keys = {locale => I18n.backend.send(:translations)[locale] || {}}
       Translation.where(:locale => @to_locale).each { |translation|
-        next if translation.value == ''
-        next if !translation.value
+        next if !translation.value or translation.value == ''
         set_nested(keys[locale], translation.key.split("."), translation.value)
       }
       remove_blanks keys
       yaml = RailsI18nterface::Yamlfile.new.keys_to_yaml(keys)
       response.headers['Content-Disposition'] = "attachment; filename=#{locale}.yml"
       render :text => yaml
-    end
-
-    def remove_blanks hash
-      hash.each { |k, v|
-        if !v || v == ''
-          hash.delete k
-        end
-        if v.is_a? Hash
-          remove_blanks v
-          if v == {}
-            hash.delete k
-          end
-        end
-      }
-    end
-
-    def set_nested(hash, key, value)
-      if key.length == 1
-        hash[key[0]] = value
-      else
-        k = key.shift
-        set_nested(hash[k] ||= {}, key, value)
-      end
     end
 
     def update

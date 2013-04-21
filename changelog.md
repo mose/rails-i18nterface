@@ -6,9 +6,9 @@ Warning
 
 All Dates are GMT+8 (Asia/Taipei)
 
-### v0.1.5 :
+### v0.1.5 : 2013-04-21
 
-* bugfix
+* hot-bugfix
 
 ### v0.1.4 : 2013-04-21
 

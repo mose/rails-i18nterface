@@ -3,10 +3,11 @@ module RailsI18nterface
 
     def self.extract_files
       i18n_lookup_pattern = /\b(?:I18n\.t|I18n\.translate|t)(?:\s|\():?(?:'|")(\.?[a-z0-9_\.]+)(?:'|")/
+      f = {}
       self.files_to_scan.inject(HashWithIndifferentAccess.new) do |files, file|
-        files.merge! self.populate_keys(file, i18n_lookup_pattern)
+        f = files.merge! self.populate_keys(file, i18n_lookup_pattern)
       end
-      files.merge! self.extract_activerecords
+      f.merge self.extract_activerecords
     end
 
     def self.populate_keys(file, pattern)
@@ -41,7 +42,7 @@ module RailsI18nterface
         matchdata = regex.match(File.read(schema))
         while matchdata != nil
           model = matchdata[1]
-          files["activerecord.models.#{model}"] = 'db/schema.rb'
+          files["activerecord.models.#{model}"] = ['db/schema.rb']
           files.merge!(self.extract_attributes(model,matchdata[2]))
           matchdata = regex.match(matchdata.post_match)
         end
@@ -55,7 +56,7 @@ module RailsI18nterface
       matchdata = regex.match(txt)
       while matchdata != nil
         attribute = matchdata[1]
-        files["activerecord.attributes.#{model}.#{attribute}"] = 'db/schema.rb'
+        files["activerecord.attributes.#{model}.#{attribute}"] = ['db/schema.rb']
         matchdata = regex.match(matchdata.post_match)
       end
       files

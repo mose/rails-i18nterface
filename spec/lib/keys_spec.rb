@@ -9,8 +9,27 @@ describe RailsI18nterface::Keys do
 
   describe "to_a" do
     it "extracts keys from I18n lookups in .rb, .html.erb, and .rhtml files" do
-      @keys.to_a.map(&:to_s).sort.should == ['article.key1', 'article.key2', 'article.key3', 'article.key4', 'article.key5',
-        'category_erb.key1', 'category_html_erb.key1', 'category_rhtml.key1', 'js.alert']
+      @keys.to_a.map(&:to_s).sort.should == [
+        "activerecord.attributes.article.active",
+        "activerecord.attributes.article.body",
+        "activerecord.attributes.article.created_at",
+        "activerecord.attributes.article.title",
+        "activerecord.attributes.article.updated_at",
+        "activerecord.attributes.topics.created_at",
+        "activerecord.attributes.topics.title",
+        "activerecord.attributes.topics.updated_at",
+        "activerecord.models.article",
+        "activerecord.models.topics",
+        "article.key1",
+        "article.key2",
+        "article.key3",
+        "article.key4",
+        "article.key5",
+        "category_erb.key1",
+        "category_html_erb.key1",
+        "category_rhtml.key1",
+        "js.alert"
+      ]
     end
   end
 

@@ -6,6 +6,10 @@ Warning
 
 All Dates are GMT+8 (Asia/Taipei)
 
+### v0.1.6 :
+
+* adding simplecov, rubocop for helping in refactoring
+
 ### v0.1.5 : 2013-04-21
 
 * hot-bugfix

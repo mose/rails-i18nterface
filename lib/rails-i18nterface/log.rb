@@ -24,14 +24,14 @@ module RailsI18nterface
     end
 
     def from_texts
-      file.deep_stringify_keys(Keys.to_deep_hash(keys.inject({}) do |hash, key|
+      file.deep_stringify_keys(Keys.to_deep_hash(keys.reduce({ }) do |hash, key|
         hash[key] = I18n.backend.send(:lookup, from_locale, key)
         hash
       end))
     end
 
     def file_path
-      File.join(Rails.root, "config", "locales", "log", "from_#{from_locale}_to_#{to_locale}.yml")
+      File.join(Rails.root, 'config', 'locales', 'log', "from_#{from_locale}_to_#{to_locale}.yml")
     end
   end
 end

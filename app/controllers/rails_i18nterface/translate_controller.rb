@@ -31,46 +31,36 @@ module RailsI18nterface
     def load_db_translations
       @versions = {}
       @dbvalues = {@to_locale => {}}
-      (Translation.where(:locale => @to_locale) || []).each { |translation|
+      (Translation.where(:locale => @to_locale) || []).each do |translation|
         @versions[translation.key] = translation.updated_at.to_i
         yaml_value = I18n.backend.send(:lookup, @to_locale, translation.key)
-        if (yaml_value and translation.value != yaml_value)
+        if yaml_value && translation.value != yaml_value
           translation.value = yaml_value
           Translation.where(key: translation.key).first.update_attribute(:value, yaml_value)
         end
         @dbvalues[@to_locale][translation.key] = translation.value
         @keys << translation.key
-      }
+      end
       @keys.uniq!
     end
 
     def export
       locale = params[:locale].to_sym
       keys = {locale => I18n.backend.send(:translations)[locale] || {}}
-      Translation.where(:locale => @to_locale).each { |translation|
+      Translation.where(:locale => @to_locale).each do |translation|
         next if !translation.value or translation.value == ''
-        set_nested(keys[locale], translation.key.split("."), translation.value)
-      }
+        set_nested(keys[locale], translation.key.split('.'), translation.value)
+      end
       remove_blanks keys
-      yaml = RailsI18nterface::Yamlfile.new.keys_to_yaml(keys)
+      puts keys
+      yaml = RailsI18nterface::Yamlfile.new(nil).keys_to_yaml(keys)
       response.headers['Content-Disposition'] = "attachment; filename=#{locale}.yml"
       render :text => yaml
     end
 
     def update
-      params[:key].each { |k, v|
-        t = Translation.where(:key => k, :locale => @to_locale).first
-        unless t
-          t = Translation.new
-          t.key = k
-          t.locale = @to_locale
-        end
-        next if t.value == v
-        if params[:version][k].to_i == t.updated_at.to_i
-          t.value = v
-        end
-        t.save
-      }
+      puts params[:key]
+      Translation.update(@to_locale, params[:key])
       if I18n.backend.respond_to? :store_translations
         I18n.backend.store_translations(@to_locale, RailsI18nterface::Keys.to_deep_hash(params[:key]))
       end
@@ -93,9 +83,12 @@ module RailsI18nterface
       keys = (@files.keys.map(&:to_s) + RailsI18nterface::Keys.new.i18n_keys(@from_locale)).uniq
       keys.reject! do |key|
         from_text = lookup(@from_locale, key)
-        # When translating from one language to another, make sure there is a text to translate from.
-        # Always exclude non string translation objects as we don't support editing them in the UI.
-        (@from_locale != @to_locale && !from_text.present?) || (from_text.present? && !from_text.is_a?(String))
+        # When translating from one language to another,
+        # make sure there is a text to translate from.
+        # Always exclude non string translation objects
+        # as we don't support editing them in the UI.
+        (@from_locale != @to_locale && !from_text.present?) ||
+          (from_text.present? && !from_text.is_a?(String))
       end
     end
 
@@ -141,12 +134,13 @@ module RailsI18nterface
 
     def filter_by_text_pattern
       return if params[:text_pattern].blank?
+      lookup_key = lookup(@from_locale, key)
       @keys.reject! do |key|
         case params[:text_type]
         when 'contains'
-          !lookup(@from_locale, key).present? || !lookup(@from_locale, key).to_s.downcase.index(params[:text_pattern].downcase)
+          !lookup_key.present? || !lookup_key.to_s.downcase.index(params[:text_pattern].downcase)
         when 'equals'
-          !lookup(@from_locale, key).present? || lookup(@from_locale, key).to_s.downcase != params[:text_pattern].downcase
+          !lookup_key.present? || lookup_key.to_s.downcase != params[:text_pattern].downcase
         else
           raise "Unknown text_type '#{params[:text_type]}'"
         end
@@ -211,7 +205,7 @@ module RailsI18nterface
     def old_from_text(key)
       return @old_from_text[key] if @old_from_text && @old_from_text[key]
       @old_from_text = {}
-      text = key.split(".").inject(log_hash) do |hash, k|
+      text = key.split(".").reduce(log_hash) do |hash, k|
         hash ? hash[k] : nil
       end
       @old_from_text[key] = text

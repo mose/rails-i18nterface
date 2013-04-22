@@ -1,5 +1,18 @@
-ENV["RAILS_ENV"] ||= 'test'
-$:<<File.expand_path("../../lib",__FILE__)
+if ENV['COV']
+  require 'simplecov'
+  SimpleCov.start do
+    add_filter '/spec/'
+    add_filter '/config/'
+    add_filter '/db/'
+    add_group 'Models', '/app/models/'
+    add_group 'Controllers', '/app/controllers/'
+    add_group 'Helpers', '/app/helpers/'
+    add_group 'Lib', '/lib/'
+  end
+end
+
+ENV['RAILS_ENV'] ||= 'test'
+$LOAD_PATH << File.expand_path('../../lib', __FILE__)
 
 require 'rubygems'
 require 'bundler'
@@ -17,7 +30,8 @@ require 'rspec/autorun'
 require 'capybara/rails'
 require 'rails-i18nterface'
 
-new_root = File.expand_path(File.join("..", "internal"), __FILE__)
+
+new_root = File.expand_path(File.join('..', 'internal'), __FILE__)
 
 RSpec.configure do |config|
   config.mock_with :rspec
@@ -35,3 +49,4 @@ end
 # improve the performance of the specs suite by not logging anything
 # see http://blog.plataformatec.com.br/2011/12/three-tips-to-improve-the-performance-of-your-test-suite/
 Rails.logger.level = 4
+

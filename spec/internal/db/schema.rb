@@ -1,4 +1,5 @@
 ActiveRecord::Schema.define do
+  # rubocop:disable all
 
   create_table "article", force: true do |t|
     t.string   "title", :null => false
@@ -13,5 +14,6 @@ ActiveRecord::Schema.define do
     t.datetime "created_at"
     t.datetime "updated_at"
   end
+  # rubocop:enable all
 
 end

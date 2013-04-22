@@ -1,18 +1,14 @@
 module RailsI18nterface
   module Utils
 
-    def remove_blanks hash
-      hash.each { |k, v|
-        if !v || v == ''
-          hash.delete k
-        end
+    def remove_blanks(hash)
+      hash.each do |k, v|
+        hash.delete k if !v || v == ''
         if v.is_a? Hash
           remove_blanks v
-          if v == {}
-            hash.delete k
-          end
+          hash.delete k if v == {}
         end
-      }
+      end
     end
 
     def set_nested(hash, key, value)

@@ -117,7 +117,7 @@ a{
   position: fixed;
   top: 65px;
   width: 200px;
-  height: 100%;
+  height: calc(100% - 65px);
   overflow-y: scroll;
   background-color: #ddd;
   padding-top: 10px;

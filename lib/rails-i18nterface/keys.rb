@@ -5,15 +5,15 @@ module RailsI18nterface
 
     # Allows keys extracted from lookups in files to be cached
     def self.files
-      @@files ||= new.files
+      @files ||= new.files
     end
 
     def self.names
-      @@names || new.names
+      @names || new.names
     end
     # Allows flushing of the files cache
     def self.files=(files)
-      @@files = files
+      @files = files
     end
 
     def files
@@ -37,7 +37,7 @@ module RailsI18nterface
     end
 
     def untranslated_keys
-      self.class.translated_locales.inject({}) do |missing, locale|
+      self.class.translated_locales.reduce({}) do |missing, locale|
         missing[locale] = i18n_keys(I18n.default_locale).map do |key|
           I18n.backend.send(:lookup, locale, key).nil? ? key : nil
         end.compact
@@ -48,14 +48,16 @@ module RailsI18nterface
     def missing_keys
       locale = I18n.default_locale
       yaml_keys = {}
-      yaml_keys = Storage.file_paths(locale).inject({}) do |keys, path|
+      yaml_keys = Storage.file_paths(locale).reduce({}) do |keys, path|
         keys = keys.deep_merge(Yamlfile.new(path).read[locale.to_s])
       end
       files.reject { |key, file| self.class.contains_key?(yaml_keys, key) }
     end
 
     def self.translated_locales
-      I18n.available_locales.reject { |locale| [:root, I18n.default_locale.to_sym].include?(locale) }
+      I18n.available_locales.reject do |locale|
+        [:root, I18n.default_locale.to_sym].include?(locale)
+      end
     end
 
     # Checks if a nested hash contains the keys in dot separated I18n key.
@@ -76,10 +78,10 @@ module RailsI18nterface
     # contains_key?("foo.bar.baz.bla", key) # => false
     #
     def self.contains_key?(hash, key)
-      keys = key.to_s.split(".")
+      keys = key.to_s.split('.')
       return false if keys.empty?
-      !keys.inject(HashWithIndifferentAccess.new(hash)) do |memo, key|
-        memo.is_a?(Hash) ? memo.try(:[], key) : nil
+      !keys.reduce(HashWithIndifferentAccess.new(hash)) do |memo, k|
+        memo.is_a?(Hash) ? memo.try(:[], k) : nil
       end.nil?
     end
 
@@ -98,10 +100,10 @@ module RailsI18nterface
     #  {'pressrelease.label.one' => "Pressmeddelande"}
     #
     def self.to_shallow_hash(hash)
-      hash.inject({}) do |shallow_hash, (key, value)|
+      hash.reduce({}) do |shallow_hash, (key, value)|
         if value.is_a?(Hash)
           to_shallow_hash(value).each do |sub_key, sub_value|
-            shallow_hash[[key, sub_key].join(".")] = sub_value
+            shallow_hash[[key, sub_key].join('.')] = sub_value
           end
         else
           shallow_hash[key.to_s] = value
@@ -124,10 +126,10 @@ module RailsI18nterface
     #   }
     # }
     def self.to_deep_hash(hash)
-      hash.inject({}) do |deep_hash, (key, value)|
+      hash.reduce({}) do |deep_hash, (key, value)|
         keys = key.to_s.split('.').reverse
         leaf_key = keys.shift
-        key_hash = keys.inject({leaf_key.to_sym => value}) { |hash, key| {key.to_sym => hash} }
+        key_hash = keys.reduce({leaf_key.to_sym => value}) { |h, k| { k.to_sym => h } }
         deep_merge!(deep_hash, key_hash)
         deep_hash
       end

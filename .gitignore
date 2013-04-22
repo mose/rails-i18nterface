@@ -7,3 +7,4 @@ Gemfile.lock
 /tmp
 node_modules
 *.gem
+coverage/

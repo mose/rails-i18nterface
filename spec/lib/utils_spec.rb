@@ -3,7 +3,7 @@ require 'spec_helper'
 describe RailsI18nterface::Utils do
   include RailsI18nterface::Utils
 
-  it "Removes blanks from a hash" do
+  it 'Removes blanks from a hash' do
     hash = { a: 'a', b: { ba: '', bb: 'bb'}, c: '', d: { }, e: { ea: 'ee', eb: { } } }
     expected = { a: 'a', b: { bb: 'bb'}, e: { ea: 'ee' } }
     remove_blanks(hash).should == expected

@@ -2,9 +2,14 @@ module RailsI18nterface
   module Sourcefiles
 
     def self.extract_files
-      i18n_lookup_pattern = /\b(?:I18n\.t|I18n\.translate|t)(?:\s|\():?(?:'|")(\.?[a-z0-9_\.]+)(?:'|")/
+      i18n_lookup_pattern = /\b
+        (?:I18n\.t|I18n\.translate|t)
+        (?:\s|\():?(?:'|")
+          (\.?[a-z0-9_\.]+)
+        (?:'|")
+        /x
       f = {}
-      self.files_to_scan.inject(HashWithIndifferentAccess.new) do |files, file|
+      self.files_to_scan.reduce(HashWithIndifferentAccess.new) do |files, file|
         f = files.merge! self.populate_keys(file, i18n_lookup_pattern)
       end
       f.merge self.extract_activerecords
@@ -30,8 +35,8 @@ module RailsI18nterface
     end
 
     def self.files_to_scan
-      Dir.glob(File.join(Storage.root_dir, "{app,config,lib}", "**","*.{rb,erb,haml,slim,rhtml}")) +
-        Dir.glob(File.join(Storage.root_dir, "{public,app/assets}", "javascripts", "**","*.{js,coffee}"))
+      Dir.glob(File.join(Storage.root_dir, '{app,config,lib}', '**', '*.{rb,erb,haml,slim,rhtml}')) +
+        Dir.glob(File.join(Storage.root_dir, '{public,app/assets}', 'javascripts', '**', '*.{js,coffee}'))
     end
 
     def self.extract_activerecords
@@ -43,14 +48,14 @@ module RailsI18nterface
         while matchdata != nil
           model = matchdata[1]
           files["activerecord.models.#{model}"] = ['db/schema.rb']
-          files.merge!(self.extract_attributes(model,matchdata[2]))
+          files.merge!(self.extract_attributes(model, matchdata[2]))
           matchdata = regex.match(matchdata.post_match)
         end
       end
       files
     end
 
-    def self.extract_attributes(model,txt)
+    def self.extract_attributes(model, txt)
       files = {}
       regex = Regexp.new('\s*t\.[-_0-9a-z]*\s*"([^"]*?)"')
       matchdata = regex.match(txt)

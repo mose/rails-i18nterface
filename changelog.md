@@ -8,7 +8,8 @@ All Dates are GMT+8 (Asia/Taipei)
 
 ### v0.1.6 :
 
-* fix style compliance with rubocop
+* fix scrolling bug on the namespaces left menu
+* improve style compliance with rubocop
 * adding simplecov, rubocop for helping in refactoring
 
 ### v0.1.5 : 2013-04-21

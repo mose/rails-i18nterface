@@ -133,8 +133,8 @@ module RailsI18nterface
 
     def filter_by_text_pattern
       return if params[:text_pattern].blank?
-      lookup_key = lookup(@from_locale, key)
       @keys.reject! do |key|
+        lookup_key = lookup(@from_locale, key)
         case params[:text_type]
         when 'contains'
           !lookup_key.present? || !lookup_key.to_s.downcase.index(params[:text_pattern].downcase)

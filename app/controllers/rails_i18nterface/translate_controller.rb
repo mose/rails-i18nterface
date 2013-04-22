@@ -20,8 +20,8 @@ module RailsI18nterface
     end
 
     def destroy
-      term = Translation.find_by_key(params[:key])
-      if term.destroy!
+      term = RailsI18nterface::Translation.find_by_key(params[:key])
+      if term and term.destroy
         render json: 'ok'
       else
         render json: 'error'
@@ -31,12 +31,12 @@ module RailsI18nterface
     def load_db_translations
       @versions = {}
       @dbvalues = {@to_locale => {}}
-      (Translation.where(:locale => @to_locale) || []).each do |translation|
+      (RailsI18nterface::Translation.where(:locale => @to_locale) || []).each do |translation|
         @versions[translation.key] = translation.updated_at.to_i
         yaml_value = I18n.backend.send(:lookup, @to_locale, translation.key)
         if yaml_value && translation.value != yaml_value
           translation.value = yaml_value
-          Translation.where(key: translation.key).first.update_attribute(:value, yaml_value)
+          RailsI18nterface::Translation.where(key: translation.key).first.update_attribute(:value, yaml_value)
         end
         @dbvalues[@to_locale][translation.key] = translation.value
         @keys << translation.key
@@ -47,7 +47,7 @@ module RailsI18nterface
     def export
       locale = params[:locale].to_sym
       keys = {locale => I18n.backend.send(:translations)[locale] || {}}
-      Translation.where(:locale => @to_locale).each do |translation|
+      RailsI18nterface::Translation.where(:locale => @to_locale).each do |translation|
         next if !translation.value or translation.value == ''
         set_nested(keys[locale], translation.key.split('.'), translation.value)
       end
@@ -59,7 +59,7 @@ module RailsI18nterface
     end
 
     def update
-      Translation.update(@to_locale, params[:key])
+      RailsI18nterface::Translation.update(@to_locale, params[:key])
       if I18n.backend.respond_to? :store_translations
         I18n.backend.store_translations(@to_locale, RailsI18nterface::Keys.to_deep_hash(params[:key]))
       end
@@ -72,7 +72,7 @@ module RailsI18nterface
 
     def reload
       RailsI18nterface::Keys.files = nil
-      redirect_to :action => 'index'
+      redirect_to root_path(params.slice(:filter, :sort_by, :key_type, :key_pattern, :text_type, :text_pattern))
     end
 
     private

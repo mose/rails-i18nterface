@@ -1,8 +1,8 @@
-class Translation < ActiveRecord::Base
+class RailsI18nterface::Translation < ActiveRecord::Base
 
   def self.update(locale, keys)
     keys.each do |k, v|
-      t = Translation.where(key: k, locale: locale).first
+      t = RailsI18nterface::Translation.where(key: k, locale: locale).first
       if t
         if !v || v == ''
           t.destroy!
@@ -12,7 +12,7 @@ class Translation < ActiveRecord::Base
           t.save!
         end
       elsif v != ''
-        t = Translation.new
+        t = RailsI18nterface::Translation.new
         t.key = k
         t.locale = locale
         t.save!
@@ -21,5 +21,3 @@ class Translation < ActiveRecord::Base
   end
 
 end
-
-

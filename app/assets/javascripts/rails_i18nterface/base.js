@@ -67,10 +67,14 @@ $.domReady(function() {
         url: 'delete/'+key,
         method: 'delete',
         success: function(resp) {
-          alert(resp);
+          if (resp == error) {
+            alert(resp.msg);
+          } else {
+            alert(resp);
+          }
         },
         error: function(resp,msg) {
-          alert("Error: "+resp.statusText);
+          alert("Error: " + msg);
         }
       })
     }

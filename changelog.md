@@ -8,6 +8,7 @@ All Dates are GMT+8 (Asia/Taipei)
 
 ### v0.1.6 :
 
+* move model into the gem namespace **warning** you gotta run `rake railties:install:migrations` and `rake db:migrate` again if you upgrade
 * fix scrolling bug on the namespaces left menu
 * improve style compliance with rubocop
 * adding simplecov, rubocop for helping in refactoring

@@ -6,7 +6,11 @@ Warning
 
 All Dates are GMT+8 (Asia/Taipei)
 
-### v0.1.6 :
+### v0.1.7 :
+
+
+
+### v0.1.6 : 2013-04-22
 
 * move model into the gem namespace **warning** you gotta run `rake railties:install:migrations` and `rake db:migrate` again if you upgrade
 * fix scrolling bug on the namespaces left menu

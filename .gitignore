@@ -8,3 +8,4 @@ Gemfile.lock
 node_modules
 *.gem
 coverage/
+Gemfile.lock

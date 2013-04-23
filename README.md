@@ -55,6 +55,11 @@ constraints AdminConstraint.new do
     mount RailsI18nterface::Engine => "/translate", :as => "translate_engine"
   end
 end
+# this second route will be then used if the user is not an admin
+get 'translate' => redirect do |p, req|
+  req.flash['error'] = I18n.t('errors.permission_denied')
+  "/signin"
+end
 ```
 
 Then create a `config/initializers/admin_constraint.rb` containing:

@@ -3,6 +3,10 @@ Rails-i18nterface Changelog
 
 **Warning** All Dates are GMT+8 (Asia/Taipei)
 
+### v0.1.8 :
+
+* improvement on the readme
+
 ### v0.1.7 : 2013-04-23
 
 * fix the deletion of translation, it is removed from yml and display if not present in the parsed source code

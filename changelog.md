@@ -8,7 +8,7 @@ All Dates are GMT+8 (Asia/Taipei)
 
 ### v0.1.7 :
 
-
+* avoid saving empty translations to the yml file
 
 ### v0.1.6 : 2013-04-22
 

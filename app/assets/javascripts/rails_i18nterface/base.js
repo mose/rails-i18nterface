@@ -63,20 +63,11 @@ $.domReady(function() {
     e.stopPropagation();
     key = $(this).previous().text();
     if (confirm("Are you sure you want to delete the key "+key+" from database ?")) {
-      $.ajax({
-        url: 'delete/'+key,
-        method: 'delete',
-        success: function(resp) {
-          if (resp == error) {
-            alert(resp.msg);
-          } else {
-            alert(resp);
-          }
-        },
-        error: function(resp,msg) {
-          alert("Error: " + msg);
-        }
-      })
+      var newF = document.createElement("form");
+      newF.action = 'delete/'+key;
+      newF.method = 'POST';
+      document.getElementsByTagName('body')[0].appendChild(newF);
+      newF.submit();
     }
   });
 });

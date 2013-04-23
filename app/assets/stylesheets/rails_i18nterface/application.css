@@ -481,7 +481,9 @@ div.selected{
   background-color:#ffe;
 }
 
-
+.flash {
+  text-align: right;
+}
 .clear {
   clear:both;
 }

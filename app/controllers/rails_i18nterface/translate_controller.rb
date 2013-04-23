@@ -20,12 +20,17 @@ module RailsI18nterface
     end
 
     def destroy
-      term = RailsI18nterface::Translation.find_by_key(params[:key])
+      puts params
+      term = RailsI18nterface::Translation.find_by_key(params[:del])
       if term and term.destroy
-        render json: 'ok'
+        flash[:success] = "Translations removed from database"
       else
-        render json: 'error'
+        flash[:notice] = "Translations not found in database"
       end
+      #params[:key] = HashWithIndifferentAccess.new(params[:key].to_sym => '')
+      params[:key] = { params[:del] => '' }
+      update
+      #redirect_to root_path(params.slice(:filter, :sort_by, :key_type, :key_pattern, :text_type, :text_pattern))
     end
 
     def load_db_translations

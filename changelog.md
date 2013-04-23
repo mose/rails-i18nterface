@@ -1,13 +1,11 @@
 Rails-i18nterface Changelog
 =============================
 
-Warning
---------
+**Warning** All Dates are GMT+8 (Asia/Taipei)
 
-All Dates are GMT+8 (Asia/Taipei)
+### v0.1.7 : 2013-04-23
 
-### v0.1.7 :
-
+* fix the deletion of translation, it is removed from yml and display if not present in the parsed source code
 * avoid saving empty translations to the yml file
 
 ### v0.1.6 : 2013-04-22

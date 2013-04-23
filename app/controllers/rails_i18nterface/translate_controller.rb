@@ -27,10 +27,8 @@ module RailsI18nterface
       else
         flash[:notice] = "Translations not found in database"
       end
-      #params[:key] = HashWithIndifferentAccess.new(params[:key].to_sym => '')
       params[:key] = { params[:del] => '' }
       update
-      #redirect_to root_path(params.slice(:filter, :sort_by, :key_type, :key_pattern, :text_type, :text_pattern))
     end
 
     def load_db_translations

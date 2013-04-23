@@ -1,5 +1,8 @@
 module RailsI18nterface
   class Storage
+
+    include Utils
+
     attr_accessor :locale
 
     def initialize(locale)
@@ -7,7 +10,7 @@ module RailsI18nterface
     end
 
     def write_to_file
-      Yamlfile.new(file_path).write(keys)
+      Yamlfile.new(file_path).write(remove_blanks(keys))
     end
 
     def self.file_paths(locale)

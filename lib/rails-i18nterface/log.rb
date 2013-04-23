@@ -1,17 +1,20 @@
 module RailsI18nterface
   class Log
+
+    include Utils
+
     attr_accessor :from_locale, :to_locale, :keys
 
     def initialize(from_locale, to_locale, keys)
       self.from_locale = from_locale
       self.to_locale = to_locale
-      self.keys = keys
+      self.keys = keys.reject { |k, v| v == '' }
     end
 
     def write_to_file
       current_texts = File.exists?(file_path) ? file.read : {}
       current_texts.merge!(from_texts)
-      file.write(current_texts)
+      file.write(remove_blanks(current_texts))
     end
 
     def read

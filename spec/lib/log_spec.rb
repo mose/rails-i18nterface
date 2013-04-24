@@ -2,11 +2,14 @@ require 'spec_helper'
 
 describe RailsI18nterface::Log do
   describe 'write_to_file' do
+
+    include RailsI18nterface::Utils
+
     before(:each) do
       I18n.locale = :sv
       I18n.backend.store_translations(:sv, from_texts)
       #keys = RailsI18nterface::Keys.new
-      @log = RailsI18nterface::Log.new(:sv, :en, RailsI18nterface::Keys.to_shallow_hash(from_texts).keys)
+      @log = RailsI18nterface::Log.new(:sv, :en, to_shallow_hash(from_texts).keys)
       @log.stub!(:file_path).and_return(file_path)
       FileUtils.rm_f file_path
     end

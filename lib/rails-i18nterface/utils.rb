@@ -48,7 +48,7 @@ module RailsI18nterface
       hash1.merge!(hash2, &merger)
     end
 
-    def self.contains_key?(hash, key)
+    def contains_key?(hash, key)
       keys = key.to_s.split('.')
       return false if keys.empty?
       !keys.reduce(HashWithIndifferentAccess.new(hash)) do |memo, k|

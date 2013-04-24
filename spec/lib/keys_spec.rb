@@ -1,6 +1,9 @@
 require 'spec_helper'
 
 describe RailsI18nterface::Keys do
+
+  include RailsI18nterface::Utils
+
   before(:each) do
     #I18n.stub!(:default_locale).and_return(:en)
     #RailsI18nterface::Storage.stub!(:root_dir).and_return(i18n_files_dir)
@@ -9,7 +12,7 @@ describe RailsI18nterface::Keys do
 
   describe 'to_a' do
     it 'extracts keys from I18n lookups in .rb, .html.erb, and .rhtml files' do
-      @keys.to_a.map(&:to_s).sort.should == [
+      @keys.files.keys.map(&:to_s).sort.should == [
         'activerecord.attributes.article.active',
         'activerecord.attributes.article.body',
         'activerecord.attributes.article.created_at',
@@ -35,7 +38,7 @@ describe RailsI18nterface::Keys do
 
   describe 'to_hash' do
     it 'return a hash with I18n keys and file lists' do
-      @keys.to_hash[:'article.key3'].should == ['app/models/article.rb']
+      @keys.files[:'article.key3'].should == ['app/models/article.rb']
     end
   end
 

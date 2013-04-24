@@ -22,7 +22,7 @@ Bundler.require :default, :test
 
 require 'capybara/rspec'
 
-Combustion.initialize! :active_record, :action_controller, :action_view, :sprockets
+Combustion.initialize! :action_controller, :action_view
 
 require 'rspec/rails'
 require 'rspec/autorun'
@@ -35,7 +35,6 @@ new_root = File.expand_path(File.join('..', 'internal'), __FILE__)
 
 RSpec.configure do |config|
   config.mock_with :rspec
-  config.use_transactional_fixtures = true
   config.include Capybara::DSL, example_group: { file_path: /\bspec\/request\// }
   config.include RailsI18nterface::Engine.routes.url_helpers
   config.before(:each) do

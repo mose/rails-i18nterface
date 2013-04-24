@@ -8,8 +8,7 @@ module RailsI18nterface
 
     def index
       @dbvalues = {}
-      @keys = initialize_keys
-      load_db_translations
+      @keys = RailsI18nterface::Keys.new(@from_locale, @to_locale)
       @deep_keys = to_deep_hash(@keys)
       filter_by_key_pattern
       filter_by_text_pattern
@@ -19,54 +18,14 @@ module RailsI18nterface
       @total_entries = @keys.size
     end
 
-    def initialize_keys
-      @files = RailsI18nterface::Keys.files
-      keys = (@files.keys.map(&:to_s) + RailsI18nterface::Keys.new.i18n_keys(@from_locale)).uniq
-      keys.reject! do |key|
-        from_text = lookup(@from_locale, key)
-        # When translating from one language to another,
-        # make sure there is a text to translate from.
-        # Always exclude non string translation objects
-        # as we don't support editing them in the UI.
-        (@from_locale != @to_locale && !from_text.present?) ||
-          (from_text.present? && !from_text.is_a?(String))
-      end
-    end
-
     def destroy
-      term = RailsI18nterface::Translation.find_by_key(params[:del])
-      if term and term.destroy
-        flash[:success] = "Translations removed from database"
-      else
-        flash[:notice] = "Translations not found in database"
-      end
       params[:key] = { params[:del] => '' }
       update
-    end
-
-    def load_db_translations
-      @versions = {}
-      @dbvalues = {@to_locale => {}}
-      (RailsI18nterface::Translation.where(:locale => @to_locale) || []).each do |translation|
-        @versions[translation.key] = translation.updated_at.to_i
-        yaml_value = I18n.backend.send(:lookup, @to_locale, translation.key)
-        if yaml_value && translation.value != yaml_value
-          translation.value = yaml_value
-          RailsI18nterface::Translation.where(key: translation.key).first.update_attribute(:value, yaml_value)
-        end
-        @dbvalues[@to_locale][translation.key] = translation.value
-        @keys << translation.key
-      end
-      @keys.uniq!
     end
 
     def export
       locale = params[:locale].to_sym
       keys = {locale => I18n.backend.send(:translations)[locale] || {}}
-      RailsI18nterface::Translation.where(:locale => @to_locale).each do |translation|
-        next if !translation.value or translation.value == ''
-        set_nested(keys[locale], translation.key.split('.'), translation.value)
-      end
       remove_blanks keys
       puts keys
       yaml = RailsI18nterface::Yamlfile.new(nil).keys_to_yaml(keys)
@@ -75,7 +34,6 @@ module RailsI18nterface
     end
 
     def update
-      RailsI18nterface::Translation.update(@to_locale, params[:key])
       if I18n.backend.respond_to? :store_translations
         I18n.backend.store_translations(@to_locale, RailsI18nterface::Keys.to_deep_hash(params[:key]))
       end
@@ -95,7 +53,7 @@ module RailsI18nterface
 
 
     def lookup(locale, key)
-      (@dbvalues[locale] && @dbvalues[locale][key]) || I18n.backend.send(:lookup, locale, key)
+      I18n.backend.send(:lookup, locale, key)
     end
     helper_method :lookup
 

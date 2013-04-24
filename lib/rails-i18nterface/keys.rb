@@ -8,14 +8,21 @@ module RailsI18nterface
     attr_accessor :files, :keys
     attr_reader :names
 
-    def initialize
+    def initialize(from, to)
       @files = RailsI18nterface::Sourcefiles.extract_files
-      @names = i18n_keys
+      @yaml_keys = i18n_keys(I18n.default_locale)
+      @from_locale = from
+      @to_locale = to
+      @all_keys = initialize_keys
+    end
+
+    def initialize_keys
+      (@files.keys.map(&:to_s) + @names).uniq
     end
 
     def i18n_keys(locale)
       I18n.backend.send(:init_translations) unless I18n.backend.initialized?
-      self.class.to_shallow_hash(I18n.backend.send(:translations)[locale.to_sym]).keys.sort
+      to_shallow_hash(I18n.backend.send(:translations)[locale.to_sym]).keys.sort
     end
 
     def untranslated_keys
@@ -33,7 +40,7 @@ module RailsI18nterface
       yaml_keys = Storage.file_paths(locale).reduce({}) do |keys, path|
         keys = keys.deep_merge(Yamlfile.new(path).read[locale.to_s])
       end
-      files.reject { |key, file| self.class.contains_key?(yaml_keys, key) }
+      files.reject { |key, file| contains_key?(yaml_keys, key) }
     end
 
     def self.translated_locales

@@ -27,11 +27,11 @@ describe RailsI18nterface::Utils do
     end
 
     it 'convert shallow hash with dot separated keys to deep hash' do
-      to_deep_hash(shallow_hash).should == deep_hash
+      to_deep_hash(@shallow_hash).should == @deep_hash
     end
 
     it 'converts a deep hash to a shallow one' do
-      to_shallow_hash(deep_hash).should == shallow_hash
+      to_shallow_hash(@deep_hash).should == @shallow_hash
     end
 
   end

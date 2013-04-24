@@ -19,8 +19,21 @@ module RailsI18nterface
       @total_entries = @keys.size
     end
 
+    def initialize_keys
+      @files = RailsI18nterface::Keys.files
+      keys = (@files.keys.map(&:to_s) + RailsI18nterface::Keys.new.i18n_keys(@from_locale)).uniq
+      keys.reject! do |key|
+        from_text = lookup(@from_locale, key)
+        # When translating from one language to another,
+        # make sure there is a text to translate from.
+        # Always exclude non string translation objects
+        # as we don't support editing them in the UI.
+        (@from_locale != @to_locale && !from_text.present?) ||
+          (from_text.present? && !from_text.is_a?(String))
+      end
+    end
+
     def destroy
-      puts params
       term = RailsI18nterface::Translation.find_by_key(params[:del])
       if term and term.destroy
         flash[:success] = "Translations removed from database"
@@ -80,19 +93,6 @@ module RailsI18nterface
 
     private
 
-    def initialize_keys
-      @files = RailsI18nterface::Keys.files
-      keys = (@files.keys.map(&:to_s) + RailsI18nterface::Keys.new.i18n_keys(@from_locale)).uniq
-      keys.reject! do |key|
-        from_text = lookup(@from_locale, key)
-        # When translating from one language to another,
-        # make sure there is a text to translate from.
-        # Always exclude non string translation objects
-        # as we don't support editing them in the UI.
-        (@from_locale != @to_locale && !from_text.present?) ||
-          (from_text.present? && !from_text.is_a?(String))
-      end
-    end
 
     def lookup(locale, key)
       (@dbvalues[locale] && @dbvalues[locale][key]) || I18n.backend.send(:lookup, locale, key)

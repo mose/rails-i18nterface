@@ -96,23 +96,6 @@ describe RailsI18nterface::Keys do
     end
   end
 
-  describe 'contains_key?' do
-    it 'works' do
-      hash = {
-        :foo => {
-          :bar => {
-            :baz => false
-          }
-        }
-      }
-      RailsI18nterface::Keys.contains_key?(hash, '').should be_false
-      RailsI18nterface::Keys.contains_key?(hash, 'foo').should be_true
-      RailsI18nterface::Keys.contains_key?(hash, 'foo.bar').should be_true
-      RailsI18nterface::Keys.contains_key?(hash, 'foo.bar.baz').should be_true
-      RailsI18nterface::Keys.contains_key?(hash, :'foo.bar.baz').should be_true
-      RailsI18nterface::Keys.contains_key?(hash, 'foo.bar.baz.bla').should be_false
-    end
-  end
 
   describe 'translated_locales' do
     before(:each) do
@@ -125,17 +108,6 @@ describe RailsI18nterface::Keys do
     end
   end
 
-  describe 'to_deep_hash' do
-    it 'convert shallow hash with dot separated keys to deep hash' do
-      RailsI18nterface::Keys.to_deep_hash(shallow_hash).should == deep_hash
-    end
-  end
-
-  describe 'to_shallow_hash' do
-    it 'converts a deep hash to a shallow one' do
-      RailsI18nterface::Keys.to_shallow_hash(deep_hash).should == shallow_hash
-    end
-  end
 
   ##########################################################################
   #

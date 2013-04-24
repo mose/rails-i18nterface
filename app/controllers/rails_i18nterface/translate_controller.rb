@@ -10,7 +10,7 @@ module RailsI18nterface
       @dbvalues = {}
       @keys = initialize_keys
       load_db_translations
-      @deep_keys = RailsI18nterface::Keys.to_deep_hash(@keys)
+      @deep_keys = to_deep_hash(@keys)
       filter_by_key_pattern
       filter_by_text_pattern
       filter_by_translated_or_changed

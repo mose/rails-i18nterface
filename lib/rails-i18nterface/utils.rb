@@ -20,5 +20,54 @@ module RailsI18nterface
       end
     end
 
+    def to_shallow_hash(hash)
+      hash.reduce({}) do |shallow_hash, (key, value)|
+        if value.is_a?(Hash)
+          to_shallow_hash(value).each do |sub_key, sub_value|
+            shallow_hash[[key, sub_key].join('.')] = sub_value
+          end
+        else
+          shallow_hash[key.to_s] = value
+        end
+        shallow_hash
+      end
+    end
+
+    def to_deep_hash(hash)
+      hash.reduce({}) do |deep_hash, (key, value)|
+        keys = key.to_s.split('.').reverse
+        leaf_key = keys.shift
+        key_hash = keys.reduce({leaf_key.to_sym => value}) { |h, k| { k.to_sym => h } }
+        deep_merge!(deep_hash, key_hash)
+        deep_hash
+      end
+    end
+
+    def deep_merge!(hash1, hash2)
+      merger = proc { |key, v1, v2| Hash === v1 && Hash === v2 ? v1.merge(v2, &merger) : v2 }
+      hash1.merge!(hash2, &merger)
+    end
+
+    def contains_key?(hash, key)
+      keys = key.to_s.split('.')
+      return false if keys.empty?
+      !keys.reduce(HashWithIndifferentAccess.new(hash)) do |memo, k|
+        memo.is_a?(Hash) ? memo.try(:[], k) : nil
+      end.nil?
+    end
+
+    def deep_stringify_keys(hash)
+      hash.reduce({ }) do |result, (key, value)|
+        value = deep_stringify_keys(value) if value.is_a? Hash
+        result[(key.to_s rescue key) || key] = value
+        result
+      end
+    end
+
+    def keys_to_yaml(hash)
+      keys = deep_stringify_keys(hash)
+      keys.respond_to?(:ya2yaml) ? keys.ya2yaml(escape_as_utf8: true) : keys.to_yaml
+    end
+
   end
 end

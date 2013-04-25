@@ -8,108 +8,68 @@ module RailsI18nterface
 
     def index
       @dbvalues = {}
-      @keys = initialize_keys
-      load_db_translations
-      @deep_keys = RailsI18nterface::Keys.to_deep_hash(@keys)
+      @keys = RailsI18nterface::Keys.new(Rails.root, @from_locale, @to_locale)
+      @files = @keys.files
+      @yaml_keys = @keys.yaml_keys
+      @all_keys = @keys.all_keys
+      @deep_keys = to_deep_hash(@all_keys)
       filter_by_key_pattern
       filter_by_text_pattern
       filter_by_translated_or_changed
       sort_keys
       paginate_keys
-      @total_entries = @keys.size
+      @total_entries = @all_keys.size
+      @page_title = "Translate"
+      @show_filters = ["all", "untranslated", "translated"]
     end
 
     def destroy
-      puts params
-      term = RailsI18nterface::Translation.find_by_key(params[:del])
-      if term and term.destroy
-        flash[:success] = "Translations removed from database"
-      else
-        flash[:notice] = "Translations not found in database"
-      end
       params[:key] = { params[:del] => '' }
       update
-    end
-
-    def load_db_translations
-      @versions = {}
-      @dbvalues = {@to_locale => {}}
-      (RailsI18nterface::Translation.where(:locale => @to_locale) || []).each do |translation|
-        @versions[translation.key] = translation.updated_at.to_i
-        yaml_value = I18n.backend.send(:lookup, @to_locale, translation.key)
-        if yaml_value && translation.value != yaml_value
-          translation.value = yaml_value
-          RailsI18nterface::Translation.where(key: translation.key).first.update_attribute(:value, yaml_value)
-        end
-        @dbvalues[@to_locale][translation.key] = translation.value
-        @keys << translation.key
-      end
-      @keys.uniq!
     end
 
     def export
       locale = params[:locale].to_sym
       keys = {locale => I18n.backend.send(:translations)[locale] || {}}
-      RailsI18nterface::Translation.where(:locale => @to_locale).each do |translation|
-        next if !translation.value or translation.value == ''
-        set_nested(keys[locale], translation.key.split('.'), translation.value)
-      end
       remove_blanks keys
-      puts keys
-      yaml = RailsI18nterface::Yamlfile.new(nil).keys_to_yaml(keys)
+      yaml = keys_to_yaml(keys)
       response.headers['Content-Disposition'] = "attachment; filename=#{locale}.yml"
       render :text => yaml
     end
 
     def update
-      RailsI18nterface::Translation.update(@to_locale, params[:key])
       if I18n.backend.respond_to? :store_translations
-        I18n.backend.store_translations(@to_locale, RailsI18nterface::Keys.to_deep_hash(params[:key]))
+        I18n.backend.store_translations(@to_locale, to_deep_hash(params[:key]))
       end
-      RailsI18nterface::Storage.new(@to_locale).write_to_file
-      RailsI18nterface::Log.new(@from_locale, @to_locale, params[:key].keys).write_to_file
-      force_init_translations # Force reload from YAML file
+      yaml = RailsI18nterface::Yamlfile.new(Rails.root, @to_locale)
+      yaml.write_to_file
+      force_init_translations
       flash[:notice] = "Translations stored"
       redirect_to root_path(params.slice(:filter, :sort_by, :key_type, :key_pattern, :text_type, :text_pattern))
     end
 
     def reload
-      RailsI18nterface::Keys.files = nil
+      @keys.reload
       redirect_to root_path(params.slice(:filter, :sort_by, :key_type, :key_pattern, :text_type, :text_pattern))
     end
 
     private
 
-    def initialize_keys
-      @files = RailsI18nterface::Keys.files
-      keys = (@files.keys.map(&:to_s) + RailsI18nterface::Keys.new.i18n_keys(@from_locale)).uniq
-      keys.reject! do |key|
-        from_text = lookup(@from_locale, key)
-        # When translating from one language to another,
-        # make sure there is a text to translate from.
-        # Always exclude non string translation objects
-        # as we don't support editing them in the UI.
-        (@from_locale != @to_locale && !from_text.present?) ||
-          (from_text.present? && !from_text.is_a?(String))
-      end
-    end
 
     def lookup(locale, key)
-      (@dbvalues[locale] && @dbvalues[locale][key]) || I18n.backend.send(:lookup, locale, key)
+      I18n.backend.send(:lookup, locale, key)
     end
     helper_method :lookup
 
     def filter_by_translated_or_changed
       params[:filter] ||= 'all'
       return if params[:filter] == 'all'
-      @keys.reject! do |key|
+      @all_keys.reject! do |key|
         case params[:filter]
         when 'untranslated'
           lookup(@to_locale, key).present?
         when 'translated'
           lookup(@to_locale, key).blank?
-        when 'changed'
-          old_from_text(key).blank? || lookup(@from_locale, key) == old_from_text(key)
         else
           raise "Unknown filter '#{params[:filter]}'"
         end
@@ -118,7 +78,7 @@ module RailsI18nterface
 
     def filter_by_key_pattern
       return if params[:key_pattern].blank?
-      @keys.reject! do |key|
+      @all_keys.reject! do |key|
         case params[:key_type]
         when "starts_with"
           if params[:key_pattern] == '.'
@@ -136,7 +96,7 @@ module RailsI18nterface
 
     def filter_by_text_pattern
       return if params[:text_pattern].blank?
-      @keys.reject! do |key|
+      @all_keys.reject! do |key|
         lookup_key = lookup(@from_locale, key)
         case params[:text_type]
         when 'contains'
@@ -153,9 +113,9 @@ module RailsI18nterface
       params[:sort_by] ||= "key"
       case params[:sort_by]
       when "key"
-        @keys.sort!
+        @all_keys.sort!
       when "text"
-        @keys.sort! do |key1, key2|
+        @all_keys.sort! do |key1, key2|
           if lookup(@from_locale, key1).present? && lookup(@from_locale, key2).present?
             lookup(@from_locale, key1).to_s.downcase <=> lookup(@from_locale, key2).to_s.downcase
           elsif lookup(@from_locale, key1).present?
@@ -171,7 +131,7 @@ module RailsI18nterface
 
     def paginate_keys
       params[:page] ||= 1
-      @paginated_keys = @keys[offset, per_page]
+      @paginated_keys = @all_keys[offset, per_page]
     end
 
     def offset
@@ -204,18 +164,5 @@ module RailsI18nterface
       @to_locale = session[:to_locale].to_sym
     end
 
-    def old_from_text(key)
-      return @old_from_text[key] if @old_from_text && @old_from_text[key]
-      @old_from_text = {}
-      text = key.split(".").reduce(log_hash) do |hash, k|
-        hash ? hash[k] : nil
-      end
-      @old_from_text[key] = text
-    end
-    helper_method :old_from_text
-
-    def log_hash
-      @log_hash ||= RailsI18nterface::Log.new(@from_locale, @to_locale, {}).read
-    end
   end
 end

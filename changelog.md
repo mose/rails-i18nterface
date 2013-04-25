@@ -3,6 +3,10 @@ Rails-i18nterface Changelog
 
 **Warning** All Dates are GMT+8 (Asia/Taipei)
 
+### v0.2.1 :
+
+
+
 ### v0.2.0 :
 
 * added a cache lib to accelerate loading. not used yet but will be soon.

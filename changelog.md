@@ -5,6 +5,7 @@ Rails-i18nterface Changelog
 
 ### v0.2.0 :
 
+* added a cache lib to accelerate loading. not used yet but will be soon.
 * fix on activerecords models detection, to have model names rather than table names
 * removed the logs, that was useful to detect changes ubt was not refreshed
 * removed the database, which was pretty useless, then no more need for migrate

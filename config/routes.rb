@@ -1,3 +1,5 @@
+# encoding: utf-8
+
 RailsI18nterface::Engine.routes.draw do
   root to: 'translate#index'
 

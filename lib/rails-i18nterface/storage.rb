@@ -1,3 +1,5 @@
+# encoding: utf-8
+
 module RailsI18nterface
   class Storage
 

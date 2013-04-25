@@ -1,3 +1,5 @@
+# encoding: utf-8
+
 require 'rails'
 
 module RailsI18nterface

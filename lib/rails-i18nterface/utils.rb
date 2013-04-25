@@ -1,3 +1,5 @@
+# encoding: utf-8
+
 module RailsI18nterface
   module Utils
 
@@ -34,12 +36,12 @@ module RailsI18nterface
     end
 
     def to_deep_hash(hash)
-      hash.reduce({}) do |deep_hash, (key, value)|
+      hash.reduce({}) do |a, (key, value)|
         keys = key.to_s.split('.').reverse
         leaf_key = keys.shift
         key_hash = keys.reduce({leaf_key.to_sym => value}) { |h, k| { k.to_sym => h } }
-        deep_merge!(deep_hash, key_hash)
-        deep_hash
+        deep_merge!(a, key_hash)
+        a
       end
     end
 

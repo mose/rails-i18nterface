@@ -1,3 +1,5 @@
+# encoding: utf-8
+
 module RailsI18nterface
   class TranslateController < RailsI18nterface::ApplicationController
 
@@ -19,8 +21,8 @@ module RailsI18nterface
       sort_keys
       paginate_keys
       @total_entries = @all_keys.size
-      @page_title = "Translate"
-      @show_filters = ["all", "untranslated", "translated"]
+      @page_title = 'Translate'
+      @show_filters = ['all', 'untranslated', 'translated']
     end
 
     def destroy
@@ -44,7 +46,7 @@ module RailsI18nterface
       yaml = RailsI18nterface::Yamlfile.new(Rails.root, @to_locale)
       yaml.write_to_file
       force_init_translations
-      flash[:notice] = "Translations stored"
+      flash[:notice] = 'Translations stored'
       redirect_to root_path(params.slice(:filter, :sort_by, :key_type, :key_pattern, :text_type, :text_pattern))
     end
 
@@ -80,13 +82,13 @@ module RailsI18nterface
       return if params[:key_pattern].blank?
       @all_keys.reject! do |key|
         case params[:key_type]
-        when "starts_with"
+        when 'starts_with'
           if params[:key_pattern] == '.'
             key.match(/\./)
           else
             !key.starts_with?(params[:key_pattern])
           end
-        when "contains"
+        when 'contains'
           key.index(params[:key_pattern]).nil?
         else
           raise "Unknown key_type '#{params[:key_type]}'"
@@ -110,11 +112,11 @@ module RailsI18nterface
     end
 
     def sort_keys
-      params[:sort_by] ||= "key"
+      params[:sort_by] ||= 'key'
       case params[:sort_by]
-      when "key"
+      when 'key'
         @all_keys.sort!
-      when "text"
+      when 'text'
         @all_keys.sort! do |key1, key2|
           if lookup(@from_locale, key1).present? && lookup(@from_locale, key2).present?
             lookup(@from_locale, key1).to_s.downcase <=> lookup(@from_locale, key2).to_s.downcase

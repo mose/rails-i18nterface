@@ -1,3 +1,5 @@
+# encoding: utf-8
+
 if ENV['COV']
   require 'simplecov'
   SimpleCov.start do

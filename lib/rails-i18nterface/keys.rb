@@ -1,4 +1,4 @@
-#require 'pathname'
+# encoding: utf-8
 
 module RailsI18nterface
   class Keys
@@ -29,11 +29,11 @@ module RailsI18nterface
     end
 
     def untranslated_keys
-      self.class.translated_locales.reduce({}) do |missing, locale|
-        missing[locale] = i18n_keys(I18n.default_locale).map do |key|
-          I18n.backend.send(:lookup, locale, key).nil? ? key : nil
+      self.class.translated_locales.reduce({}) do |a, e|
+        a[e] = i18n_keys(I18n.default_locale).map do |key|
+          I18n.backend.send(:lookup, e, key).nil? ? key : nil
         end.compact
-        missing
+        a
       end
     end
 
@@ -41,8 +41,8 @@ module RailsI18nterface
       locale = I18n.default_locale
       filepath = Dir.glob(File.join(@root_dir, 'config', 'locales', '**', "#{locale}.yml"))
       yaml_keys = {}
-      yaml_keys = filepath.reduce({}) do |keys, path|
-        keys = keys.deep_merge(Yamlfile.new(@root_dir, locale).read[locale.to_s])
+      yaml_keys = filepath.reduce({}) do |a, e|
+        a = a.deep_merge(Yamlfile.new(@root_dir, locale).read[locale.to_s])
       end
       @files.keys.reject { |key, file| contains_key?(yaml_keys, key) }
     end

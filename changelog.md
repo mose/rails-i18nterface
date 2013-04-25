@@ -3,8 +3,12 @@ Rails-i18nterface Changelog
 
 **Warning** All Dates are GMT+8 (Asia/Taipei)
 
-### v0.1.8 :
+### v0.2.0 :
 
+* fix on activerecords models detection, to have model names rather than table names
+* removed the logs, that was useful to detect changes ubt was not refreshed
+* removed the database, which was pretty useless, then no more need for migrate
+* huge refactoring in the libs
 * improvement on the readme
 
 ### v0.1.7 : 2013-04-23

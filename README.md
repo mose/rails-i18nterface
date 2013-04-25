@@ -40,11 +40,7 @@ In routes.rb
 ```ruby
 mount RailsI18nterface::Engine => "/translate", :as => "translate_engine"
 ```
-Copy migration to store translated values and migrate
-```
-rake railties:install:migrations
-rake db:migrate
-```
+
 ### Protect access
 
 You may want to protect the translation engine to admin and create a constraint
@@ -86,12 +82,12 @@ Where `[:en]` and `[:ja, :es, :fr]` could be replaced by locale list of your cho
 ## Todo
 
 * fix the code smell reported by code climate
-  * extract code from the controller to a lib
-  * refactor the libs in a cleaner way
-  * apply rubocop and follow his law
+  * extract code from the controller to a lib (in progress)
+  * refactor the libs in a cleaner way (in progress)
+  * apply rubocop and follow his law (done)
 * make the application thread-safe
-* remove those damn global variables
-* extend testing to refactored libs
+* remove those damn global variables (in progress)
+* extend testing to refactored libs (in progress)
 * change navigation to an ajax-driven reload
 * add a way to gather .one and .other and .few under same translation line
 * add support for other i18n backends (gettext)

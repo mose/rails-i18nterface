@@ -15,7 +15,7 @@ module RailsI18nterface
 
     def write(hash)
       FileUtils.mkdir_p File.dirname(@file_path)
-      File.open(@path, 'w') do |file|
+      File.open(@file_path, 'w') do |file|
         file.puts keys_to_yaml(hash)
       end
     end

@@ -19,6 +19,8 @@ module RailsI18nterface
       sort_keys
       paginate_keys
       @total_entries = @all_keys.size
+      @page_title = "Translate"
+      @show_filters = ["all", "untranslated", "translated"]
     end
 
     def destroy
@@ -41,8 +43,7 @@ module RailsI18nterface
       end
       yaml = RailsI18nterface::Yamlfile.new(Rails.root, @to_locale)
       yaml.write_to_file
-      RailsI18nterface::Log.new(@from_locale, @to_locale, params[:key].keys).write_to_file
-      force_init_translations # Force reload from YAML file
+      force_init_translations
       flash[:notice] = "Translations stored"
       redirect_to root_path(params.slice(:filter, :sort_by, :key_type, :key_pattern, :text_type, :text_pattern))
     end
@@ -69,8 +70,6 @@ module RailsI18nterface
           lookup(@to_locale, key).present?
         when 'translated'
           lookup(@to_locale, key).blank?
-        when 'changed'
-          old_from_text(key).blank? || lookup(@from_locale, key) == old_from_text(key)
         else
           raise "Unknown filter '#{params[:filter]}'"
         end
@@ -165,18 +164,5 @@ module RailsI18nterface
       @to_locale = session[:to_locale].to_sym
     end
 
-    def old_from_text(key)
-      return @old_from_text[key] if @old_from_text && @old_from_text[key]
-      @old_from_text = {}
-      text = key.split(".").reduce(log_hash) do |hash, k|
-        hash ? hash[k] : nil
-      end
-      @old_from_text[key] = text
-    end
-    helper_method :old_from_text
-
-    def log_hash
-      @log_hash ||= RailsI18nterface::Log.new(@from_locale, @to_locale, {}).read
-    end
   end
 end

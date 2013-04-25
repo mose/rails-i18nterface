@@ -1,29 +1,21 @@
-<%
-  @page_title = "Translate"
-  show_filters = ["all", "untranslated", "translated"]
-  show_filters << "changed" if @from_locale != @to_locale
-%>
 <%= form_tag(params, :method => :get, :name => 'filter_form') do %>
 <%= hidden_field_tag(:filter, params[:filter]) %>
 <%= hidden_field_tag(:sort_by, params[:sort_by]) %>
 <div id="top">
-  <% if @page_title %>
-    <h1>
-      <div class="right">
-       <%= select_tag(:from_locale, options_for_select(I18n.available_locales, @from_locale.to_sym)) %> <span>to</span>
-       <%= select_tag(:to_locale, options_for_select(I18n.available_locales, @to_locale.to_sym)) %>
-       <%= submit_tag "Display" %>
-      </div>
-      <%= link_to '.. /', '../' %>
-      <%= link_to @page_title, root_path %></a>
-      <div class="center">
-       <label>Show:</label> <%=  simple_filter(show_filters).html_safe %>
-        Found <strong><%= @total_entries %></strong> messages
-        <%= link_to "Reload messages", translate_reload_path(params) %>
-      </div>
-
-    </h1>
-  <% end %>
+  <h1>
+    <div class="right">
+     <%= select_tag(:from_locale, options_for_select(I18n.available_locales, @from_locale.to_sym)) %> <span>to</span>
+     <%= select_tag(:to_locale, options_for_select(I18n.available_locales, @to_locale.to_sym)) %>
+     <%= submit_tag "Display" %>
+    </div>
+    <%= link_to '.. /', '../' %>
+    <%= link_to @page_title, root_path %></a>
+    <div class="center">
+     <label>Show:</label> <%=  simple_filter(@show_filters).html_safe %>
+      Found <strong><%= @total_entries %></strong> messages
+      <%= link_to "Reload messages", translate_reload_path(params) %>
+    </div>
+  </h1>
   <% flash.each do |key, msg| %>
     <div class="flash" id="<%= key %>"><%= msg %></div>
   <% end %>
@@ -78,7 +70,6 @@
       %>
   	  <div class="translation">
       	<p class="edit-form">
-  			<%= hidden_field_tag("version[#{key}]", @versions[key] || '0') %>
   		  <% if n_lines > 1 %>
           <div class="right">
               <% if @files[key] %>

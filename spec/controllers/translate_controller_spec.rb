@@ -54,7 +54,6 @@ describe RailsI18nterface::TranslateController do
     #   log = mock(:log)
     #   old_translations = {:home => {:page_title => 'Skapar ny artikel'}}
     #   log.should_receive(:read).and_return(deep_stringify_keys(old_translations))
-    #   RailsI18nterface::Log.should_receive(:new).with(:sv, :en, {}).and_return(log)
     #   get_page :index, :filter => 'changed', use_route: 'rails-i18nterface'
     #   assigns(:total_entries).should == 1
     #   assigns(:keys).should == ['home.page_title']

@@ -39,12 +39,12 @@ module RailsI18nterface
 
     def missing_keys
       locale = I18n.default_locale
-      filepath = Dir.glob(File.join(Rails.root, 'config', 'locales', '**', "#{locale}.yml"))
+      filepath = Dir.glob(File.join(@root_dir, 'config', 'locales', '**', "#{locale}.yml"))
       yaml_keys = {}
       yaml_keys = filepath.reduce({}) do |keys, path|
-        keys = keys.deep_merge(Yamlfile.new(path).read[locale.to_s])
+        keys = keys.deep_merge(Yamlfile.new(@root_dir, locale).read[locale.to_s])
       end
-      files.reject { |key, file| contains_key?(yaml_keys, key) }
+      @files.keys.reject { |key, file| contains_key?(yaml_keys, key) }
     end
 
     def self.translated_locales

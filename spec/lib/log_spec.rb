@@ -8,7 +8,6 @@ describe RailsI18nterface::Log do
     before(:each) do
       I18n.locale = :sv
       I18n.backend.store_translations(:sv, from_texts)
-      #keys = RailsI18nterface::Keys.new
       @log = RailsI18nterface::Log.new(:sv, :en, to_shallow_hash(from_texts).keys)
       @log.stub!(:file_path).and_return(file_path)
       FileUtils.rm_f file_path
@@ -22,7 +21,7 @@ describe RailsI18nterface::Log do
       File.exists?(file_path).should be_false
       @log.write_to_file
       File.exists?(file_path).should be_true
-      expected = RailsI18nterface::Yamlfile.new(nil).deep_stringify_keys(from_texts)
+      expected = deep_stringify_keys(from_texts)
       RailsI18nterface::Yamlfile.new(file_path).read.should == expected
     end
 

@@ -2,36 +2,32 @@ require 'fileutils'
 
 module RailsI18nterface
   class Yamlfile
+
+    include Utils
+
     attr_reader :path
 
-    def initialize(path)
-      @path = path
+    def initialize(root_dir, locale)
+      @root_dir = root_dir
+      @locale = locale
+      @file_path = File.join(@root_dir, 'config', 'locales', "#{locale}.yml")
     end
 
     def write(hash)
-      FileUtils.mkdir_p File.dirname(@path)
+      FileUtils.mkdir_p File.dirname(@file_path)
       File.open(@path, 'w') do |file|
         file.puts keys_to_yaml(hash)
       end
     end
 
     def read
-      File.exists?(path) ? YAML::load(IO.read(@path)) : { }
+      File.exists?(@file_path) ? YAML::load(IO.read(@file_path)) : { }
     end
 
-    # Stringifying keys for prettier YAML
-    def deep_stringify_keys(hash)
-      hash.reduce({ }) do |result, (key, value)|
-        value = deep_stringify_keys(value) if value.is_a? Hash
-        result[(key.to_s rescue key) || key] = value
-        result
-      end
+    def write_to_file
+      keys = { @locale => I18n.backend.send(:translations)[@locale] }
+      write remove_blanks(keys)
     end
 
-    def keys_to_yaml(hash)
-      # Using ya2yaml, if available, for UTF8 support
-      keys = deep_stringify_keys(hash)
-      keys.respond_to?(:ya2yaml) ? keys.ya2yaml(escape_as_utf8: true) : keys.to_yaml
-    end
   end
 end

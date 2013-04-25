@@ -5,9 +5,8 @@ describe RailsI18nterface::Keys do
   include RailsI18nterface::Utils
 
   before(:each) do
-    #I18n.stub!(:default_locale).and_return(:en)
-    #RailsI18nterface::Storage.stub!(:root_dir).and_return(i18n_files_dir)
-    @keys = RailsI18nterface::Keys.new
+    @root_dir = File.expand_path(File.join('..', '..', '..', 'spec', 'internal'), __FILE__)
+    @keys = RailsI18nterface::Keys.new(@root_dir, :sv, :no)
   end
 
   describe 'to_a' do
@@ -18,11 +17,11 @@ describe RailsI18nterface::Keys do
         'activerecord.attributes.article.created_at',
         'activerecord.attributes.article.title',
         'activerecord.attributes.article.updated_at',
-        'activerecord.attributes.topics.created_at',
-        'activerecord.attributes.topics.title',
-        'activerecord.attributes.topics.updated_at',
+        'activerecord.attributes.topic.created_at',
+        'activerecord.attributes.topic.title',
+        'activerecord.attributes.topic.updated_at',
         'activerecord.models.article',
-        'activerecord.models.topics',
+        'activerecord.models.topic',
         'article.key1',
         'article.key2',
         'article.key3',
@@ -52,52 +51,52 @@ describe RailsI18nterface::Keys do
       @keys.i18n_keys(:en).should == ['articles.new.page_title', 'categories.flash.created', 'empty', 'home.about']
     end
 
-  describe 'untranslated_keys' do
-    before(:each) do
-      I18n.backend.stub!(:translations).and_return(translations)
+    describe 'untranslated_keys' do
+      before(:each) do
+        I18n.backend.stub!(:translations).and_return(translations)
+      end
+
+      it 'should return a hash with keys with missing translations in each locale' do
+        @keys.untranslated_keys.should == {
+          :sv => ['articles.new.page_title', 'categories.flash.created', 'empty'],
+          :no => ['articles.new.page_title', 'categories.flash.created', 'empty', 'home.about']
+        }
+      end
     end
 
-    it 'should return a hash with keys with missing translations in each locale' do
-      @keys.untranslated_keys.should == {
-        :sv => ['articles.new.page_title', 'categories.flash.created', 'empty'],
-        :no => ['articles.new.page_title', 'categories.flash.created', 'empty', 'home.about']
-      }
-    end
-  end
-
-  describe 'missing_keys' do
-    before(:each) do
-      @file_path = File.join(i18n_files_dir, 'config', 'locales', 'en.yml')
-      RailsI18nterface::Yamlfile.new(@file_path).write({
-        :en => {
-          :home => {
-            :page_title => false,
-            :intro => {
-              :one => 'intro one',
-              :other => 'intro other'
+    describe 'missing_keys' do
+      before(:each) do
+        @file_path = File.join(@root_dir, 'config', 'locales', 'en.yml')
+        RailsI18nterface::Yamlfile.new(@file_path).write({
+          :en => {
+            :home => {
+              :page_title => false,
+              :intro => {
+                :one => 'intro one',
+                :other => 'intro other'
+              }
             }
           }
+        })
+      end
+
+      after(:each) do
+        FileUtils.rm(@file_path)
+      end
+
+      it 'should return a hash with keys that are not in the locale file' do
+        @keys.stub!(:files).and_return({
+          :'home.page_title' => 'app/views/home/index.rhtml',
+          :'home.intro' => 'app/views/home/index.rhtml',
+          :'home.signup' => 'app/views/home/_signup.rhtml',
+          :'about.index.page_title' => 'app/views/about/index.rhtml'
+        })
+        @keys.missing_keys.should == {
+          :'home.signup' => 'app/views/home/_signup.rhtml',
+          :'about.index.page_title' => 'app/views/about/index.rhtml'
         }
-      })
+      end
     end
-
-    after(:each) do
-      FileUtils.rm(@file_path)
-    end
-
-    it 'should return a hash with keys that are not in the locale file' do
-      @keys.stub!(:files).and_return({
-        :'home.page_title' => 'app/views/home/index.rhtml',
-        :'home.intro' => 'app/views/home/index.rhtml',
-        :'home.signup' => 'app/views/home/_signup.rhtml',
-        :'about.index.page_title' => 'app/views/about/index.rhtml'
-      })
-      @keys.missing_keys.should == {
-        :'home.signup' => 'app/views/home/_signup.rhtml',
-        :'about.index.page_title' => 'app/views/about/index.rhtml'
-      }
-    end
-  end
 
 
   describe 'translated_locales' do
@@ -167,7 +166,4 @@ describe RailsI18nterface::Keys do
     }
   end
 
-  def i18n_files_dir
-    File.expand_path(File.join('..', '..', '..', 'spec', 'internal'), __FILE__)
-  end
 end

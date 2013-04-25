@@ -56,5 +56,18 @@ module RailsI18nterface
       end.nil?
     end
 
+    def deep_stringify_keys(hash)
+      hash.reduce({ }) do |result, (key, value)|
+        value = deep_stringify_keys(value) if value.is_a? Hash
+        result[(key.to_s rescue key) || key] = value
+        result
+      end
+    end
+
+    def keys_to_yaml(hash)
+      keys = deep_stringify_keys(hash)
+      keys.respond_to?(:ya2yaml) ? keys.ya2yaml(escape_as_utf8: true) : keys.to_yaml
+    end
+
   end
 end

@@ -27,7 +27,7 @@ module RailsI18nterface
     end
 
     def from_texts
-      file.deep_stringify_keys(to_deep_hash(keys.reduce({ }) do |hash, key|
+      deep_stringify_keys(to_deep_hash(keys.reduce({ }) do |hash, key|
         hash[key] = I18n.backend.send(:lookup, from_locale, key)
         hash
       end))

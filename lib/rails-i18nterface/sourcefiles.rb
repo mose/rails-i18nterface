@@ -1,7 +1,7 @@
 module RailsI18nterface
   module Sourcefiles
 
-    def self.extract_files
+    def self.extract_files(root_dir)
       i18n_lookup_pattern = /\b
         (?:I18n\.t|I18n\.translate|t)
         (?:\s|\():?(?:'|")
@@ -9,14 +9,14 @@ module RailsI18nterface
         (?:'|")
         /x
       f = {}
-      self.files_to_scan.reduce(HashWithIndifferentAccess.new) do |files, file|
-        f = files.merge! self.populate_keys(file, i18n_lookup_pattern)
+      self.files_to_scan(root_dir).reduce(HashWithIndifferentAccess.new) do |files, file|
+        f = files.merge! self.populate_keys(root_dir, file, i18n_lookup_pattern)
       end
-      f.merge self.extract_activerecords
+      f.merge self.extract_activerecords(root_dir)
     end
 
-    def self.populate_keys(file, pattern)
-      files = self.extract_activerecords
+    def self.populate_keys(root_dir, file, pattern)
+      files = {}
       begin #hack to avoid UTF-8 error
         IO.read(file).scan(pattern).flatten.map(&:to_sym).each do |key|
           path = self.relative_path(file)
@@ -34,19 +34,19 @@ module RailsI18nterface
       Pathname.new(File.expand_path(file)).relative_path_from(Pathname.new(Rails.root)).to_s
     end
 
-    def self.files_to_scan
-      Dir.glob(File.join(Storage.root_dir, '{app,config,lib}', '**', '*.{rb,erb,haml,slim,rhtml}')) +
-        Dir.glob(File.join(Storage.root_dir, '{public,app/assets}', 'javascripts', '**', '*.{js,coffee}'))
+    def self.files_to_scan(root_dir)
+      Dir.glob(File.join(root_dir, '{app,config,lib}', '**', '*.{rb,erb,haml,slim,rhtml}')) +
+        Dir.glob(File.join(root_dir, '{public,app/assets}', 'javascripts', '**', '*.{js,coffee}'))
     end
 
-    def self.extract_activerecords
+    def self.extract_activerecords(root_dir)
       files = {}
-      schema = File.join(Storage.root_dir, 'db', 'schema.rb')
+      schema = File.join(root_dir, 'db', 'schema.rb')
       if File.exists? schema
         regex = Regexp.new('\s*create_table\s"([^"]*)[^\n]*\n(.*?)\send\n', Regexp::MULTILINE)
         matchdata = regex.match(File.read(schema))
         while matchdata != nil
-          model = matchdata[1]
+          model = matchdata[1].classify.underscore
           files["activerecord.models.#{model}"] = ['db/schema.rb']
           files.merge!(self.extract_attributes(model, matchdata[2]))
           matchdata = regex.match(matchdata.post_match)

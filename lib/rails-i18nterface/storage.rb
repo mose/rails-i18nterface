@@ -13,10 +13,6 @@ module RailsI18nterface
       Yamlfile.new(file_path).write(remove_blanks(keys))
     end
 
-    def self.file_paths(locale)
-      Dir.glob(File.join(root_dir, 'config', 'locales', '**', "#{locale}.yml"))
-    end
-
     def self.root_dir
       Rails.root
     end

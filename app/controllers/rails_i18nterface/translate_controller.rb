@@ -8,14 +8,17 @@ module RailsI18nterface
 
     def index
       @dbvalues = {}
-      @keys = RailsI18nterface::Keys.new(@from_locale, @to_locale)
-      @deep_keys = to_deep_hash(@keys)
+      @keys = RailsI18nterface::Keys.new(Rails.root, @from_locale, @to_locale)
+      @files = @keys.files
+      @yaml_keys = @keys.yaml_keys
+      @all_keys = @keys.all_keys
+      @deep_keys = to_deep_hash(@all_keys)
       filter_by_key_pattern
       filter_by_text_pattern
       filter_by_translated_or_changed
       sort_keys
       paginate_keys
-      @total_entries = @keys.size
+      @total_entries = @all_keys.size
     end
 
     def destroy
@@ -27,17 +30,17 @@ module RailsI18nterface
       locale = params[:locale].to_sym
       keys = {locale => I18n.backend.send(:translations)[locale] || {}}
       remove_blanks keys
-      puts keys
-      yaml = RailsI18nterface::Yamlfile.new(nil).keys_to_yaml(keys)
+      yaml = keys_to_yaml(keys)
       response.headers['Content-Disposition'] = "attachment; filename=#{locale}.yml"
       render :text => yaml
     end
 
     def update
       if I18n.backend.respond_to? :store_translations
-        I18n.backend.store_translations(@to_locale, RailsI18nterface::Keys.to_deep_hash(params[:key]))
+        I18n.backend.store_translations(@to_locale, to_deep_hash(params[:key]))
       end
-      RailsI18nterface::Storage.new(@to_locale).write_to_file
+      yaml = RailsI18nterface::Yamlfile.new(Rails.root, @to_locale)
+      yaml.write_to_file
       RailsI18nterface::Log.new(@from_locale, @to_locale, params[:key].keys).write_to_file
       force_init_translations # Force reload from YAML file
       flash[:notice] = "Translations stored"
@@ -45,7 +48,7 @@ module RailsI18nterface
     end
 
     def reload
-      RailsI18nterface::Keys.files = nil
+      @keys.reload
       redirect_to root_path(params.slice(:filter, :sort_by, :key_type, :key_pattern, :text_type, :text_pattern))
     end
 
@@ -60,7 +63,7 @@ module RailsI18nterface
     def filter_by_translated_or_changed
       params[:filter] ||= 'all'
       return if params[:filter] == 'all'
-      @keys.reject! do |key|
+      @all_keys.reject! do |key|
         case params[:filter]
         when 'untranslated'
           lookup(@to_locale, key).present?
@@ -76,7 +79,7 @@ module RailsI18nterface
 
     def filter_by_key_pattern
       return if params[:key_pattern].blank?
-      @keys.reject! do |key|
+      @all_keys.reject! do |key|
         case params[:key_type]
         when "starts_with"
           if params[:key_pattern] == '.'
@@ -94,7 +97,7 @@ module RailsI18nterface
 
     def filter_by_text_pattern
       return if params[:text_pattern].blank?
-      @keys.reject! do |key|
+      @all_keys.reject! do |key|
         lookup_key = lookup(@from_locale, key)
         case params[:text_type]
         when 'contains'
@@ -111,9 +114,9 @@ module RailsI18nterface
       params[:sort_by] ||= "key"
       case params[:sort_by]
       when "key"
-        @keys.sort!
+        @all_keys.sort!
       when "text"
-        @keys.sort! do |key1, key2|
+        @all_keys.sort! do |key1, key2|
           if lookup(@from_locale, key1).present? && lookup(@from_locale, key2).present?
             lookup(@from_locale, key1).to_s.downcase <=> lookup(@from_locale, key2).to_s.downcase
           elsif lookup(@from_locale, key1).present?
@@ -129,7 +132,7 @@ module RailsI18nterface
 
     def paginate_keys
       params[:page] ||= 1
-      @paginated_keys = @keys[offset, per_page]
+      @paginated_keys = @all_keys[offset, per_page]
     end
 
     def offset

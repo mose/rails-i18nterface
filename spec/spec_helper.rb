@@ -38,7 +38,6 @@ RSpec.configure do |config|
   config.include Capybara::DSL, example_group: { file_path: /\bspec\/request\// }
   config.include RailsI18nterface::Engine.routes.url_helpers
   config.before(:each) do
-    RailsI18nterface::Storage.stub!(:root_dir).and_return(new_root)
     RailsI18nterface::Keys.stub(:i18n_keys).and_return(:en)
     I18n.stub!(:default_locale).and_return(:en)
     I18n.stub!(:available_locales).and_return([:sv, :no, :en, :root])

@@ -6,18 +6,21 @@ module RailsI18nterface
     include Utils
 
     attr_accessor :files, :keys
-    attr_reader :names
+    attr_reader :yaml_keys, :all_keys
 
-    def initialize(from, to)
-      @files = RailsI18nterface::Sourcefiles.extract_files
+    def initialize(root_dir, from, to)
+      @root_dir = root_dir
+      @files = RailsI18nterface::Sourcefiles.extract_files(root_dir)
       @yaml_keys = i18n_keys(I18n.default_locale)
       @from_locale = from
       @to_locale = to
-      @all_keys = initialize_keys
+      @all_keys = (@files.keys.map(&:to_s) + @yaml_keys).uniq
     end
 
-    def initialize_keys
-      (@files.keys.map(&:to_s) + @names).uniq
+    def reload
+      @files = RailsI18nterface::Sourcefiles.extract_files(root_dir)
+      @yaml_keys = i18n_keys(I18n.default_locale)
+      @all_keys = (@files.keys.map(&:to_s) + @yaml_keys).uniq
     end
 
     def i18n_keys(locale)
@@ -36,8 +39,9 @@ module RailsI18nterface
 
     def missing_keys
       locale = I18n.default_locale
+      filepath = Dir.glob(File.join(Rails.root, 'config', 'locales', '**', "#{locale}.yml"))
       yaml_keys = {}
-      yaml_keys = Storage.file_paths(locale).reduce({}) do |keys, path|
+      yaml_keys = filepath.reduce({}) do |keys, path|
         keys = keys.deep_merge(Yamlfile.new(path).read[locale.to_s])
       end
       files.reject { |key, file| contains_key?(yaml_keys, key) }

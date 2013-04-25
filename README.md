@@ -92,6 +92,12 @@ Where `[:en]` and `[:ja, :es, :fr]` could be replaced by locale list of your cho
 * add a way to gather .one and .other and .few under same translation line
 * add support for other i18n backends (gettext)
 
+## Note for upgrade 0.1.x to 0.2.x
+
+The database is not used anymore, back to the good old way.
+So you can remove the table rails_i18nterface_translations (v0.1.7)
+or translations (< 0.1.7).
+
 ## License
 
 ```

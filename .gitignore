@@ -1,9 +1,8 @@
-spec/internal/tmp/*
 spec/internal/log/*
 Gemfile.lock
 .rvmrc
-/tmp
 node_modules
 *.gem
 coverage/
+/tmp
 Gemfile.lock

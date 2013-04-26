@@ -7,16 +7,10 @@ describe RailsI18nterface::Cache do
 
   before :each do
     @cachefile = File.expand_path(File.join('..', 'files', 'cache_test'), __FILE__)
-    @file = File.join(File.dirname(@cachefile), 'test.yml')
-    @sample = { 'a' => 'a', 'b' => 'b' }
-    File.open(@file, 'w') do |f|
-      f.write YAML.dump(@sample)
-    end
   end
 
   after :each do
     FileUtils.rm @cachefile if File.exists? @cachefile
-    FileUtils.rm @file if File.exists? @file
   end
 
   it 'stores cache of an object' do
@@ -28,24 +22,26 @@ describe RailsI18nterface::Cache do
   it 'reads cache from marshalled file' do
     a = { a: 'a' }
     cache_save a, @cachefile
-    b = cache_load @cachefile, @file
+    b = cache_load @cachefile
     b.should == a
   end
 
   it 'creates the cache if not present' do
-    b = cache_load @cachefile, @file do
-      YAML.load_file @file
+    b = cache_load @cachefile do
+      20
     end
-    b.should == @sample
+    File.exists?(@cachefile).should be_true
+    b.should == 20
   end
 
-  it 'refreshes the cache if the origin file changed' do
-    mtime = File.mtime(@file) - 100
-    File.utime(mtime, mtime, @file)
-    b = cache_load @cachefile, @file do
-      YAML.load_file @file
+  it 'creates the cache if not present, using an argument' do
+    b = cache_load @cachefile, 'something' do |options|
+      options
     end
-    b.should == @sample
+    File.exists?(@cachefile).should be_true
+    b.should == 'something'
   end
+
+
 
 end

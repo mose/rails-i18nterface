@@ -10,15 +10,15 @@ module RailsI18nterface
 
     def initialize(root_dir, from, to)
       @root_dir = root_dir
-      @files = RailsI18nterface::Sourcefiles.extract_files(root_dir)
+      @files = RailsI18nterface::Sourcefiles.load_files(root_dir)
       @yaml_keys = i18n_keys(I18n.default_locale)
       @from_locale = from
       @to_locale = to
       @all_keys = (@files.keys.map(&:to_s) + @yaml_keys).uniq
     end
 
-    def reload
-      @files = RailsI18nterface::Sourcefiles.extract_files(root_dir)
+    def reload(root_dir)
+      @files = RailsI18nterface::Sourcefiles.refresh(root_dir)
       @yaml_keys = i18n_keys(I18n.default_locale)
       @all_keys = (@files.keys.map(&:to_s) + @yaml_keys).uniq
     end

@@ -1,6 +1,7 @@
 # encoding: utf-8
 
 class Article
+
   def validate
 # rubocop : disable all
     something([t(:'article.key1') + "#{t('article.key2')}"])
@@ -12,6 +13,8 @@ class Article
     'bla bla t ' + "blubba bla" + ' foobar'
 # rubocop : enable all
   end
+
   def something
   end
+
 end

@@ -95,14 +95,17 @@ describe RailsI18nterface::TranslateController do
   end
 
   describe 'translate' do
+
     it 'should store translations to I18n backend and then write them to a YAML file' do
       session[:from_locale] = :sv
       session[:to_locale] = :en
-      key_param = {'articles.new.title' => 'New Article', 'category' => 'Category'}
+      key_param = {}
       # hmm, this is called 7 times, I would like to know why
       # I18n.backend.should_receive(:store_translations)
-      put :update, key: key_param, version: 1, use_route: 'rails-i18nterface'
+      RailsI18nterface::Yamlfile.stub!(:write_to_file)
+      put :update, key: key_param, use_route: 'rails-i18nterface'
       response.should be_redirect
+
     end
   end
 

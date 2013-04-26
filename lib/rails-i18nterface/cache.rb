@@ -3,38 +3,32 @@
 module RailsI18nterface
   module Cache
 
-    def cache_save(obj, uri, options={})
+    def cache_save(obj, uri)
       FileUtils.rm uri if File.exists? uri
       File.open(uri, 'wb') do |f|
         Marshal.dump(obj, f)
       end
+      obj
     end
 
-    def cache_load(uri, file, &process)
-      mtime = File.mtime(file)
-      if cached?(uri) && uptodate?(uri, file)
-        File.open(uri) do |f|
-          Marshal.load f
-        end
+    def cache_load(uri, options={}, &process)
+      if File.file? uri
+        load uri
+      elsif block_given?
+        cache_save(yield(options), uri)
       else
-        if block_given?
-          obj = yield
-          cache_save(obj, uri)
-          File.utime(mtime, mtime, uri)
-          obj
-        else
-          nil
-        end
+        nil
       end
     end
 
-    def cached?(uri)
-      File.file? uri
+    private
+
+    def load(uri)
+      File.open(uri) do |f|
+        Marshal.load f
+      end
     end
 
-    def uptodate?(uri, file)
-      File.mtime(uri) == File.mtime(file)
-    end
 
   end
 end

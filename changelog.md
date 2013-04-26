@@ -5,7 +5,7 @@ Rails-i18nterface Changelog
 
 ### v0.2.1 :
 
-
+* added a cache (using marshall) for teh scan of translatable string extracted from application
 
 ### v0.2.0 :
 

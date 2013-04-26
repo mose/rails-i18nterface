@@ -3,6 +3,21 @@
 module RailsI18nterface
   module Sourcefiles
 
+    extend RailsI18nterface::Cache
+
+    def self.load_files(root_dir)
+      cachefile = File.join(root_dir, 'tmp', 'translation_strings')
+      cache_load cachefile, root_dir do |options|
+        RailsI18nterface::Sourcefiles.extract_files options
+      end
+    end
+
+    def self.refresh(root_dir)
+      cachefile = File.join(root_dir, 'tmp', 'translation_strings')
+      FileUtils.rm cachefile if File.exists? cachefile
+      self.load_files(root_dir)
+    end
+
     def self.extract_files(root_dir)
       i18n_lookup_pattern = /\b
         (?:I18n\.t|I18n\.translate|t)
@@ -19,15 +34,10 @@ module RailsI18nterface
 
     def self.populate_keys(root_dir, file, pattern)
       files = {}
-      begin #hack to avoid UTF-8 error
-        IO.read(file).scan(pattern).flatten.map(&:to_sym).each do |key|
-          path = self.relative_path(file)
-          files[key] ||= []
-          files[key] << path unless files[key].include?(path)
-        end
-      rescue Exception => e
-        puts e.inspect
-        puts e.backtrace
+      IO.read(file).scan(pattern).flatten.map(&:to_sym).each do |key|
+        path = self.relative_path(file)
+        files[key] ||= []
+        files[key] << path unless files[key].include?(path)
       end
       files
     end

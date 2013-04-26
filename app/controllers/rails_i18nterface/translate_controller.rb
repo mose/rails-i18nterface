@@ -153,15 +153,11 @@ module RailsI18nterface
       I18n.backend.send(:init_translations) rescue false
     end
 
-    def default_locale
-      I18n.default_locale
-    end
-
     def set_locale
-      session[:from_locale] ||= default_locale
-      session[:to_locale] ||= :en
+      session[:from_locale] ||= I18n.default_locale
+      session[:to_locale] ||= I18n.default_locale
       session[:from_locale] = params[:from_locale] if params[:from_locale].present?
-      session[:to_locale] = params[:to_locale] if params[:to_locale].present?
+      session[:to_locale] = params[:to_locale] if params[:tolocale].present?
       @from_locale = session[:from_locale].to_sym
       @to_locale = session[:to_locale].to_sym
     end

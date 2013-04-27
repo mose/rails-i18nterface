@@ -7,19 +7,13 @@ module RailsI18nterface
       I18n.backend.send(:lookup, locale, key)
     end
 
-    def simple_filter(labels, param_name = 'filter', selected_value = nil)
-      selected_value ||= params[param_name]
+    def simple_filter(labels, param_name = 'filter')
       filter = []
-      labels.each do |item|
-        if item.is_a?(Array)
-          type, label = item
-        else
-          type = label = item
-        end
-        if type.to_s == selected_value.to_s
+      labels.each do |label|
+        if label.to_s == params[param_name].to_s
           filter << "<i>#{label}</i>"
         else
-          link_params = params.merge({param_name.to_s => type})
+          link_params = params.merge({param_name.to_s => label})
           link_params.merge!({'page' => nil}) if param_name.to_s != 'page'
           filter << link_to(label, link_params)
         end
@@ -63,12 +57,11 @@ module RailsI18nterface
       k != '' && k += '.'
       h.each do |key, val|
         if val.is_a? Hash
-          out << "<li class=\"dir\"><span class=\"display\" data-id=\"#{k + key.to_s}\"></span>"
-          out << key.to_s
-          out << " <span class=\"num\">(#{val.length})</span>"
+          out << '<li class="dir"><span class="display" data-id="%s"></span>%s <span class="num">(%d)</span>' %
+            [ k + key.to_s, key.to_s, val.length]
           out << list_namespace(k + key.to_s, val)
         else
-          out << "<li class=\"item\" data-id=\"#{k + key.to_s}\">#{key}"
+          out << '<li class="item" data-id="%s">%s' % [ k + key.to_s, key]
         end
         out << '</li>'
       end

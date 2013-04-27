@@ -5,8 +5,8 @@ module RailsI18nterface
 
     include Utils
 
+    before_filter :init
     before_filter :init_translations
-    before_filter :set_locale
 
     def index
       @dbvalues = {}
@@ -59,24 +59,36 @@ module RailsI18nterface
       (params[:page].to_i - 1) * @per_page
     end
 
-    def init_translations
-      I18n.backend.send(:init_translations) unless I18n.backend.initialized?
+
+  protected
+
+    def init
+      init_session
+      init_assigns
+      init_translations
     end
 
-    def force_init_translations
-      I18n.backend.send(:init_translations) rescue false
+    def init_assigns
+      @from_locale = session[:from_locale].to_sym
+      @to_locale = session[:to_locale].to_sym
+      @per_page = session[:per_page]
     end
 
-    def set_locale
+    def init_session
       session[:from_locale] ||= I18n.default_locale
       session[:to_locale] ||= I18n.default_locale
       session[:per_page] ||= 50
       session[:from_locale] = params[:from_locale] if params[:from_locale].present?
       session[:to_locale] = params[:to_locale] if params[:tolocale].present?
       session[:per_page] = params[:per_page].to_i if params[:per_page].present?
-      @from_locale = session[:from_locale].to_sym
-      @to_locale = session[:to_locale].to_sym
-      @per_page = session[:per_page]
+    end
+
+    def init_translations
+      I18n.backend.send(:init_translations) unless I18n.backend.initialized?
+    end
+
+    def force_init_translations
+      I18n.backend.send(:init_translations) rescue false
     end
 
   end

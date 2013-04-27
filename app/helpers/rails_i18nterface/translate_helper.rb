@@ -3,6 +3,10 @@
 module RailsI18nterface
   module TranslateHelper
 
+    def lookup(locale, key)
+      I18n.backend.send(:lookup, locale, key)
+    end
+
     def simple_filter(labels, param_name = 'filter', selected_value = nil)
       selected_value ||= params[param_name]
       filter = []

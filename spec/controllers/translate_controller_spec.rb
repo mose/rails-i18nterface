@@ -8,7 +8,6 @@ describe RailsI18nterface::TranslateController do
     include RailsI18nterface::Utils
 
     before(:each) do
-      controller.stub!(:per_page).and_return(1)
       I18n.backend.stub!(:translations).and_return(i18n_translations)
       I18n.backend.instance_eval { @initialized = true }
       I18n.stub!(:valid_locales).and_return([:en, :sv])
@@ -16,49 +15,49 @@ describe RailsI18nterface::TranslateController do
     end
 
     it 'shows sorted paginated keys from the translate from locale and extracted keys by default' do
-      get_page :index, use_route: 'rails-i18nterface'
+      get_page :index, per_page: 1, use_route: 'rails-i18nterface'
       assigns(:from_locale).should == :sv
       assigns(:to_locale).should == :sv
-      assigns(:all_keys).size.should == 22
+      assigns(:keys).all_keys.size.should == 22
       assigns(:paginated_keys).should == ['activerecord.attributes.article.active']
     end
 
     it 'can be paginated with the page param' do
-      get_page :index, :page => 2, use_route: 'rails-i18nterface'
+      get_page :index, per_page: 1, :page => 2, use_route: 'rails-i18nterface'
       assigns(:paginated_keys).should == ['activerecord.attributes.article.body']
     end
 
     it 'can sort by key' do
-      get_page :index, :filter => 'translated', :sort_by => 'key', use_route: 'rails-i18nterface'
+      get_page :index, per_page: 1, filter: 'translated', sort_by: 'key', use_route: 'rails-i18nterface'
       assigns(:paginated_keys).should == ['articles.new.page_title']
     end
 
     it 'can sort by text' do
-      get_page :index, :filter => 'translated', :sort_by => 'text', use_route: 'rails-i18nterface'
+      get_page :index, per_page: 1, filter: 'translated', sort_by: 'text', use_route: 'rails-i18nterface'
       assigns(:paginated_keys).should == ['vendor.foobar']
     end
 
     it 'accepts a key_pattern param with key_type=starts_with' do
-      get_page :index, :key_pattern => 'articles', :key_type => 'starts_with', use_route: 'rails-i18nterface'
+      get_page :index, per_page: 1, key_pattern: 'articles', key_type: 'starts_with', use_route: 'rails-i18nterface'
       assigns(:paginated_keys).should == ['articles.new.page_title']
-      assigns(:total_entries).should == 1
+      assigns(:keys).all_keys.size.should == 1
     end
 
     it 'accepts a key_pattern param with key_type=contains' do
-      get_page :index, :key_pattern => 'page_', :key_type => 'contains', use_route: 'rails-i18nterface'
-      assigns(:total_entries).should == 2
+      get_page :index, per_page: 1, key_pattern: 'page_', key_type: 'contains', use_route: 'rails-i18nterface'
+      assigns(:keys).all_keys.size.should == 2
       assigns(:paginated_keys).should == ['articles.new.page_title']
     end
 
     it 'accepts a filter=untranslated param' do
-      get_page :index, :filter => 'untranslated', use_route: 'rails-i18nterface'
-      assigns(:total_entries).should == 19
+      get_page :index, per_page: 1, filter: 'untranslated', use_route: 'rails-i18nterface'
+      assigns(:keys).all_keys.size.should == 19
       assigns(:paginated_keys).should == ['activerecord.attributes.article.active']
     end
 
     it 'accepts a filter=translated param' do
-      get_page :index, :filter => 'translated', use_route: 'rails-i18nterface'
-      assigns(:total_entries).should == 3
+      get_page :index, per_page: 1, filter: 'translated', use_route: 'rails-i18nterface'
+      assigns(:keys).all_keys.size.should == 3
       assigns(:paginated_keys).should == ['articles.new.page_title']
     end
 

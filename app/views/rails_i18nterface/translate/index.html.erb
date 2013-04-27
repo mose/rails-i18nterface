@@ -12,7 +12,7 @@
     <%= link_to @page_title, root_path %></a>
     <div class="center">
      <label>Show:</label> <%=  simple_filter(@show_filters).html_safe %>
-      Found <strong><%= @total_entries %></strong> messages
+      Found <strong><%= @keys.all_keys.size %></strong> messages
       <%= link_to "Reload messages", translate_reload_path(params) %>
     </div>
   </h1>
@@ -21,7 +21,8 @@
   <% end %>
 </div>
 <div id="searchbox">
-
+  Per page
+  <%= text_field_tag(:per_page, session[:per_page], size: 2) %>
    <%= select_tag(:key_type, options_for_select([["Key contains", 'contains'], ["Key starts with", 'starts_with']], params[:key_type])) %>
    <%= text_field_tag(:key_pattern, params[:key_pattern], :size => 50, :id => "key_pattern_value", :class => "text-default") %>
 
@@ -35,15 +36,15 @@
 <% end %>
 
 <div id="namespaces">
-  <%= build_namespace(@deep_keys).html_safe %>
+  <%= build_namespace(@keys.namespaces).html_safe %>
 </div>
 
 <div id="inside">
   <div class="paging">
-    <%= render :partial => 'pagination', :locals => {:total_entries => @total_entries, :per_page => per_page} %>
+    <%= render :partial => 'pagination', :locals => {:total_entries => @keys.all_keys.size, :per_page => @per_page} %>
   </div>
 
-  <% if @total_entries > 0 %>
+  <% if @keys.all_keys.size > 0 %>
   <%= form_tag(translate_path, method: :put) do %>
     <div>
         <%= hidden_field_tag(:filter, params[:filter], :id => "hid_filter") %>
@@ -72,11 +73,11 @@
       	<p class="edit-form">
   		  <% if n_lines > 1 %>
           <div class="right">
-              <% if @files[key] %>
+              <% if @keys.files[key] %>
                 <div class="files">
-                  <div class="count">found in <%= @files[key].count %> files</div>
+                  <div class="count">found in <%= @keys.files[key].count %> files</div>
                   <div class="filelist">
-                    <div><%= @files[key].join("</div><div>").html_safe %></div>
+                    <div><%= @keys.files[key].join("</div><div>").html_safe %></div>
                   </div>
                 </div>
               <% end %>
@@ -96,11 +97,11 @@
   		    </div>
         <% else %>
           <div class="right">
-            <% if @files[key] %>
+            <% if @keys.files[key] %>
               <div class="files">
-                <div class="count">found in <%= @files[key].count %> files</div>
+                <div class="count">found in <%= @keys.files[key].count %> files</div>
                 <div class="filelist">
-                  <div><%= @files[key].join("</div><div>").html_safe %></div>
+                  <div><%= @keys.files[key].join("</div><div>").html_safe %></div>
                 </div>
               </div>
             <% end %>
@@ -127,7 +128,7 @@
   <% end %>
 
   <div class="paging clear">
-    <%= render :partial => 'pagination', :locals => {:total_entries => @total_entries, :per_page => per_page} %>
+    <%= render :partial => 'pagination', :locals => {:total_entries => @keys.all_keys.size, :per_page => @per_page} %>
   </div>
 
 </div>

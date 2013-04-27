@@ -11,16 +11,9 @@ module RailsI18nterface
     def index
       @dbvalues = {}
       @keys = RailsI18nterface::Keys.new(Rails.root, @from_locale, @to_locale)
-      @files = @keys.files
-      @yaml_keys = @keys.yaml_keys
-      @all_keys = @keys.all_keys
-      @deep_keys = to_deep_hash(@all_keys)
-      filter_by_key_pattern
-      filter_by_text_pattern
-      filter_by_translated_or_changed
-      sort_keys
+      @keys.apply_filters(params)
       paginate_keys
-      @total_entries = @all_keys.size
+      @total_entries = @keys.all_keys.size
       @page_title = 'Translate'
       @show_filters = ['all', 'untranslated', 'translated']
     end
@@ -57,56 +50,41 @@ module RailsI18nterface
 
     private
 
-
-    def lookup(locale, key)
-      I18n.backend.send(:lookup, locale, key)
-    end
-    helper_method :lookup
-
     def filter_by_translated_or_changed
       params[:filter] ||= 'all'
       return if params[:filter] == 'all'
-      @all_keys.reject! do |key|
-        case params[:filter]
-        when 'untranslated'
+      @keys.all_keys.reject! do |key|
+        if params[:filter] == 'untranslated'
           lookup(@to_locale, key).present?
-        when 'translated'
+        else #translated
           lookup(@to_locale, key).blank?
-        else
-          raise "Unknown filter '#{params[:filter]}'"
         end
       end
     end
 
     def filter_by_key_pattern
       return if params[:key_pattern].blank?
-      @all_keys.reject! do |key|
-        case params[:key_type]
-        when 'starts_with'
+      @keys.all_keys.reject! do |key|
+        if params[:key_type] == 'starts_with'
           if params[:key_pattern] == '.'
             key.match(/\./)
           else
             !key.starts_with?(params[:key_pattern])
           end
-        when 'contains'
+        else #contains
           key.index(params[:key_pattern]).nil?
-        else
-          raise "Unknown key_type '#{params[:key_type]}'"
         end
       end
     end
 
     def filter_by_text_pattern
       return if params[:text_pattern].blank?
-      @all_keys.reject! do |key|
+      @keys.all_keys.reject! do |key|
         lookup_key = lookup(@from_locale, key)
-        case params[:text_type]
-        when 'contains'
+        if params[:text_type] == 'contains'
           !lookup_key.present? || !lookup_key.to_s.downcase.index(params[:text_pattern].downcase)
-        when 'equals'
+        else #equals
           !lookup_key.present? || lookup_key.to_s.downcase != params[:text_pattern].downcase
-        else
-          raise "Unknown text_type '#{params[:text_type]}'"
         end
       end
     end
@@ -115,9 +93,9 @@ module RailsI18nterface
       params[:sort_by] ||= 'key'
       case params[:sort_by]
       when 'key'
-        @all_keys.sort!
+        @keys.all_keys.sort!
       when 'text'
-        @all_keys.sort! do |key1, key2|
+        @keys.all_keys.sort! do |key1, key2|
           if lookup(@from_locale, key1).present? && lookup(@from_locale, key2).present?
             lookup(@from_locale, key1).to_s.downcase <=> lookup(@from_locale, key2).to_s.downcase
           elsif lookup(@from_locale, key1).present?
@@ -133,17 +111,12 @@ module RailsI18nterface
 
     def paginate_keys
       params[:page] ||= 1
-      @paginated_keys = @all_keys[offset, per_page]
+      @paginated_keys = @keys.all_keys[offset, @per_page]
     end
 
     def offset
-      (params[:page].to_i - 1) * per_page
+      (params[:page].to_i - 1) * @per_page
     end
-
-    def per_page
-      params[:per_page] ? params[:per_page].to_i : 50
-    end
-    helper_method :per_page
 
     def init_translations
       I18n.backend.send(:init_translations) unless I18n.backend.initialized?
@@ -156,10 +129,13 @@ module RailsI18nterface
     def set_locale
       session[:from_locale] ||= I18n.default_locale
       session[:to_locale] ||= I18n.default_locale
+      session[:per_page] ||= 50
       session[:from_locale] = params[:from_locale] if params[:from_locale].present?
       session[:to_locale] = params[:to_locale] if params[:tolocale].present?
+      session[:per_page] = params[:per_page].to_i if params[:per_page].present?
       @from_locale = session[:from_locale].to_sym
       @to_locale = session[:to_locale].to_sym
+      @per_page = session[:per_page]
     end
 
   end

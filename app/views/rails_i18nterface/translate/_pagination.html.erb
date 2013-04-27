@@ -6,12 +6,64 @@
 <% if n_pages > 1 %>
 <div class="clearfix">
 	<ul class="paging">
-	  <% (1..n_pages).each do |page_number| %>
-	    <% if current_page == page_number %>
-	      <li class="selected"><%= link_to(page_number, params.merge(:page => page_number), :title => "Page #{page_number}" ) %></li>
-	    <% else %>
-	      <li><%= link_to(page_number, params.merge(:page => page_number), :title => "Page #{page_number}") %></li>
-	    <% end %>
+		<% if n_pages > 18 %>
+			<% if current_page < 8 %>
+				<% (1..8).each do |page_number| %>
+			    <% if current_page == page_number %>
+			      <li class="selected">
+			      	<%= link_to(page_number, params.merge(:page => page_number), :title => "Page #{page_number}" ) %>
+			      </li>
+			    <% else %>
+			      <li><%= link_to(page_number, params.merge(:page => page_number), :title => "Page #{page_number}") %></li>
+			    <% end %>
+	      <% end %>
+	      <li class="gap">...</li>
+	      <li>
+	      	<%= link_to(n_pages, params.merge(:page => n_pages), :title => "Page #{n_pages}" ) %>
+	      </li>
+			<% elsif current_page > n_pages - 8 %>
+				<li>
+	      	<%= link_to(1, params.merge(:page => 1), :title => "Page 1" ) %>
+	      </li>
+	      <li class="gap">...</li>
+				<% ((n_pages - 8)..n_pages).each do |page_number| %>
+			    <% if current_page == page_number %>
+			      <li class="selected">
+			      	<%= link_to(page_number, params.merge(:page => page_number), :title => "Page #{page_number}" ) %>
+			      </li>
+			    <% else %>
+			      <li><%= link_to(page_number, params.merge(:page => page_number), :title => "Page #{page_number}") %></li>
+			    <% end %>
+	      <% end %>
+			<% else %>
+	      <li>
+	      	<%= link_to(1, params.merge(:page => 1), :title => "Page 1" ) %>
+	      </li>
+	      <li class="gap">...</li>
+	      <% ((current_page - 4)..(current_page + 4)).each do |page_number| %>
+			    <% if current_page == page_number %>
+			      <li class="selected">
+			      	<%= link_to(page_number, params.merge(:page => page_number), :title => "Page #{page_number}" ) %>
+			      </li>
+			    <% else %>
+			      <li><%= link_to(page_number, params.merge(:page => page_number), :title => "Page #{page_number}") %></li>
+			    <% end %>
+	      <% end %>
+	      <li class="gap">...</li>
+	      <li>
+	      	<%= link_to(n_pages, params.merge(:page => n_pages), :title => "Page #{n_pages}" ) %>
+	      </li>
+			<% end %>
+		<% else %>
+		  <% (1..n_pages).each do |page_number| %>
+		    <% if current_page == page_number %>
+		      <li class="selected">
+		      	<%= link_to(page_number, params.merge(:page => page_number), :title => "Page #{page_number}" ) %>
+		      </li>
+		    <% else %>
+		      <li><%= link_to(page_number, params.merge(:page => page_number), :title => "Page #{page_number}") %></li>
+		    <% end %>
+		  <% end %>
 	  <% end %>
 	</ul>
 </div>

@@ -278,7 +278,7 @@ ul.paging {
 	display: block;
   margin: 0;
 }
-ul.paging li{
+ul.paging li {
 	display: block;
 	margin: 0;
 	float: left;
@@ -292,9 +292,9 @@ ul.paging li.selected a {
   text-decoration: none;
   border-radius: 5px;
 }
-ul.paging li a{
-	line-height:1em;
-	padding:0.5em 0.5em;
+ul.paging li a {
+	line-height: 1em;
+	padding: 0.5em 0.5em;
   min-width: 20px;
   text-decoration: none;
   font-weight: bold;
@@ -305,6 +305,10 @@ ul.paging li a:hover {
 }
 ul.paging li.selected a:hover {
   background: #000;
+}
+li.gap {
+  padding: 0 1em;
+  letter-spacing: .5em;
 }
 /*forms filter*/
 #searchbox .sep {

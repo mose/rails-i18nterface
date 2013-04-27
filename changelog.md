@@ -3,13 +3,15 @@ Rails-i18nterface Changelog
 
 **Warning** All Dates are GMT+8 (Asia/Taipei)
 
-### v0.2.1 :
+### v0.2.1 : 2013-04-27
 
+* oy, improved code climate rating from 1.3 to 3, sweet (yeah I love those small badges)
+* fix sort order on the navigation menu
 * added a per_page input on view
 * moved more methods from controller to libs
 * added a cache (using marshall) for teh scan of translatable string extracted from application
 
-### v0.2.0 :
+### v0.2.0 : 2013-04-24
 
 * added a cache lib to accelerate loading. not used yet but will be soon.
 * fix on activerecords models detection, to have model names rather than table names

@@ -5,11 +5,11 @@ Rails-i18nterface Changelog
 
 ### v0.2.2 :
 
-
+* some more code smell fixes
 
 ### v0.2.1 : 2013-04-27
 
-* oy, improved code climate rating from 1.3 to 3, sweet (yeah I love those small badges)
+* oy, improved code climate rating from 1.3 to 3.7, sweet (yeah I love those small badges)
 * fix sort order on the navigation menu
 * added a per_page input on view
 * moved more methods from controller to libs

@@ -15,7 +15,7 @@ module RailsI18nterface
       @from_locale = from
       @to_locale = to
       @all_keys = (@files.keys.map(&:to_s) + @yaml_keys).uniq
-      @namespaces = to_deep_hash(@all_keys)
+      @namespaces = deep_sort(to_deep_hash(@all_keys))
     end
 
     def apply_filters(params)

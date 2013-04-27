@@ -50,6 +50,20 @@ module RailsI18nterface
       hash1.merge!(hash2, &merger)
     end
 
+    def deep_sort(object)
+      if object.is_a?(Hash)
+        res = Hash.new
+        object.each {|k, v| res[k] = deep_sort(v) }
+        Hash[res.sort {|a, b| a[0].to_s <=> b[0].to_s } ]
+      elsif object.is_a?(Array)
+        array = Array.new
+        object.each_with_index {|v, i| array[i] = deep_sort(v) }
+        array
+      else
+        object
+      end
+    end
+
     def contains_key?(hash, key)
       keys = key.to_s.split('.')
       return false if keys.empty?

@@ -50,65 +50,6 @@ module RailsI18nterface
 
     private
 
-    def filter_by_translated_or_changed
-      params[:filter] ||= 'all'
-      return if params[:filter] == 'all'
-      @keys.all_keys.reject! do |key|
-        if params[:filter] == 'untranslated'
-          lookup(@to_locale, key).present?
-        else #translated
-          lookup(@to_locale, key).blank?
-        end
-      end
-    end
-
-    def filter_by_key_pattern
-      return if params[:key_pattern].blank?
-      @keys.all_keys.reject! do |key|
-        if params[:key_type] == 'starts_with'
-          if params[:key_pattern] == '.'
-            key.match(/\./)
-          else
-            !key.starts_with?(params[:key_pattern])
-          end
-        else #contains
-          key.index(params[:key_pattern]).nil?
-        end
-      end
-    end
-
-    def filter_by_text_pattern
-      return if params[:text_pattern].blank?
-      @keys.all_keys.reject! do |key|
-        lookup_key = lookup(@from_locale, key)
-        if params[:text_type] == 'contains'
-          !lookup_key.present? || !lookup_key.to_s.downcase.index(params[:text_pattern].downcase)
-        else #equals
-          !lookup_key.present? || lookup_key.to_s.downcase != params[:text_pattern].downcase
-        end
-      end
-    end
-
-    def sort_keys
-      params[:sort_by] ||= 'key'
-      case params[:sort_by]
-      when 'key'
-        @keys.all_keys.sort!
-      when 'text'
-        @keys.all_keys.sort! do |key1, key2|
-          if lookup(@from_locale, key1).present? && lookup(@from_locale, key2).present?
-            lookup(@from_locale, key1).to_s.downcase <=> lookup(@from_locale, key2).to_s.downcase
-          elsif lookup(@from_locale, key1).present?
-            -1
-          else
-            1
-          end
-        end
-      else
-        raise "Unknown sort_by '#{params[:sort_by]}'"
-      end
-    end
-
     def paginate_keys
       params[:page] ||= 1
       @paginated_keys = @keys.all_keys[offset, @per_page]

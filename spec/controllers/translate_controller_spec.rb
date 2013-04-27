@@ -3,6 +3,36 @@
 require 'spec_helper'
 
 describe RailsI18nterface::TranslateController do
+
+  after :each do
+    root_dir = File.expand_path(File.join('..', '..', '..', 'spec', 'internal'), __FILE__)
+    yaml_trad = File.join(root_dir, 'config', 'locales', 'en.yml')
+    FileUtils.rm yaml_trad if File.exists? yaml_trad
+  end
+
+  it 'should store translations to I18n backend and then write them to a YAML file' do
+    session[:from_locale] = :sv
+    session[:to_locale] = :en
+    key_param = {}
+    # hmm, this is called 7 times, I would like to know why
+    # I18n.backend.should_receive(:store_translations)
+    RailsI18nterface::Yamlfile.stub!(:write_to_file)
+    put :update, key: key_param, use_route: 'rails-i18nterface'
+    response.should be_redirect
+  end
+
+  # TODO: improve this test
+  it 'exports the yml file from current translations' do
+    get :export, locale: 'en', use_route: 'rails-i18nterface'
+    response.headers['Content-Disposition'].should == "attachment; filename=en.yml"
+  end
+
+  # TODO: improve this test
+  it 'reloads the string to translate from changed string in source code' do
+    get :reload, use_route: 'rails-i18nterface'
+    response.should be_redirect
+  end
+
   describe 'index' do
 
     include RailsI18nterface::Utils
@@ -90,21 +120,6 @@ describe RailsI18nterface::TranslateController do
         :'general.back' => ['app/views/articles/new.rhtml', 'app/views/categories/new.rhtml'],
         :'articles.new.page_title' => ['app/views/articles/new.rhtml']
       })
-    end
-  end
-
-  describe 'translate' do
-
-    it 'should store translations to I18n backend and then write them to a YAML file' do
-      session[:from_locale] = :sv
-      session[:to_locale] = :en
-      key_param = {}
-      # hmm, this is called 7 times, I would like to know why
-      # I18n.backend.should_receive(:store_translations)
-      RailsI18nterface::Yamlfile.stub!(:write_to_file)
-      put :update, key: key_param, use_route: 'rails-i18nterface'
-      response.should be_redirect
-
     end
   end
 

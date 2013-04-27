@@ -40,7 +40,8 @@ describe RailsI18nterface::Keys do
   end
 
   it 'reloads the translatable strings' do
-    @keys.reload(@root_dir).size.should == 123
+    size = @keys.all_keys.size
+    @keys.reload(@root_dir).size.should == size
   end
 
   describe 'i18n_keys' do

@@ -3,6 +3,10 @@ Rails-i18nterface Changelog
 
 **Warning** All Dates are GMT+8 (Asia/Taipei)
 
+### v0.2.2 :
+
+
+
 ### v0.2.1 : 2013-04-27
 
 * oy, improved code climate rating from 1.3 to 3, sweet (yeah I love those small badges)

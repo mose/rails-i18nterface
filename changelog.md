@@ -3,8 +3,9 @@ Rails-i18nterface Changelog
 
 **Warning** All Dates are GMT+8 (Asia/Taipei)
 
-### v0.2.2 :
+### v0.2.2 : 2013-04-29
 
+* fix reload function
 * some more code smell fixes
 
 ### v0.2.1 : 2013-04-27

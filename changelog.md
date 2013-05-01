@@ -3,7 +3,10 @@ Rails-i18nterface Changelog
 
 **Warning** All Dates are GMT+8 (Asia/Taipei)
 
-### v0.2.3 :
+### v0.2.4 :
+
+
+### v0.2.3 : 2013-05-02
 
 * fixed default sort order to sort by key
 * fix language switch and add missing test

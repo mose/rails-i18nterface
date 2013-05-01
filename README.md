@@ -6,27 +6,6 @@
 [![Code Climate](https://codeclimate.com/github/mose/rails-i18nterface.png)](https://codeclimate.com/github/mose/rails-i18nterface)
 [![Gem Version](https://badge.fury.io/rb/rails-i18nterface.png)](http://badge.fury.io/rb/rails-i18nterface)
 
-This is a fork of an overhaul of a fork of a fork of rails-translate.
-
-It was originally created by [Peter Marklund and Joakim Westerlund @ mynewsdesk](https://github.com/mynewsdesk/translate)
-and later adapted to rails 3.0 by [Claudius Coenen](https://github.com/ccoenen/rails-translate).
-This version is a spin-off of Claudius Coenen's version by [Larry Sprock](https://github.com/lardawge/rails-i18nterface).
-It was renamed, refactored and prepared for rails 3.1 as an Engine. Over this work
-[Michal Hantl](https://github.com/hakunin/rails-i18nterface) made a bunch of nice UI modifications
-on his fork. Since then it was more or less abandoned.
-
-I took over the evolution with some new features:
-
-* testing using [combustion](https://github.com/pat/combustion) and [rspec](https://github.com/rspec/rspec)
-* redesign of the layout
-* navigation overhaul, splitting the name-spaces in a foldable menu
-* gathering of first-level translations under a ROOT container
-* gemification and release of a version 0.1.0
-* (the 0.0.1 was the work from Larry Sprock but was not published as a gem)
-* compatibility with rails 4 and ruby 2
-
-Check the [Changelog](https://github.com/mose/rails-i18nterface/blob/master/changelog.md) for details about further changes.
-
 ![rails-i18nterface](http://mose.fr/rails-i18nterface.png)
 
 ## Usage
@@ -82,13 +61,13 @@ Where `[:en]` and `[:ja, :es, :fr]` could be replaced by locale list of your cho
 
 ## Todo
 
-* fix the code smell reported by code climate
-  * extract code from the controller to a lib (in progress)
-  * refactor the libs in a cleaner way (in progress)
+* fix the code smell reported by code climate (done)
+  * extract code from the controller to a lib (dmostly done)
+  * refactor the libs in a cleaner way (mostly done)
   * apply rubocop and follow his law (done)
 * make the application thread-safe
-* remove those damn global variables (in progress)
-* extend testing to refactored libs (in progress)
+* remove those damn global variables (done)
+* extend testing to refactored libs (mostly done)
 * change navigation to an ajax-driven reload
 * add a way to gather .one and .other and .few under same translation line
 * add support for other i18n backends (gettext)
@@ -98,6 +77,29 @@ Where `[:en]` and `[:ja, :es, :fr]` could be replaced by locale list of your cho
 The database is not used anymore, back to the good old way.
 So you can remove the table rails_i18nterface_translations (v0.1.7)
 or translations (< 0.1.7).
+
+## Project history
+
+This is a fork of an overhaul of a fork of a fork of rails-translate.
+
+It was originally created by [Peter Marklund and Joakim Westerlund @ mynewsdesk](https://github.com/mynewsdesk/translate)
+and later adapted to rails 3.0 by [Claudius Coenen](https://github.com/ccoenen/rails-translate).
+This version is a spin-off of Claudius Coenen's version by [Larry Sprock](https://github.com/lardawge/rails-i18nterface).
+It was renamed, refactored and prepared for rails 3.1 as an Engine. Over this work
+[Michal Hantl](https://github.com/hakunin/rails-i18nterface) made a bunch of nice UI modifications
+on his fork. Since then it was more or less abandoned.
+
+I took over the evolution with some new features:
+
+* testing using [combustion](https://github.com/pat/combustion) and [rspec](https://github.com/rspec/rspec)
+* redesign of the layout
+* navigation overhaul, splitting the name-spaces in a foldable menu
+* gathering of first-level translations under a ROOT container
+* gemification and release of a version 0.1.0
+* (the 0.0.1 was the work from Larry Sprock but was not published as a gem)
+* compatibility with rails 4 and ruby 2
+
+Check the [Changelog](https://github.com/mose/rails-i18nterface/blob/master/changelog.md) for details about further changes.
 
 ## License
 

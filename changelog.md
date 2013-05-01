@@ -3,7 +3,11 @@ Rails-i18nterface Changelog
 
 **Warning** All Dates are GMT+8 (Asia/Taipei)
 
-### v0.2.2 :
+### v0.2.3 :
+
+* added a link way to change single-line in multiline in translations
+
+### v0.2.2 : 2013-04-29
 
 * some more code smell fixes
 

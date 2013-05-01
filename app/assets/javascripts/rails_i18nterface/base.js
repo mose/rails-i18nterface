@@ -70,4 +70,13 @@ $.domReady(function() {
       newF.submit();
     }
   });
+  $(".multiline").on('click', function(e) {
+    e.preventDefault();
+    input = $(this).next();
+    area = $.create('<textarea rows="4" id="'+input.attr("id")+'" name="'+input.attr('name')+'">');
+    area.text(input.val());
+    area.appendTo($(this).parent());
+    input.hide();
+    $(this).hide();
+  });
 });

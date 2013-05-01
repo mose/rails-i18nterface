@@ -105,13 +105,13 @@
                 </div>
               </div>
             <% end %>
-    			  <span class="key" ><%=h key %></span>
+    			  <span class="key"><%=h key %></span>
             <a href="#" class="delete" title="Delete this key from database">X</a>
     			</div>
           <div class="translation-text">
             <code class="keytext" id="<%= tid %>_original"><%= from_text %></code>
           </div>
-
+          <a class="change multiline" href="#" title="click to transform in a multi-line translation">&#9654;</a>
     			<%= text_field_tag(field_name, to_text, :size => line_size, :id => tid) %>
     		<% end %>
   		  </p>

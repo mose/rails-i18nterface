@@ -376,6 +376,17 @@ div.translation {
   border-bottom: solid 1px #d5d6d5;
   clear:both;
 }
+div.translation .change {
+  position: absolute;
+  display: inline-block;
+  margin-left: -15px;
+  cursor: pointer;
+  color: #c3c6c9;
+  text-decoration: none;
+}
+div.translation .change:hover {
+  color: #369;
+}
 div.translation input, div.translation textarea {
   font-family: monospace;
   font-size: 1.1em;
@@ -384,6 +395,7 @@ div.translation input, div.translation textarea {
 	padding: 4px;
   border: 1px solid #aaa;
   border-radius: 3px;
+  position: relative;
 }
 div.translation textarea {
 }
@@ -482,7 +494,7 @@ div.selected{
 
 .translation input,
 .long-translation .translation-textarea textarea {
-  background-color:#ffe;
+  background-color:#f3f6f9;
 }
 
 .flash {

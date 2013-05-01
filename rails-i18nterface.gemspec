@@ -10,8 +10,8 @@ Gem::Specification.new do |s|
   s.authors     = ["Mose"]
   s.email       = ["mose@mose.com"]
   s.homepage    = "https://github.com/mose/rails-i18nterface"
-  s.summary     = "A rails 3.1/4 engine for translating in a web page."
-  s.description = "A rails 3.1/4 engine adding an interface for translating and writing translation files."
+  s.summary     = "A rails engine for translating in a web page."
+  s.description = "A rails engine adding an interface for translating and writing translation files. Works with rails 3 and 4."
   s.license     = "MIT"
 
   s.files = Dir["{app,config,db,lib}/**/*"] + ["MIT-LICENSE", "Rakefile", "README.md"]

@@ -80,7 +80,7 @@ module RailsI18nterface
       session[:to_locale] ||= I18n.default_locale
       session[:per_page] ||= 50
       session[:from_locale] = params[:from_locale] if params[:from_locale].present?
-      session[:to_locale] = params[:to_locale] if params[:tolocale].present?
+      session[:to_locale] = params[:to_locale] if params[:to_locale].present?
       session[:per_page] = params[:per_page].to_i if params[:per_page].present?
     end
 

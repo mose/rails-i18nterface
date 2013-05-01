@@ -44,6 +44,12 @@ describe RailsI18nterface::TranslateController do
       I18n.stub!(:default_locale).and_return(:sv)
     end
 
+    it 'can switch languages' do
+      get_page :index, per_page: 1, from_locale: 'sv', to_locale: 'en', use_route: 'rails-i18nterface'
+      assigns(:from_locale).should == :sv
+      assigns(:to_locale).should == :en
+    end
+
     it 'shows sorted paginated keys from the translate from locale and extracted keys by default' do
       get_page :index, per_page: 1, use_route: 'rails-i18nterface'
       assigns(:from_locale).should == :sv

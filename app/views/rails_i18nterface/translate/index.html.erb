@@ -56,7 +56,7 @@
     </div>
     <div class="translations">
       <p class="translate">
-        Translations from <%= @from_locale %> to <%= @to_locale %>
+        Translations from <b><%= @from_locale %></b> to <b><%= @to_locale %></b> -
         <label>Sort by:</label> <%= simple_filter(["key", "text"], 'sort_by').html_safe %>
   	    <%= submit_tag "Save Translations", style: 'float:right;' %>
   	  </p>

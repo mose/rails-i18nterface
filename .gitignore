@@ -1,8 +1,10 @@
-spec/internal/log/*
-Gemfile.lock
+/Gemfile.lock
 .rvmrc
-node_modules
+/node_modules
 *.gem
-coverage/
+/coverage/
 /tmp
-Gemfile.lock
+
+spec/internal/tmp/translation_strings
+spec/internal/log/*
+

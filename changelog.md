@@ -9,6 +9,7 @@ Rails-i18nterface Changelog
 
 ### v0.2.2 : 2013-04-29
 
+* fix reload function
 * some more code smell fixes
 
 ### v0.2.1 : 2013-04-27

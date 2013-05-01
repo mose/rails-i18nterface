@@ -472,35 +472,35 @@ div.selected{
 }
 /*feedback*/
 .long-translation {
-  padding-bottom:2em;
-  clear:both;
+  clear: both;
 }
 .long-translation .translation-text {
-  float:left;
-  width:50%;
-  padding-top:8px;
+  float: left;
+  width: 50%;
+  padding: 4px;
+  border: 1px solid #eee;
+  border-radius: 3px;
+  font-size: 1.1em;
 }
 .long-translation .translation-textarea {
-  float:left;
-  width:50%;
-  height:100%;
+  float: left;
+  width: 50%;
 }
 .long-translation .translation-text,
 .long-translation .translation-textarea textarea {
-  line-height:175%;
-  font-size:11px;
-  font-family:monospace;
+  line-height: 175%;
+  font-family: monospace;
 }
 
 .translation input,
 .long-translation .translation-textarea textarea {
-  background-color:#f3f6f9;
+  background-color: #f3f6f9;
 }
 
 .flash {
   text-align: right;
 }
 .clear {
-  clear:both;
+  clear: both;
 }
 

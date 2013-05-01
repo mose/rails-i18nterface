@@ -67,12 +67,18 @@ module RailsI18nterface
       init_session
       init_assigns
       init_translations
+      init_sort
+    end
+
+    def init_sort
+      params[:sort_by] = 'key' unless params[:sort_by]
     end
 
     def init_assigns
       @from_locale = session[:from_locale].to_sym
       @to_locale = session[:to_locale].to_sym
       @per_page = session[:per_page]
+      @sort_by = params[:sort_by] || 'key'
     end
 
     def init_session

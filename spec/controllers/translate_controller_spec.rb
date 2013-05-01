@@ -63,6 +63,11 @@ describe RailsI18nterface::TranslateController do
       assigns(:paginated_keys).should == ['activerecord.attributes.article.body']
     end
 
+    it 'has a default sort order by key' do
+      get_page :index, per_page: 1, use_route: 'rails-i18nterface'
+      request.params[:sort_by].should == 'key'
+    end
+
     it 'can sort by key' do
       get_page :index, per_page: 1, filter: 'translated', sort_by: 'key', use_route: 'rails-i18nterface'
       assigns(:paginated_keys).should == ['articles.new.page_title']

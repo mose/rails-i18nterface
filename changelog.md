@@ -5,6 +5,8 @@ Rails-i18nterface Changelog
 
 ### v0.2.3 :
 
+* fixed default sort order to sort by key
+* fix language switch and add missing test
 * added a link way to change single-line in multiline in translations
 
 ### v0.2.2 : 2013-04-29

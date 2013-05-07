@@ -5,6 +5,8 @@ Rails-i18nterface Changelog
 
 ### v0.2.4 : 2013-05-07
 
+* added an unobstrusive missing_translation enclosed in invisble chars
+  for later on being able to have an in-view translation
 * fix the parser of source code so it can extract the plural statements
   under the condition the `count:` param is the first one declared
   (the old way `:count =>` also is detected).

@@ -24,8 +24,8 @@ module RailsI18nterface
     def n_lines(text, line_size)
       n_lines = 1
       if text.present?
-        n_lines = text.split("\n").size
-        n_lines = text.length / line_size + 1 if n_lines == 1 && text.length > line_size
+        n_lines = text.to_s.split("\n").size
+        n_lines = text.to_s.length / line_size + 1 if n_lines == 1 && text.to_s.length > line_size
       end
       n_lines
     end

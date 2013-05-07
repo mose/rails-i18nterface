@@ -54,7 +54,7 @@ describe RailsI18nterface::TranslateController do
       get_page :index, per_page: 1, use_route: 'rails-i18nterface'
       assigns(:from_locale).should == :sv
       assigns(:to_locale).should == :sv
-      assigns(:keys).all_keys.size.should == 22
+      assigns(:keys).all_keys.size.should == 27
       assigns(:paginated_keys).should == ['activerecord.attributes.article.active']
     end
 
@@ -92,7 +92,7 @@ describe RailsI18nterface::TranslateController do
 
     it 'accepts a filter=untranslated param' do
       get_page :index, per_page: 1, filter: 'untranslated', use_route: 'rails-i18nterface'
-      assigns(:keys).all_keys.size.should == 19
+      assigns(:keys).all_keys.size.should == 24
       assigns(:paginated_keys).should == ['activerecord.attributes.article.active']
     end
 

@@ -26,8 +26,13 @@ describe RailsI18nterface::Keys do
       'article.key1',
       'article.key2',
       'article.key3',
-      'article.key4',
+      'article.key4.one',
+      'article.key4.other',
+      'article.key4.zero',
       'article.key5',
+      'article.key6.one',
+      'article.key6.other',
+      'article.key6.zero',
       'category_erb.key1',
       'category_html_erb.key1',
       'category_rhtml.key1',
@@ -95,7 +100,7 @@ describe RailsI18nterface::Keys do
           :'home.signup' => 'app/views/home/_signup.rhtml',
           :'about.index.page_title' => 'app/views/about/index.rhtml'
         })
-        @keys.missing_keys.size.should == 19
+        @keys.missing_keys.size.should == 24
       end
     end
 

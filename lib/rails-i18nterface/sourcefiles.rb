@@ -19,31 +19,43 @@ module RailsI18nterface
     end
 
     def self.extract_files(root_dir)
-      i18n_lookup_pattern = /\b
-        (?:I18n\.t|I18n\.translate|t)
-        (?:\s|\():?(?:'|")
-          (\.?[a-z0-9_\.]+)
-        (?:'|")
-        /x
       f = {}
       self.files_to_scan(root_dir).reduce(HashWithIndifferentAccess.new) do |files, file|
-        f = files.merge! self.populate_keys(root_dir, file, i18n_lookup_pattern)
+        f = files.merge! self.populate_keys(root_dir, file)
       end
       f.merge self.extract_activerecords(root_dir)
     end
 
-    def self.populate_keys(root_dir, file, pattern)
+    def self.populate_keys(root_dir, file)
       files = {}
-      IO.read(file).scan(pattern).flatten.map(&:to_sym).each do |key|
-        path = self.relative_path(file)
-        files[key] ||= []
-        files[key] << path unless files[key].include?(path)
+      IO.read(file).scan(self.pattern).each do |key,count|
+        path = self.relative_path(root_dir, file)
+        if count
+          keys = [key + '.zero', key + '.one', key + '.other']
+        else
+          keys = [key]
+        end
+        keys.map(&:to_sym).each do |k|
+          files[k] ||= []
+          files[k] << path unless files[k].include?(path)
+        end
       end
       files
     end
 
-    def self.relative_path(file)
-      Pathname.new(File.expand_path(file)).relative_path_from(Pathname.new(Rails.root)).to_s
+    def self.pattern
+      /\b
+        (?:I18n\.t|I18n\.translate|t)
+        (?:\s+|\():?(?:'|")
+          (\.?[a-z0-9_\.]+)
+        (?:'|")
+        (?:\s*,\s*)?
+        (count:|:count\s*=>)?
+      /x
+    end
+
+    def self.relative_path(root_dir, file)
+      Pathname.new(File.expand_path(file)).relative_path_from(Pathname.new(root_dir)).to_s
     end
 
     def self.files_to_scan(root_dir)

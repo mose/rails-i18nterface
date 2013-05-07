@@ -30,7 +30,24 @@ describe RailsI18nterface::Sourcefiles do
   it 'extracts translatable string from code source' do
     x = RailsI18nterface::Sourcefiles.load_files(@root_dir)
     File.exists?(@cache_file).should be_true
-    x.size.should == 19
+    x.size.should == 24
+  end
+
+  it 'populates from plural form when a :count is passed as param' do
+    file = File.join(@root_dir, 'app/models/article.rb')
+    keys = RailsI18nterface::Sourcefiles.populate_keys(@root_dir, file)
+    keys[:"article.key3.zero"].should == nil
+    keys[:"article.key4.zero"].should == ["app/models/article.rb"]
+    keys[:"article.key4.one"].should == ["app/models/article.rb"]
+    keys[:"article.key4.other"].should == ["app/models/article.rb"]
+  end
+
+  it 'populates from plural form when a :count => is passed as param' do
+    file = File.join(@root_dir, 'app/models/article.rb')
+    keys = RailsI18nterface::Sourcefiles.populate_keys(@root_dir, file)
+    keys[:"article.key6.zero"].should == ["app/models/article.rb"]
+    keys[:"article.key6.one"].should == ["app/models/article.rb"]
+    keys[:"article.key6.other"].should == ["app/models/article.rb"]
   end
 
   describe 'refreshing' do
@@ -49,7 +66,7 @@ describe RailsI18nterface::Sourcefiles do
         f.puts "<%= t('something') %>"
       end
       y = RailsI18nterface::Sourcefiles.refresh(@root_dir)
-      y.size.should == 20
+      y.size.should == 25
     end
   end
 

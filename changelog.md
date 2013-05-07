@@ -3,8 +3,13 @@ Rails-i18nterface Changelog
 
 **Warning** All Dates are GMT+8 (Asia/Taipei)
 
-### v0.2.4 :
+### v0.2.4 : 2013-05-07
 
+* fix the parser of source code so it can extract the plural statements
+  under the condition the `count:` param is the first one declared
+  (the old way `:count =>` also is detected).
+  It then generate a `.zero`, `.one` and `.other` keys
+* fix the display when a translation is not a string
 
 ### v0.2.3 : 2013-05-02
 

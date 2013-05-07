@@ -3,6 +3,10 @@ Rails-i18nterface Changelog
 
 **Warning** All Dates are GMT+8 (Asia/Taipei)
 
+### v0.2.5 : wip
+
+
+
 ### v0.2.4 : 2013-05-07
 
 * added an unobstrusive missing_translation enclosed in invisble chars

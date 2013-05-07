@@ -56,9 +56,13 @@ module RailsI18nterface
         object.each {|k, v| res[k] = deep_sort(v) }
         Hash[res.sort {|a, b| a[0].to_s <=> b[0].to_s } ]
       elsif object.is_a?(Array)
-        array = Array.new
-        object.each_with_index {|v, i| array[i] = deep_sort(v) }
-        array
+        if object[0].is_a?(Hash) || object[0].is_a?(Array)
+          array = Array.new
+          object.each_with_index { |v, i| array[i] = deep_sort(v) }
+          array
+        else
+          object.sort
+        end
       else
         object
       end

@@ -18,6 +18,12 @@ describe RailsI18nterface::Utils do
     hash.should == expected
   end
 
+  it 'can deep sort hashes' do
+    hash = { b: '', a: { aa: 'aa' }, d: 'd', c: [ cb: [ 'b', 'a', 'c' ], ca: { caa: 'caa' }] }
+    expected = { a: { aa: 'aa' }, b: '', c: [ ca: { caa: 'caa' }, cb: [ 'a', 'b', 'c' ] ], d: 'd' }
+    deep_sort(hash).should == expected
+  end
+
   describe 'to_deep_hash' do
     before :each do
       @shallow_hash = { 'pressrelease.label.one' => 'Pressmeddelande',

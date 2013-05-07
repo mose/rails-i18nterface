@@ -28,9 +28,9 @@ describe RailsI18nterface::Sourcefiles do
   end
 
   it 'extracts translatable string from code source' do
-    x = RailsI18nterface::Sourcefiles.load_files(@root_dir)
+    allfiles = RailsI18nterface::Sourcefiles.load_files(@root_dir)
     File.exists?(@cache_file).should be_true
-    x.size.should == 24
+    allfiles['title'].should == ['app/controllers/application_controller.rb']
   end
 
   it 'populates from plural form when a :count is passed as param' do
@@ -65,8 +65,8 @@ describe RailsI18nterface::Sourcefiles do
       File.open(File.join(@root_dir,'app','views','test.html.erb'),'w') do |f|
         f.puts "<%= t('something') %>"
       end
-      y = RailsI18nterface::Sourcefiles.refresh(@root_dir)
-      y.size.should == 25
+      allfiles = RailsI18nterface::Sourcefiles.refresh(@root_dir)
+      allfiles['something'].should == ['app/views/test.html.erb']
     end
   end
 

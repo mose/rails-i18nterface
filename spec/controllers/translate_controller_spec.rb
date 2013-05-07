@@ -54,7 +54,7 @@ describe RailsI18nterface::TranslateController do
       get_page :index, per_page: 1, use_route: 'rails-i18nterface'
       assigns(:from_locale).should == :sv
       assigns(:to_locale).should == :sv
-      assigns(:keys).all_keys.size.should == 27
+      assigns(:keys).all_keys.sort[0].should == 'activerecord.attributes.article.active'
       assigns(:paginated_keys).should == ['activerecord.attributes.article.active']
     end
 
@@ -78,6 +78,12 @@ describe RailsI18nterface::TranslateController do
       assigns(:paginated_keys).should == ['vendor.foobar']
     end
 
+    it 'can filter to see only the root items when using . as pattern' do
+      get_page :index, per_page: 1, key_pattern: '.', key_type: 'starts_with', use_route: 'rails-i18nterface'
+      assigns(:paginated_keys).should == ['title']
+      assigns(:keys).all_keys.size.should == 1
+    end
+
     it 'accepts a key_pattern param with key_type=starts_with' do
       get_page :index, per_page: 1, key_pattern: 'articles', key_type: 'starts_with', use_route: 'rails-i18nterface'
       assigns(:paginated_keys).should == ['articles.new.page_title']
@@ -92,7 +98,7 @@ describe RailsI18nterface::TranslateController do
 
     it 'accepts a filter=untranslated param' do
       get_page :index, per_page: 1, filter: 'untranslated', use_route: 'rails-i18nterface'
-      assigns(:keys).all_keys.size.should == 24
+      assigns(:keys).all_keys.sort[0].should == 'activerecord.attributes.article.active'
       assigns(:paginated_keys).should == ['activerecord.attributes.article.active']
     end
 

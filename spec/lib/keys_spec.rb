@@ -36,7 +36,8 @@ describe RailsI18nterface::Keys do
       'category_erb.key1',
       'category_html_erb.key1',
       'category_rhtml.key1',
-      'js.alert'
+      'js.alert',
+      'title'
     ]
   end
 
@@ -100,7 +101,7 @@ describe RailsI18nterface::Keys do
           :'home.signup' => 'app/views/home/_signup.rhtml',
           :'about.index.page_title' => 'app/views/about/index.rhtml'
         })
-        @keys.missing_keys.size.should == 24
+        @keys.missing_keys.sort[0].should == "activerecord.attributes.article.active"
       end
     end
 

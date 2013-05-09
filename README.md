@@ -5,6 +5,7 @@
 [![Coverage Status](https://coveralls.io/repos/mose/rails-i18nterface/badge.png?branch=master)](https://coveralls.io/r/mose/rails-i18nterface)
 [![Code Climate](https://codeclimate.com/github/mose/rails-i18nterface.png)](https://codeclimate.com/github/mose/rails-i18nterface)
 [![Gem Version](https://badge.fury.io/rb/rails-i18nterface.png)](http://badge.fury.io/rb/rails-i18nterface)
+[![Selenium Test Status](https://saucelabs.com/buildstatus/mose)](https://saucelabs.com/u/mose)
 
 ![rails-i18nterface](http://mose.fr/rails-i18nterface.png)
 

@@ -5,7 +5,7 @@ Rails-i18nterface Changelog
 
 ### v0.2.5 : wip
 
-
+* added calls to http://saucelabs.com browsers testing
 
 ### v0.2.4 : 2013-05-07
 

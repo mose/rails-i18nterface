@@ -24,30 +24,30 @@ describe RailsI18nterface::Sourcefiles do
       'activerecord.attributes.topic.updated_at'=>['db/schema.rb']
     }
     hash = RailsI18nterface::Sourcefiles.extract_activerecords(@root_dir)
-    hash.should == expected
+    expect(hash).to eq expected
   end
 
   it 'extracts translatable string from code source' do
     allfiles = RailsI18nterface::Sourcefiles.load_files(@root_dir)
-    File.exists?(@cache_file).should be_true
-    allfiles['title'].should == ['app/controllers/application_controller.rb']
+    expect(File.exists? @cache_file).to be_true
+    expect(allfiles['title']).to eq ['app/controllers/application_controller.rb']
   end
 
   it 'populates from plural form when a :count is passed as param' do
     file = File.join(@root_dir, 'app/models/article.rb')
     keys = RailsI18nterface::Sourcefiles.populate_keys(@root_dir, file)
-    keys[:"article.key3.zero"].should == nil
-    keys[:"article.key4.zero"].should == ["app/models/article.rb"]
-    keys[:"article.key4.one"].should == ["app/models/article.rb"]
-    keys[:"article.key4.other"].should == ["app/models/article.rb"]
+    expect(keys[:"article.key3.zero"]).to be_nil
+    expect(keys[:"article.key4.zero"]).to eq ["app/models/article.rb"]
+    expect(keys[:"article.key4.one"]).to eq ["app/models/article.rb"]
+    expect(keys[:"article.key4.other"]).to eq ["app/models/article.rb"]
   end
 
   it 'populates from plural form when a :count => is passed as param' do
     file = File.join(@root_dir, 'app/models/article.rb')
     keys = RailsI18nterface::Sourcefiles.populate_keys(@root_dir, file)
-    keys[:"article.key6.zero"].should == ["app/models/article.rb"]
-    keys[:"article.key6.one"].should == ["app/models/article.rb"]
-    keys[:"article.key6.other"].should == ["app/models/article.rb"]
+    expect(keys[:"article.key6.zero"]).to eq ["app/models/article.rb"]
+    expect(keys[:"article.key6.one"]).to eq ["app/models/article.rb"]
+    expect(keys[:"article.key6.other"]).to eq ["app/models/article.rb"]
   end
 
   describe 'refreshing' do
@@ -66,7 +66,7 @@ describe RailsI18nterface::Sourcefiles do
         f.puts "<%= t('something') %>"
       end
       allfiles = RailsI18nterface::Sourcefiles.refresh(@root_dir)
-      allfiles['something'].should == ['app/views/test.html.erb']
+      expect(allfiles['something']).to eq ['app/views/test.html.erb']
     end
   end
 

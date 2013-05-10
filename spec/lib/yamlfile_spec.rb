@@ -23,7 +23,7 @@ describe RailsI18nterface::Yamlfile do
 
     it 'writes all I18n messages for a locale to YAML file' do
       @file.write(@translations)
-      @file.read.should == deep_stringify_keys(@translations)
+      expect(@file.read).to eq deep_stringify_keys(@translations)
     end
 
   end
@@ -31,7 +31,7 @@ describe RailsI18nterface::Yamlfile do
   describe 'deep_stringify_keys' do
     it 'should convert all keys in a hash to strings' do
       expected = { 'en' => { 'a' => { 'aa' => 'aa' }, 'b' => 'b' } }
-      deep_stringify_keys(@translations).should == expected
+      expect(deep_stringify_keys @translations).to eq expected
     end
   end
 

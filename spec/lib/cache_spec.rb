@@ -16,30 +16,30 @@ describe RailsI18nterface::Cache do
   it 'stores cache of an object' do
     a = { a: 'a' }
     cache_save a, @cachefile
-    File.exists?(@cachefile).should be_true
+    expect(File.exists? @cachefile).to be_true
   end
 
   it 'reads cache from marshalled file' do
     a = { a: 'a' }
     cache_save a, @cachefile
     b = cache_load @cachefile
-    b.should == a
+    expect(b).to eq a
   end
 
   it 'creates the cache if not present' do
     b = cache_load @cachefile do
       20
     end
-    File.exists?(@cachefile).should be_true
-    b.should == 20
+    expect(File.exists? @cachefile).to be_true
+    expect(b).to be 20
   end
 
   it 'creates the cache if not present, using an argument' do
     b = cache_load @cachefile, 'something' do |options|
       options
     end
-    File.exists?(@cachefile).should be_true
-    b.should == 'something'
+    expect(File.exists? @cachefile).to be_true
+    expect(b).to eq 'something'
   end
 
 

@@ -46,66 +46,66 @@ describe RailsI18nterface::TranslateController do
 
     it 'can switch languages' do
       get_page :index, per_page: 1, from_locale: 'sv', to_locale: 'en', use_route: 'rails-i18nterface'
-      assigns(:from_locale).should == :sv
-      assigns(:to_locale).should == :en
+      expect(assigns :from_locale).to be :sv
+      expect(assigns :to_locale).to be :en
     end
 
     it 'shows sorted paginated keys from the translate from locale and extracted keys by default' do
       get_page :index, per_page: 1, use_route: 'rails-i18nterface'
-      assigns(:from_locale).should == :sv
-      assigns(:to_locale).should == :sv
-      assigns(:keys).all_keys.sort[0].should == 'activerecord.attributes.article.active'
-      assigns(:paginated_keys).should == ['activerecord.attributes.article.active']
+      expect(assigns :from_locale).to be :sv
+      expect(assigns :to_locale).to be :sv
+      expect(assigns(:keys).all_keys.sort[0]).to eq 'activerecord.attributes.article.active'
+      expect(assigns :paginated_keys).to eq ['activerecord.attributes.article.active']
     end
 
     it 'can be paginated with the page param' do
       get_page :index, per_page: 1, :page => 2, use_route: 'rails-i18nterface'
-      assigns(:paginated_keys).should == ['activerecord.attributes.article.body']
+      expect(assigns :paginated_keys).to eq ['activerecord.attributes.article.body']
     end
 
     it 'has a default sort order by key' do
       get_page :index, per_page: 1, use_route: 'rails-i18nterface'
-      request.params[:sort_by].should == 'key'
+      expect(request.params[:sort_by]).to eq 'key'
     end
 
     it 'can sort by key' do
       get_page :index, per_page: 1, filter: 'translated', sort_by: 'key', use_route: 'rails-i18nterface'
-      assigns(:paginated_keys).should == ['articles.new.page_title']
+      expect(assigns :paginated_keys).to eq ['articles.new.page_title']
     end
 
     it 'can sort by text' do
       get_page :index, per_page: 1, filter: 'translated', sort_by: 'text', use_route: 'rails-i18nterface'
-      assigns(:paginated_keys).should == ['vendor.foobar']
+      expect(assigns(:paginated_keys)).to eq ['vendor.foobar']
     end
 
     it 'can filter to see only the root items when using . as pattern' do
       get_page :index, per_page: 1, key_pattern: '.', key_type: 'starts_with', use_route: 'rails-i18nterface'
-      assigns(:paginated_keys).should == ['title']
-      assigns(:keys).all_keys.size.should == 1
+      expect(assigns :paginated_keys).to eq ['title']
+      expect(assigns(:keys).all_keys.size).to be 1
     end
 
     it 'accepts a key_pattern param with key_type=starts_with' do
       get_page :index, per_page: 1, key_pattern: 'articles', key_type: 'starts_with', use_route: 'rails-i18nterface'
-      assigns(:paginated_keys).should == ['articles.new.page_title']
-      assigns(:keys).all_keys.size.should == 1
+      expect(assigns :paginated_keys).to eq ['articles.new.page_title']
+      expect(assigns(:keys).all_keys.size).to be 1
     end
 
     it 'accepts a key_pattern param with key_type=contains' do
       get_page :index, per_page: 1, key_pattern: 'page_', key_type: 'contains', use_route: 'rails-i18nterface'
-      assigns(:keys).all_keys.size.should == 2
-      assigns(:paginated_keys).should == ['articles.new.page_title']
+      expect(assigns(:keys).all_keys.size).to be 2
+      expect(assigns :paginated_keys).to eq ['articles.new.page_title']
     end
 
     it 'accepts a filter=untranslated param' do
       get_page :index, per_page: 1, filter: 'untranslated', use_route: 'rails-i18nterface'
-      assigns(:keys).all_keys.sort[0].should == 'activerecord.attributes.article.active'
-      assigns(:paginated_keys).should == ['activerecord.attributes.article.active']
+      expect(assigns(:keys).all_keys.sort[0]).to eq 'activerecord.attributes.article.active'
+      expect(assigns :paginated_keys).to eq ['activerecord.attributes.article.active']
     end
 
     it 'accepts a filter=translated param' do
       get_page :index, per_page: 1, filter: 'translated', use_route: 'rails-i18nterface'
-      assigns(:keys).all_keys.size.should == 3
-      assigns(:paginated_keys).should == ['articles.new.page_title']
+      expect(assigns(:keys).all_keys.size).to be 3
+      expect(assigns :paginated_keys).to eq ['articles.new.page_title']
     end
 
     def i18n_translations
@@ -142,7 +142,7 @@ describe RailsI18nterface::TranslateController do
 
   def get_page(*args)
     get(*args, use_route: 'rails-i18nterface')
-    response.should be_success
+    expect(response).to be_success
   end
 
 end

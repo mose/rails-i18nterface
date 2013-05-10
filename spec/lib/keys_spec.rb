@@ -12,7 +12,7 @@ describe RailsI18nterface::Keys do
   end
 
   it 'extracts keys from I18n lookups in .rb, .html.erb, and .rhtml files' do
-    @keys.files.keys.map(&:to_s).sort.should == [
+    expected = [
       'activerecord.attributes.article.active',
       'activerecord.attributes.article.body',
       'activerecord.attributes.article.created_at',
@@ -39,15 +39,16 @@ describe RailsI18nterface::Keys do
       'js.alert',
       'title'
     ]
+    expect(@keys.files.keys.sort).to eq expected
   end
 
   it 'return a hash with I18n keys and file lists' do
-    @keys.files[:'article.key3'].should == ['app/models/article.rb']
+    expect(@keys.files[:'article.key3']).to eq ['app/models/article.rb']
   end
 
   it 'reloads the translatable strings' do
     size = @keys.all_keys.size
-    @keys.reload(@root_dir).size.should == size
+    expect(@keys.reload(@root_dir).size).to be size
   end
 
   describe 'i18n_keys' do
@@ -57,7 +58,7 @@ describe RailsI18nterface::Keys do
 
     it 'should return all keys in the I18n backend translations hash' do
       I18n.backend.should_receive(:translations).and_return(translations)
-      @keys.i18n_keys(:en).should == ['articles.new.page_title', 'categories.flash.created', 'empty', 'home.about']
+      expect(@keys.i18n_keys :en).to eq ['articles.new.page_title', 'categories.flash.created', 'empty', 'home.about']
     end
 
     describe 'untranslated_keys' do
@@ -66,10 +67,11 @@ describe RailsI18nterface::Keys do
       end
 
       it 'should return a hash with keys with missing translations in each locale' do
-        @keys.untranslated_keys.should == {
-          :sv => ['articles.new.page_title', 'categories.flash.created', 'empty'],
-          :no => ['articles.new.page_title', 'categories.flash.created', 'empty', 'home.about']
+        expected = {
+          sv: ['articles.new.page_title', 'categories.flash.created', 'empty'],
+          no: ['articles.new.page_title', 'categories.flash.created', 'empty', 'home.about']
         }
+        expect(@keys.untranslated_keys).to eq expected
       end
     end
 
@@ -101,7 +103,7 @@ describe RailsI18nterface::Keys do
           :'home.signup' => 'app/views/home/_signup.rhtml',
           :'about.index.page_title' => 'app/views/about/index.rhtml'
         })
-        @keys.missing_keys.sort[0].should == "activerecord.attributes.article.active"
+        expect(@keys.missing_keys.sort[0]).to eq "activerecord.attributes.article.active"
       end
     end
 
@@ -113,7 +115,7 @@ describe RailsI18nterface::Keys do
       end
 
       it 'returns all avaiable except :root and the default' do
-        RailsI18nterface::Keys.translated_locales.should == [:sv, :no]
+        expect(RailsI18nterface::Keys.translated_locales).to eq [:sv, :no]
       end
     end
 

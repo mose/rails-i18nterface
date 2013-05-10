@@ -40,9 +40,13 @@ require 'rails-i18nterface'
 
 new_root = File.expand_path(File.join('..', 'internal'), __FILE__)
 
+Capybara.server_port = 9090
+
 RSpec.configure do |config|
   config.mock_with :rspec
-  config.include Capybara::DSL, example_group: { file_path: /\bspec\/request\// }
+  config.expect_with :rspec do |c|
+    c.syntax = :expect
+  end
   config.include RailsI18nterface::Engine.routes.url_helpers
   config.before(:each) do
     RailsI18nterface::Keys.stub(:i18n_keys).and_return(:en)

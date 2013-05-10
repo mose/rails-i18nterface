@@ -10,7 +10,7 @@ describe RailsI18nterface::TranslateController do
     FileUtils.rm yaml_trad if File.exists? yaml_trad
   end
 
-  it 'should store translations to I18n backend and then write them to a YAML file' do
+  it 'stores translations to I18n backend and then write them to a YAML file' do
     session[:from_locale] = :sv
     session[:to_locale] = :en
     key_param = {}
@@ -18,19 +18,19 @@ describe RailsI18nterface::TranslateController do
     # I18n.backend.should_receive(:store_translations)
     RailsI18nterface::Yamlfile.stub!(:write_to_file)
     put :update, key: key_param, use_route: 'rails-i18nterface'
-    response.should be_redirect
+    expect(response).to be_redirect
   end
 
   # TODO: improve this test
   it 'exports the yml file from current translations' do
     get :export, locale: 'en', use_route: 'rails-i18nterface'
-    response.headers['Content-Disposition'].should == "attachment; filename=en.yml"
+    expect(response.headers['Content-Disposition']).to eq "attachment; filename=en.yml"
   end
 
   # TODO: improve this test
   it 'reloads the string to translate from changed string in source code' do
     get :reload, use_route: 'rails-i18nterface'
-    response.should be_redirect
+    expect(response).to be_redirect
   end
 
   describe 'index' do

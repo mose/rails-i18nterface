@@ -30,3 +30,27 @@ task :sauce do
 end
 
 task :default => :spec
+
+=begin
+  after do
+    job_id = page.driver.browser.instance_variable_get("@bridge").instance_variable_get("@session_id")
+    puts "Job id: #{job_id}"
+    http = "https://saucelabs.com/rest/v1/#{ENV["SAUCE_USERNAME"]}/jobs/#{job_id}"
+    body = {
+      name: "rails-i18nterface browsers tests.",
+      passed: true,
+      public: 'public',
+      tags: ['rails-i18nterface'],
+      "custom-data" => { version: RailsI18nterface::VERSION }
+      }.to_json
+    puts body
+    RestClient::Request.execute(
+      :method => :put,
+      :url => http,
+      :user => ENV["SAUCE_USERNAME"],
+      :password => ENV["SAUCE_ACCESS_KEY"],
+      :headers => {:content_type => "application/json"},
+      :payload => body
+    )
+  end
+=end

@@ -21,7 +21,7 @@ Gem::Specification.new do |s|
   s.add_dependency "rake", ">= 3.1.0"
 
   s.add_development_dependency "tzinfo", ">= 0.3.37"
-  s.add_development_dependency "combustion", '~> 0.4.0'
+  s.add_development_dependency "combustion", '~> 0.5.0'
   s.add_development_dependency "rspec", '~> 2.13.0'
   s.add_development_dependency "rspec-rails", '~> 2.13.0'
   s.add_development_dependency "capybara"

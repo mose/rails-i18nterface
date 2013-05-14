@@ -3,10 +3,6 @@
 module RailsI18nterface
   module TranslateHelper
 
-    def lookup(locale, key)
-      I18n.backend.send(:lookup, locale, key)
-    end
-
     def simple_filter(labels, param_name = 'filter')
       filter = []
       labels.each do |label|
@@ -19,15 +15,6 @@ module RailsI18nterface
         end
       end
       filter.join(' | ')
-    end
-
-    def n_lines(text, line_size)
-      n_lines = 1
-      if text.present?
-        n_lines = text.to_s.split("\n").size
-        n_lines = text.to_s.length / line_size + 1 if n_lines == 1 && text.to_s.length > line_size
-      end
-      n_lines
     end
 
     def build_namespace(h)

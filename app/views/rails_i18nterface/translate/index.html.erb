@@ -1,38 +1,38 @@
 <%= form_tag(params, :method => :get, :name => 'filter_form') do %>
-<%= hidden_field_tag(:filter, params[:filter]) %>
-<%= hidden_field_tag(:sort_by, params[:sort_by]) %>
-<div id="top">
-  <h1>
-    <div class="right">
-     <%= select_tag(:from_locale, options_for_select(I18n.available_locales, @from_locale.to_sym)) %> <span>to</span>
-     <%= select_tag(:to_locale, options_for_select(I18n.available_locales, @to_locale.to_sym)) %>
-     <%= submit_tag "Display" %>
-    </div>
-    <%= link_to '.. /', '../' %>
-    <%= link_to @page_title, root_path %></a>
-    <div class="center">
-     <label>Show:</label> <%=  simple_filter(@show_filters).html_safe %>
-      Found <strong><%= @keys.all_keys.size %></strong> messages
-      <%= link_to "Reload messages", translate_reload_path(params) %>
-    </div>
-  </h1>
-  <% flash.each do |key, msg| %>
-    <div class="flash" id="<%= key %>"><%= msg %></div>
-  <% end %>
-</div>
-<div id="searchbox">
-  Per page
-  <%= text_field_tag(:per_page, session[:per_page], size: 2) %>
-   <%= select_tag(:key_type, options_for_select([["Key contains", 'contains'], ["Key starts with", 'starts_with']], params[:key_type])) %>
-   <%= text_field_tag(:key_pattern, params[:key_pattern], :size => 50, :id => "key_pattern_value", :class => "text-default") %>
+  <%= hidden_field_tag(:filter, params[:filter]) %>
+  <%= hidden_field_tag(:sort_by, params[:sort_by]) %>
+  <div id="top">
+    <h1>
+      <div class="right">
+        <%= select_tag(:from_locale, options_for_select(I18n.available_locales, @from_locale.to_sym)) %> <span>to</span>
+        <%= select_tag(:to_locale, options_for_select(I18n.available_locales, @to_locale.to_sym)) %>
+        <%= submit_tag "Display" %>
+      </div>
+      <%= link_to '.. /', '../' %>
+      <%= link_to @page_title, root_path %></a>
+      <div class="center">
+        <label>Show:</label> <%=  simple_filter(@show_filters).html_safe %>
+        Found <strong><%= @total_entries %></strong> messages
+        <%= link_to "Reload messages", translate_reload_path(params) %>
+      </div>
+    </h1>
+    <% flash.each do |key, msg| %>
+      <div class="flash" id="<%= key %>"><%= msg %></div>
+    <% end %>
+  </div>
+  <div id="searchbox">
+    <%= text_field_tag(:per_page, session[:per_page], size: 2) %>
+    Per page
+    <%= select_tag(:key_type, options_for_select([["Key contains", 'contains'], ["Key starts with", 'starts_with']], params[:key_type])) %>
+    <%= text_field_tag(:key_pattern, params[:key_pattern], :size => 50, :id => "key_pattern_value", :class => "text-default") %>
 
-   <%= select_tag(:text_type, options_for_select([['Text contains','contains'], ['Text equals','equals']], params[:text_type])) %>
-   <%= text_field_tag(:text_pattern, params[:text_pattern], :size => 50, :id => "text_pattern_value", :class => "text-default") %>
+    <%= select_tag(:text_type, options_for_select([['Text contains','contains'], ['Text equals','equals']], params[:text_type])) %>
+    <%= text_field_tag(:text_pattern, params[:text_pattern], :size => 50, :id => "text_pattern_value", :class => "text-default") %>
 
     <%= link_to "clear", params.merge({:text_pattern => nil, :key_pattern => nil}), class: 'btn' %>
     <%= submit_tag "Search" %>
     <%= link_to "Export language file", translate_export_path(:locale => @to_locale), class: 'btn sep' %>
-</div>
+  </div>
 <% end %>
 
 <div id="namespaces">
@@ -41,94 +41,72 @@
 
 <div id="inside">
   <div class="paging">
-    <%= render :partial => 'pagination', :locals => {:total_entries => @keys.all_keys.size, :per_page => @per_page} %>
+    <%= render :partial => 'pagination', :locals => { :total_entries => @total_entries, :per_page => @per_page } %>
   </div>
 
-  <% if @keys.all_keys.size > 0 %>
-  <%= form_tag(translate_path, method: :put) do %>
-    <div>
-        <%= hidden_field_tag(:filter, params[:filter], :id => "hid_filter") %>
-        <%= hidden_field_tag(:sort_by, params[:sort_by], :id => "hid_sort_by") %>
-        <%= hidden_field_tag(:key_type, params[:key_type], :id => "hid_key_type") %>
-        <%= hidden_field_tag(:key_pattern, params[:key_pattern], :id => "hid_key_pattern") %>
-        <%= hidden_field_tag(:text_type, params[:text_type], :id => "hid_text_type") %>
-        <%= hidden_field_tag(:text_pattern, params[:text_pattern], :id => "hid_text_pattern") %>
-    </div>
-    <div class="translations">
-      <p class="translate">
-        Translations from <b><%= @from_locale %></b> to <b><%= @to_locale %></b> -
-        <label>Sort by:</label> <%= simple_filter(["key", "text"], 'sort_by').html_safe %>
-  	    <%= submit_tag "Save Translations", style: 'float:right;' %>
-  	  </p>
-  	  <% @paginated_keys.each do |key|
-  	      from_text = lookup(@from_locale, key)
-  	      to_text = lookup(@to_locale, key)
-  	      line_size = 100
-  	      n_lines = n_lines(from_text, line_size)
-  	      field_name = "key[#{key}]"
-          tid = key.split('.').join("_")
-
-      %>
-  	  <div class="translation">
-      	<p class="edit-form">
-  		  <% if n_lines > 1 %>
-          <div class="right">
-              <% if @keys.files[key] %>
+  <% if @total_entries > 0 %>
+    <%= form_tag(translate_path, method: :put) do %>
+      <%= hidden_field_tag(:filter, params[:filter], :id => "hid_filter") %>
+      <%= hidden_field_tag(:sort_by, params[:sort_by], :id => "hid_sort_by") %>
+      <%= hidden_field_tag(:key_type, params[:key_type], :id => "hid_key_type") %>
+      <%= hidden_field_tag(:key_pattern, params[:key_pattern], :id => "hid_key_pattern") %>
+      <%= hidden_field_tag(:text_type, params[:text_type], :id => "hid_text_type") %>
+      <%= hidden_field_tag(:text_pattern, params[:text_pattern], :id => "hid_text_pattern") %>
+      <div class="translations">
+        <p class="translate">
+          Translations from <b><%= @from_locale %></b> to <b><%= @to_locale %></b> -
+          <label>Sort by:</label> <%= simple_filter(["key", "text"], 'sort_by').html_safe %>
+          <%= submit_tag "Save Translations", style: 'float:right;' %>
+        </p>
+      <% @keys.translations.each do |tr| %>
+        <div class="translation">
+          <p class="edit-form">
+            <div class="right">
+              <% if tr.files %>
                 <div class="files">
-                  <div class="count">found in <%= @keys.files[key].count %> files</div>
+                  <div class="count">
+                    found in <%= tr.files.count %> files
+                  </div>
                   <div class="filelist">
-                    <div><%= @keys.files[key].join("</div><div>").html_safe %></div>
+                    <div><%= tr.files.join("</div><div>").html_safe %></div>
                   </div>
                 </div>
               <% end %>
-  			    <span class="key"><%=h key %></span>
-            <a href="#" class="delete" title="Delete this key from database">X</a>
-  			  </div>
-          <div class="long-translation">
-  		      <div class="translation-text">
-        			<pre id="<%= tid %>_original"><%= from_text %></pre>
-              <div class="clear"></div>
-  		      </div>
-            <div class="translation-textarea">
-  			      <%= text_area_tag(field_name, to_text, :rows => n_lines, :id => tid) %>
-              <div class="clear"></div>
-  		      </div>
-            <div class="clear"></div>
-  		    </div>
-        <% else %>
-          <div class="right">
-            <% if @keys.files[key] %>
-              <div class="files">
-                <div class="count">found in <%= @keys.files[key].count %> files</div>
-                <div class="filelist">
-                  <div><%= @keys.files[key].join("</div><div>").html_safe %></div>
+              <span class="key"><%= h tr.key %></span>
+              <a href="#" class="delete" title="Delete this key from database">X</a>
+            </div>
+            <% if tr.lines > 1 %>
+              <div class="long-translation">
+                <div class="translation-text">
+                  <pre id="<%= tr.id %>_original"><%= tr.from_text %></pre>
+                  <div class="clear"></div>
                 </div>
+                <div class="translation-textarea">
+                  <%= text_area_tag("key[#{tr.key}]", tr.to_text, :rows => tr.lines, :id => tr.id) %>
+                  <div class="clear"></div>
+                </div>
+                <div class="clear"></div>
               </div>
+            <% else %>
+              <div class="translation-text">
+                <code class="keytext" id="<%= tr.id %>_original"><%= tr.from_text %></code>
+              </div>
+              <a class="change multiline" href="#" title="click to transform in a multi-line translation">&#9654;</a>
+              <%= text_field_tag("key[#{tr.key}]", tr.to_text, :size => tr.lines, :id => tr.id) %>
             <% end %>
-    			  <span class="key"><%=h key %></span>
-            <a href="#" class="delete" title="Delete this key from database">X</a>
-    			</div>
-          <div class="translation-text">
-            <code class="keytext" id="<%= tid %>_original"><%= from_text %></code>
-          </div>
-          <a class="change multiline" href="#" title="click to transform in a multi-line translation">&#9654;</a>
-    			<%= text_field_tag(field_name, to_text, :size => line_size, :id => tid) %>
-    		<% end %>
-  		  </p>
-  		<p>
-  	</p>
-  	</div>
-  <% end %>
-    <p class="translate">
-      Translations from <%= @from_locale %> to <%= @to_locale %>
-      <%= submit_tag "Save Translations", style: 'float:right' %>
-  	</p>
-  </div>
-  <% end %>
+          </p>
+        </div>
+      <% end %>
+      <p class="translate">
+        Translations from <b><%= @from_locale %></b> to <b><%= @to_locale %></b>
+        <%= submit_tag "Save Translations", style: 'float:right' %>
+      </p>
+    </div>
+    <% end %>
   <% end %>
 
   <div class="paging clear">
-    <%= render :partial => 'pagination', :locals => {:total_entries => @keys.all_keys.size, :per_page => @per_page} %>
+    <%= render :partial => 'pagination', :locals => { :total_entries => @total_entries, :per_page => @per_page } %>
   </div>
 
 </div>

@@ -6,7 +6,7 @@ module RailsI18nterface
     include Utils
 
     attr_accessor :files, :keys, :namespaces
-    attr_reader :yaml_keys, :all_keys
+    attr_reader :yaml_keys, :all_keys, :translations
 
     def initialize(root_dir, from, to)
       @root_dir = root_dir
@@ -15,6 +15,7 @@ module RailsI18nterface
       @from_locale = from
       @to_locale = to
       @all_keys = (@files.keys.map(&:to_s) + @yaml_keys).uniq
+      @translations = []
       @namespaces = deep_sort(to_deep_hash(@all_keys))
     end
 
@@ -87,6 +88,15 @@ module RailsI18nterface
     def i18n_keys(locale)
       I18n.backend.send(:init_translations) unless I18n.backend.initialized?
       to_shallow_hash(I18n.backend.send(:translations)[locale.to_sym]).keys.sort
+    end
+
+    def paginate(page, per_page)
+      offset = (page - 1) * per_page
+      @all_keys[offset, per_page].each do |key|
+        translation = RailsI18nterface::Translation.new(key, @from_locale, @to_locale)
+        translation.files = @files[key]
+        @translations << translation
+      end
     end
 
     def untranslated_keys

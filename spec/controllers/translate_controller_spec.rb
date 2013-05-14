@@ -55,12 +55,12 @@ describe RailsI18nterface::TranslateController do
       expect(assigns :from_locale).to be :sv
       expect(assigns :to_locale).to be :sv
       expect(assigns(:keys).all_keys.sort[0]).to eq 'activerecord.attributes.article.active'
-      expect(assigns :paginated_keys).to eq ['activerecord.attributes.article.active']
+      expect(assigns(:keys).translations.map(&:key)).to eq ['activerecord.attributes.article.active']
     end
 
     it 'can be paginated with the page param' do
       get_page :index, per_page: 1, :page => 2, use_route: 'rails-i18nterface'
-      expect(assigns :paginated_keys).to eq ['activerecord.attributes.article.body']
+      expect(assigns(:keys).translations.map(&:key)).to eq ['activerecord.attributes.article.body']
     end
 
     it 'has a default sort order by key' do
@@ -70,42 +70,42 @@ describe RailsI18nterface::TranslateController do
 
     it 'can sort by key' do
       get_page :index, per_page: 1, filter: 'translated', sort_by: 'key', use_route: 'rails-i18nterface'
-      expect(assigns :paginated_keys).to eq ['articles.new.page_title']
+      expect(assigns(:keys).translations.map(&:key)).to eq ['articles.new.page_title']
     end
 
     it 'can sort by text' do
       get_page :index, per_page: 1, filter: 'translated', sort_by: 'text', use_route: 'rails-i18nterface'
-      expect(assigns(:paginated_keys)).to eq ['vendor.foobar']
+      expect(assigns(:keys).translations.map(&:key)).to eq ['vendor.foobar']
     end
 
     it 'can filter to see only the root items when using . as pattern' do
       get_page :index, per_page: 1, key_pattern: '.', key_type: 'starts_with', use_route: 'rails-i18nterface'
-      expect(assigns :paginated_keys).to eq ['title']
-      expect(assigns(:keys).all_keys.size).to be 1
+      expect(assigns :total_entries).to be 1
+      expect(assigns(:keys).translations.map(&:key)).to eq ['title']
     end
 
     it 'accepts a key_pattern param with key_type=starts_with' do
       get_page :index, per_page: 1, key_pattern: 'articles', key_type: 'starts_with', use_route: 'rails-i18nterface'
-      expect(assigns :paginated_keys).to eq ['articles.new.page_title']
-      expect(assigns(:keys).all_keys.size).to be 1
+      expect(assigns :total_entries).to be 1
+      expect(assigns(:keys).translations.map(&:key)).to eq ['articles.new.page_title']
     end
 
     it 'accepts a key_pattern param with key_type=contains' do
       get_page :index, per_page: 1, key_pattern: 'page_', key_type: 'contains', use_route: 'rails-i18nterface'
-      expect(assigns(:keys).all_keys.size).to be 2
-      expect(assigns :paginated_keys).to eq ['articles.new.page_title']
+      expect(assigns :total_entries).to be 2
+      expect(assigns(:keys).translations.map(&:key)).to eq ['articles.new.page_title']
     end
 
     it 'accepts a filter=untranslated param' do
       get_page :index, per_page: 1, filter: 'untranslated', use_route: 'rails-i18nterface'
       expect(assigns(:keys).all_keys.sort[0]).to eq 'activerecord.attributes.article.active'
-      expect(assigns :paginated_keys).to eq ['activerecord.attributes.article.active']
+      expect(assigns(:keys).translations.map(&:key)).to eq ['activerecord.attributes.article.active']
     end
 
     it 'accepts a filter=translated param' do
       get_page :index, per_page: 1, filter: 'translated', use_route: 'rails-i18nterface'
-      expect(assigns(:keys).all_keys.size).to be 3
-      expect(assigns :paginated_keys).to eq ['articles.new.page_title']
+      expect(assigns :total_entries).to be 3
+      expect(assigns(:keys).translations.map(&:key)).to eq ['articles.new.page_title']
     end
 
     def i18n_translations

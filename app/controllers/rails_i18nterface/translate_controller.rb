@@ -6,13 +6,11 @@ module RailsI18nterface
     include Utils
 
     before_filter :init
-    before_filter :init_translations
 
     def index
-      @dbvalues = {}
       @keys = RailsI18nterface::Keys.new(Rails.root, @from_locale, @to_locale)
       @keys.apply_filters(params)
-      paginate_keys
+      @keys.paginate(@page, @per_page)
       @total_entries = @keys.all_keys.size
       @page_title = 'Translate'
       @show_filters = ['all', 'untranslated', 'translated']
@@ -49,18 +47,6 @@ module RailsI18nterface
       redirect_to root_path(params.slice(:filter, :sort_by, :key_type, :key_pattern, :text_type, :text_pattern))
     end
 
-    private
-
-    def paginate_keys
-      params[:page] ||= 1
-      @paginated_keys = @keys.all_keys[offset, @per_page]
-    end
-
-    def offset
-      (params[:page].to_i - 1) * @per_page
-    end
-
-
   protected
 
     def init
@@ -71,14 +57,14 @@ module RailsI18nterface
     end
 
     def init_sort
-      params[:sort_by] = 'key' unless params[:sort_by]
+      params[:sort_by] ||= 'key'
     end
 
     def init_assigns
       @from_locale = session[:from_locale].to_sym
       @to_locale = session[:to_locale].to_sym
       @per_page = session[:per_page]
-      @sort_by = params[:sort_by] || 'key'
+      @page = (params[:page] || 1).to_i
     end
 
     def init_session

@@ -3,7 +3,7 @@
 module RailsI18nterface
   class Translation
 
-    attr_accessor :files
+    attr_accessor :files, :persisted
     attr_reader :key, :from_text, :to_text, :lines, :id
 
     def initialize(key, from, to)
@@ -13,6 +13,7 @@ module RailsI18nterface
       @lines = n_lines(@to_text)
       @id = key.gsub(/\./, '_')
       @files = []
+      @persisted = true
     end
 
     def lookup(locale, key)

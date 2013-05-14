@@ -31,6 +31,7 @@ module RailsI18nterface
     end
 
     def update
+      puts params
       if I18n.backend.respond_to? :store_translations
         I18n.backend.store_translations(@to_locale, to_deep_hash(params[:key]))
       end
@@ -38,7 +39,8 @@ module RailsI18nterface
       yaml.write_to_file
       force_init_translations
       flash[:notice] = 'Translations stored'
-      redirect_to root_path(params.slice(:filter, :sort_by, :key_type, :key_pattern, :text_type, :text_pattern))
+      reload
+      # redirect_to root_path(params.slice(:filter, :sort_by, :key_type, :key_pattern, :text_type, :text_pattern))
     end
 
     def reload

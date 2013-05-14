@@ -72,7 +72,14 @@
                   </div>
                 </div>
               <% end %>
-              <span class="key"><%= h tr.key %></span>
+              <span class="key">
+                <%= h tr.key %>
+                <% if tr.persisted %>
+                  (saved)
+                <% else %>
+                  (unsaved)
+                <% end %>
+              </span>
               <a href="#" class="delete" title="Delete this key from database">X</a>
             </div>
             <% if tr.lines > 1 %>

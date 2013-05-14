@@ -5,8 +5,8 @@ require 'spec_helper'
 describe RailsI18nterface::TranslateController do
 
   after :each do
-    root_dir = File.expand_path(File.join('..', '..', '..', 'spec', 'internal'), __FILE__)
-    yaml_trad = File.join(root_dir, 'config', 'locales', 'en.yml')
+    @root_dir = File.expand_path(File.join('..', '..', '..', 'spec', 'internal'), __FILE__)
+    yaml_trad = File.join(@root_dir, 'config', 'locales', 'en.yml')
     FileUtils.rm yaml_trad if File.exists? yaml_trad
   end
 
@@ -31,6 +31,22 @@ describe RailsI18nterface::TranslateController do
   it 'reloads the string to translate from changed string in source code' do
     get :reload, use_route: 'rails-i18nterface'
     expect(response).to be_redirect
+  end
+
+  describe 'delete' do
+    it 'remove key on demand' do
+      @root_dir = File.expand_path(File.join('..', '..', '..', 'spec', 'internal'), __FILE__)
+      @file = File.join(@root_dir, 'app', 'views', 'categories', 'category.erb')
+      FileUtils.rm @file
+      post :destroy, del: 'category_erb.key1', use_route: 'rails-i18nterface'
+      expect(response).to be_redirect
+      get_page :index, per_page: 1, key_pattern: 'category_erb.key1', key_type: 'starts_with', use_route: 'rails-i18nterface'
+      expect(assigns :total_entries).to eq 0
+      File.open(@file,'w') do |f|
+        f.write "<%= t(:'category_erb.key1') %>"
+      end
+      get :reload, use_route: 'rails-i18nterface'
+    end
   end
 
   describe 'index' do

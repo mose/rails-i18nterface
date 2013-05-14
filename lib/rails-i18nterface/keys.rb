@@ -95,6 +95,7 @@ module RailsI18nterface
       @all_keys[offset, per_page].each do |key|
         translation = RailsI18nterface::Translation.new(key, @from_locale, @to_locale)
         translation.files = @files[key]
+        translation.persisted = @yaml_keys.include? key
         @translations << translation
       end
     end

@@ -31,7 +31,6 @@ module RailsI18nterface
     end
 
     def update
-      puts params
       if I18n.backend.respond_to? :store_translations
         I18n.backend.store_translations(@to_locale, to_deep_hash(params[:key]))
       end

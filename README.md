@@ -6,6 +6,7 @@
 [![Code Climate](https://codeclimate.com/github/mose/rails-i18nterface.png)](https://codeclimate.com/github/mose/rails-i18nterface)
 [![Gem Version](https://badge.fury.io/rb/rails-i18nterface.png)](http://badge.fury.io/rb/rails-i18nterface)
 [![Selenium Test Status](https://saucelabs.com/buildstatus/rails-i18nterface)](https://saucelabs.com/u/rails-i18nterface)
+[Changelog](https://github.com/mose/rails-i18nterface/blob/master/changelog.md)
 
 ![rails-i18nterface](http://mose.fr/rails-i18nterface.png)
 
@@ -63,14 +64,14 @@ Where `[:en]` and `[:ja, :es, :fr]` could be replaced by locale list of your cho
 ## Todo
 
 * fix the code smell reported by code climate (done)
-  * extract code from the controller to a lib (dmostly done)
-  * refactor the libs in a cleaner way (mostly done)
+  * extract code from the controller to a lib (done)
+  * refactor the libs in a cleaner way (done)
   * apply rubocop and follow his law (done)
-* make the application thread-safe
 * remove those damn global variables (done)
-* extend testing to refactored libs (mostly done)
+* extend testing to refactored libs (done)
+* make the application thread-safe
 * change navigation to an ajax-driven reload
-* add a way to gather .one and .other and .few under same translation line
+* add a way to gather .one and .other and .few under same translation line (not sure actually)
 * add support for other i18n backends (gettext)
 
 ## Note for upgrade 0.1.x to 0.2.x

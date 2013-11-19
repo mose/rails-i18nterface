@@ -1,3 +1,5 @@
+# encoding: utf-8
+
 module RailsI18nterface
   module UseKeyForMissing
     def call(exception, locale, key, options)

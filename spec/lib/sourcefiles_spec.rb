@@ -12,16 +12,16 @@ describe RailsI18nterface::Sourcefiles do
 
   it 'grabs field from schema.rb' do
     expected = {
-      'activerecord.models.article'=>['db/schema.rb'],
-      'activerecord.attributes.article.title'=>['db/schema.rb'],
-      'activerecord.attributes.article.body'=>['db/schema.rb'],
-      'activerecord.attributes.article.created_at'=>['db/schema.rb'],
-      'activerecord.attributes.article.updated_at'=>['db/schema.rb'],
-      'activerecord.attributes.article.active'=>['db/schema.rb'],
-      'activerecord.models.topic'=>['db/schema.rb'],
-      'activerecord.attributes.topic.title'=>['db/schema.rb'],
-      'activerecord.attributes.topic.created_at'=>['db/schema.rb'],
-      'activerecord.attributes.topic.updated_at'=>['db/schema.rb']
+      'activerecord.models.article' => ['db/schema.rb'],
+      'activerecord.attributes.article.title' => ['db/schema.rb'],
+      'activerecord.attributes.article.body' => ['db/schema.rb'],
+      'activerecord.attributes.article.created_at' => ['db/schema.rb'],
+      'activerecord.attributes.article.updated_at' => ['db/schema.rb'],
+      'activerecord.attributes.article.active' => ['db/schema.rb'],
+      'activerecord.models.topic' => ['db/schema.rb'],
+      'activerecord.attributes.topic.title' => ['db/schema.rb'],
+      'activerecord.attributes.topic.created_at' => ['db/schema.rb'],
+      'activerecord.attributes.topic.updated_at' => ['db/schema.rb']
     }
     hash = RailsI18nterface::Sourcefiles.extract_activerecords(@root_dir)
     expect(hash).to eq expected
@@ -36,24 +36,24 @@ describe RailsI18nterface::Sourcefiles do
   it 'populates from plural form when a :count is passed as param' do
     file = File.join(@root_dir, 'app/models/article.rb')
     keys = RailsI18nterface::Sourcefiles.populate_keys(@root_dir, file)
-    expect(keys[:"article.key3.zero"]).to be_nil
-    expect(keys[:"article.key4.zero"]).to eq ["app/models/article.rb"]
-    expect(keys[:"article.key4.one"]).to eq ["app/models/article.rb"]
-    expect(keys[:"article.key4.other"]).to eq ["app/models/article.rb"]
+    expect(keys[:'article.key3.zero']).to be_nil
+    expect(keys[:'article.key4.zero']).to eq ['app/models/article.rb']
+    expect(keys[:'article.key4.one']).to eq ['app/models/article.rb']
+    expect(keys[:'article.key4.other']).to eq ['app/models/article.rb']
   end
 
   it 'populates from plural form when a :count => is passed as param' do
     file = File.join(@root_dir, 'app/models/article.rb')
     keys = RailsI18nterface::Sourcefiles.populate_keys(@root_dir, file)
-    expect(keys[:"article.key6.zero"]).to eq ["app/models/article.rb"]
-    expect(keys[:"article.key6.one"]).to eq ["app/models/article.rb"]
-    expect(keys[:"article.key6.other"]).to eq ["app/models/article.rb"]
+    expect(keys[:'article.key6.zero']).to eq ['app/models/article.rb']
+    expect(keys[:'article.key6.one']).to eq ['app/models/article.rb']
+    expect(keys[:'article.key6.other']).to eq ['app/models/article.rb']
   end
 
   describe 'refreshing' do
     before :each do
       RailsI18nterface::Sourcefiles.load_files(@root_dir)
-      @testfile = File.join(@root_dir,'app','views','test.html.erb')
+      @testfile = File.join(@root_dir, 'app', 'views', 'test.html.erb')
     end
 
     after :each do
@@ -62,7 +62,7 @@ describe RailsI18nterface::Sourcefiles do
     end
 
     it 'refreshes translatable strings cache' do
-      File.open(File.join(@root_dir,'app','views','test.html.erb'),'w') do |f|
+      File.open(File.join(@root_dir, 'app', 'views', 'test.html.erb'),'w') do |f|
         f.puts "<%= t('something') %>"
       end
       allfiles = RailsI18nterface::Sourcefiles.refresh(@root_dir)

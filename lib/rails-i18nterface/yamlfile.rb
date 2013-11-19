@@ -23,7 +23,7 @@ module RailsI18nterface
     end
 
     def read
-      File.exists?(@file_path) ? YAML::load(IO.read(@file_path)) : { }
+      File.exists?(@file_path) ? YAML.load(IO.read(@file_path)) : {}
     end
 
     def write_to_file

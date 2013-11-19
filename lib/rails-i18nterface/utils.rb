@@ -39,25 +39,25 @@ module RailsI18nterface
       hash.reduce({}) do |a, (key, value)|
         keys = key.to_s.split('.').reverse
         leaf_key = keys.shift
-        key_hash = keys.reduce({leaf_key.to_sym => value}) { |h, k| { k.to_sym => h } }
+        key_hash = keys.reduce(leaf_key.to_sym => value) { |h, k| { k.to_sym => h } }
         deep_merge!(a, key_hash)
         a
       end
     end
 
     def deep_merge!(hash1, hash2)
-      merger = proc { |key, v1, v2| Hash === v1 && Hash === v2 ? v1.merge(v2, &merger) : v2 }
+      merger = proc { |key, v1, v2| v1.is_a?(Hash) && v2.is_a?(Hash) ? v1.merge(v2, &merger) : v2 }
       hash1.merge!(hash2, &merger)
     end
 
     def deep_sort(object)
       if object.is_a?(Hash)
-        res = Hash.new
-        object.each {|k, v| res[k] = deep_sort(v) }
-        Hash[res.sort {|a, b| a[0].to_s <=> b[0].to_s } ]
+        res = {}
+        object.each { |k, v| res[k] = deep_sort(v) }
+        Hash[res.sort { |a, b| a[0].to_s <=> b[0].to_s }]
       elsif object.is_a?(Array)
         if object[0].is_a?(Hash) || object[0].is_a?(Array)
-          array = Array.new
+          array = []
           object.each_with_index { |v, i| array[i] = deep_sort(v) }
           array
         else
@@ -77,7 +77,7 @@ module RailsI18nterface
     end
 
     def deep_stringify_keys(hash)
-      hash.reduce({ }) do |result, (key, value)|
+      hash.reduce({}) do |result, (key, value)|
         value = deep_stringify_keys(value) if value.is_a? Hash
         result[(key.to_s rescue key) || key] = value
         result

@@ -1,22 +1,28 @@
 if ENV['sauce']
 
   module Job
-    extend self
+    module_function
+
     def id
       @__jobid || 'undefined'
     end
+
     def id=(j)
       @__jobid ||= j
     end
+
     def failed?
       !!@__failed
     end
+
     def fails
       @__failed = true
     end
+
     def build
       Time.now.to_i.to_s
     end
+    
   end
 
   require 'sauce/capybara'

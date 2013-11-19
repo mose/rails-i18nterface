@@ -43,11 +43,11 @@ describe RailsI18nterface::Keys do
   end
 
   it "sorts by keys" do
-    expect(@keys.sort_keys().last).to eq "title"
+    expect(@keys.sort_keys.last).to eq 'title'
   end
 
   it "sorts by translation" do
-    expect(@keys.sort_keys('text').last).to eq "time.pm"
+    expect(@keys.sort_keys('text').last).to eq 'time.pm'
   end
 
   it 'return a hash with I18n keys and file lists' do
@@ -88,12 +88,12 @@ describe RailsI18nterface::Keys do
         @file_path = File.join(@root_dir, 'config', 'locales', 'en.yml')
         yaml = RailsI18nterface::Yamlfile.new(@root_dir, :en)
         yaml.write({
-          :en => {
-            :home => {
-              :page_title => false,
-              :intro => {
-                :one => 'intro one',
-                :other => 'intro other'
+          en: {
+            home: {
+              page_title: false,
+              intro: {
+                one: 'intro one',
+                other: 'intro other'
               }
             }
           }
@@ -136,25 +136,25 @@ describe RailsI18nterface::Keys do
 
     def translations
       {
-        :en => {
-          :home => {
-            :about => 'This site is about making money'
+        en: {
+          home: {
+            about: 'This site is about making money'
           },
-          :articles => {
-           :new => {
-             :page_title => 'New Article'
+          articles: {
+           new: {
+             page_title: 'New Article'
             }
           },
-          :categories => {
-            :flash => {
-             :created => 'Category created'
+          categories: {
+            flash: {
+             created: 'Category created'
             }
           },
-          :empty => nil
+          empty: nil
         },
-        :sv => {
-          :home => {
-            :about => false
+        sv: {
+          home: {
+            about: false
           }
         }
       }
@@ -172,14 +172,14 @@ describe RailsI18nterface::Keys do
 
   def deep_hash
     {
-      :pressrelease => {
-        :label => {
-          :one => 'Pressmeddelande',
-          :other => 'Pressmeddelanden'
+      pressrelease: {
+        label: {
+          one: 'Pressmeddelande',
+          other: 'Pressmeddelanden'
         }
       },
-      :article => 'Artikel',
-      :category => ''
+      article: 'Artikel',
+      category: ''
     }
   end
 

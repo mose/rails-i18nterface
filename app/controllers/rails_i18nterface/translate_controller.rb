@@ -2,7 +2,6 @@
 
 module RailsI18nterface
   class TranslateController < RailsI18nterface::ApplicationController
-
     include Utils
 
     before_filter :init
@@ -13,7 +12,7 @@ module RailsI18nterface
       @keys.paginate(@page, @per_page)
       @total_entries = @keys.all_keys.size
       @page_title = 'Translate'
-      @show_filters = ['all', 'untranslated', 'translated']
+      @show_filters = %w(all untranslated translated)
     end
 
     def destroy
@@ -23,11 +22,11 @@ module RailsI18nterface
 
     def export
       locale = params[:locale].to_sym
-      keys = {locale => I18n.backend.send(:translations)[locale] || {}}
+      keys = { locale => I18n.backend.send(:translations)[locale] || {} }
       remove_blanks keys
       yaml = keys_to_yaml(keys)
       response.headers['Content-Disposition'] = "attachment; filename=#{locale}.yml"
-      render :text => yaml
+      render text: yaml
     end
 
     def update
@@ -48,7 +47,7 @@ module RailsI18nterface
       redirect_to root_path(params.slice(:filter, :sort_by, :key_type, :key_pattern, :text_type, :text_pattern))
     end
 
-  protected
+    protected
 
     def init
       init_session

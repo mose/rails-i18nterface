@@ -22,8 +22,8 @@ module RailsI18nterface
     def apply_filters(params)
       params[:filter] ||= 'all'
       filter_by_translated(params[:filter]) if params[:filter] != 'all'
-      filter_by_key_pattern(params[:key_type], params[:key_pattern]) if !params[:key_pattern].blank?
-      filter_by_text_pattern(params[:text_type], params[:text_pattern]) if !params[:text_pattern].blank?
+      filter_by_key_pattern(params[:key_type], params[:key_pattern]) unless params[:key_pattern].blank?
+      filter_by_text_pattern(params[:text_type], params[:text_pattern]) unless params[:text_pattern].blank?
       sort_keys(params[:sort_by])
     end
 
@@ -31,7 +31,7 @@ module RailsI18nterface
       @all_keys.reject! do |key|
         if filter == 'untranslated'
           lookup(@to_locale, key).present?
-        else #translated
+        else # translated
           lookup(@to_locale, key).blank?
         end
       end
@@ -45,7 +45,7 @@ module RailsI18nterface
           else
             !key.starts_with?(pattern)
           end
-        else #contains
+        else # contains
           key.index(pattern).nil?
         end
       end
@@ -56,16 +56,16 @@ module RailsI18nterface
         lookup_key = lookup(@from_locale, key)
         if type == 'contains'
           !lookup_key.present? || !lookup_key.to_s.downcase.index(pattern.downcase)
-        else #equals
+        else # equals
           !lookup_key.present? || lookup_key.to_s.downcase != pattern.downcase
         end
       end
     end
 
-    def sort_keys(order="key")
+    def sort_keys(order = 'key')
       if order == 'key'
         @all_keys.sort!
-      else #text
+      else # text
         @all_keys.sort! do |key1, key2|
           if lookup(@from_locale, key1).present? && lookup(@from_locale, key2).present?
             lookup(@from_locale, key1).to_s.downcase <=> lookup(@from_locale, key2).to_s.downcase

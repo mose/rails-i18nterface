@@ -11,7 +11,7 @@ module RailsI18nterface
       obj
     end
 
-    def cache_load(uri, options={}, &process)
+    def cache_load(uri, options = {}, &process)
       if File.file? uri
         load uri
       elsif block_given?

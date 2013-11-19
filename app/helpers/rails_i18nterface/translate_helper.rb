@@ -1,6 +1,8 @@
 # encoding: utf-8
 
 module RailsI18nterface
+
+  # various views helpers
   module TranslateHelper
 
     def simple_filter(labels, param_name = 'filter')
@@ -9,8 +11,8 @@ module RailsI18nterface
         if label.to_s == params[param_name].to_s
           filter << "<i>#{label}</i>"
         else
-          link_params = params.merge({param_name.to_s => label})
-          link_params.merge!({'page' => nil}) if param_name.to_s != 'page'
+          link_params = params.merge(param_name.to_s => label)
+          link_params.merge!('page' => nil) if param_name.to_s != 'page'
           filter << link_to(label, link_params)
         end
       end
@@ -44,11 +46,15 @@ module RailsI18nterface
       k != '' && k += '.'
       h.each do |key, val|
         if val.is_a? Hash
-          out << '<li class="dir"><span class="display" data-id="%s"></span>%s <span class="num">(%d)</span>' %
-            [ k + key.to_s, key.to_s, val.length]
+          out << sprintf(
+            '<li class="dir"><span class="display" data-id="%s"></span>%s <span class="num">(%d)</span>',
+            k + key.to_s, 
+            key.to_s, 
+            val.length
+          )
           out << list_namespace(k + key.to_s, val)
         else
-          out << '<li class="item" data-id="%s">%s' % [ k + key.to_s, key]
+          out << sprintf('<li class="item" data-id="%s">%s', k + key.to_s, key)
         end
         out << '</li>'
       end

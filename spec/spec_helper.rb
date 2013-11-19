@@ -33,12 +33,8 @@ Combustion.initialize! :action_controller, :action_view, :sprockets
 
 require 'rspec/rails'
 require 'rspec/autorun'
-
 require 'capybara/rails'
-
 require 'rails-i18nterface'
-
-new_root = File.expand_path(File.join('..', 'internal'), __FILE__)
 
 Capybara.server_port = 9090
 

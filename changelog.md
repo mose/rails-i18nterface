@@ -5,6 +5,7 @@ Rails-i18nterface Changelog
 
 ### v0.2.5 : wip
 
+* fix sort order when ordered by text
 * refactoring to make the view more viewable
 * added calls to http://saucelabs.com browsers testing
 

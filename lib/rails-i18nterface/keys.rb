@@ -62,8 +62,7 @@ module RailsI18nterface
       end
     end
 
-    def sort_keys(order)
-      order ||= 'key'
+    def sort_keys(order="key")
       if order == 'key'
         @all_keys.sort!
       else #text
@@ -71,9 +70,9 @@ module RailsI18nterface
           if lookup(@from_locale, key1).present? && lookup(@from_locale, key2).present?
             lookup(@from_locale, key1).to_s.downcase <=> lookup(@from_locale, key2).to_s.downcase
           elsif lookup(@from_locale, key1).present?
-            -1
-          else
             1
+          else
+            -1
           end
         end
       end

@@ -42,6 +42,14 @@ describe RailsI18nterface::Keys do
     expect(@keys.files.keys.sort).to eq expected
   end
 
+  it "sorts by keys" do
+    expect(@keys.sort_keys().last).to eq "title"
+  end
+
+  it "sorts by translation" do
+    expect(@keys.sort_keys('text').last).to eq "time.pm"
+  end
+
   it 'return a hash with I18n keys and file lists' do
     expect(@keys.files[:'article.key3']).to eq ['app/models/article.rb']
   end

@@ -8,5 +8,6 @@
 spec/internal/tmp/translation_strings
 spec/internal/log/*
 
-/vendor
-/.bundle
+/vendor/
+/.bundle/
+/spec/internal/tmp/cache/

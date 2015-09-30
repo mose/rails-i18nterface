@@ -8,6 +8,8 @@ Rails-i18nterface Changelog
 * fix sort order when ordered by text
 * refactoring to make the view more viewable
 * added calls to http://saucelabs.com browsers testing
+* major refreshing in dependencies (2015)
+* drop support for ruby 1.9 (at least for development)
 
 ### v0.2.4 : 2013-05-07
 

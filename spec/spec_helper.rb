@@ -32,7 +32,6 @@ require 'capybara/rspec'
 Combustion.initialize! :action_controller, :action_view, :sprockets
 
 require 'rspec/rails'
-require 'rspec/autorun'
 require 'capybara/rails'
 require 'rails-i18nterface'
 
@@ -45,9 +44,9 @@ RSpec.configure do |config|
   end
   config.include RailsI18nterface::Engine.routes.url_helpers
   config.before(:each) do
-    RailsI18nterface::Keys.stub(:i18n_keys).and_return(:en)
-    I18n.stub!(:default_locale).and_return(:en)
-    I18n.stub!(:available_locales).and_return([:sv, :no, :en, :root])
+    allow(RailsI18nterface::Keys).to receive(:i18n_keys).and_return(:en)
+    allow(I18n).to receive(:default_locale).and_return(:en)
+    allow(I18n).to receive(:available_locales).and_return([:sv, :no, :en, :root])
   end
 end
 

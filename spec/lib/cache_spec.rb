@@ -5,43 +5,46 @@ require 'spec_helper'
 describe RailsI18nterface::Cache do
   include RailsI18nterface::Cache
 
-  before :each do
-    @cachefile = File.expand_path(File.join('..', 'files', 'cache_test'), __FILE__)
-  end
+  let(:cachefile) { File.expand_path(File.join('..', 'files', 'cache_test'), __FILE__) }
 
-  after :each do
-    FileUtils.rm @cachefile if File.exists? @cachefile
-  end
+  after { FileUtils.rm cachefile if File.exists? cachefile }
 
-  it 'stores cache of an object' do
-    a = { a: 'a' }
-    cache_save a, @cachefile
-    expect(File.exists? @cachefile).to be_true
-  end
-
-  it 'reads cache from marshalled file' do
-    a = { a: 'a' }
-    cache_save a, @cachefile
-    b = cache_load @cachefile
-    expect(b).to eq a
-  end
-
-  it 'creates the cache if not present' do
-    b = cache_load @cachefile do
-      20
+  describe '.save' do
+    let(:a) { { a: 'a' } }
+    before { cache_save a, cachefile }
+    it 'stores cache of an object' do
+      expect(File.exists? cachefile).to be_truthy
     end
-    expect(File.exists? @cachefile).to be_true
-    expect(b).to be 20
   end
 
-  it 'creates the cache if not present, using an argument' do
-    b = cache_load @cachefile, 'something' do |options|
-      options
+  describe '.load' do
+    context 'reads cache from marshalled file' do
+      let(:a) { { a: 'a' } }
+      let(:b) { cache_load cachefile }
+      before { cache_save a, cachefile }
+      it { expect(b).to eq a }
     end
-    expect(File.exists? @cachefile).to be_true
-    expect(b).to eq 'something'
-  end
 
+    context 'when the cache if not present' do
+      before { 
+        @b = cache_load cachefile do
+          20
+        end
+      }
+      it { expect(@b).to be 20 }
+      it { expect(File.exists? cachefile).to be_truthy }
+    end
+
+    context 'when the cache if not present, using an argument' do
+      before {
+        @b = cache_load cachefile, 'something' do |options| 
+          options
+        end
+      }
+      it { expect(@b).to eq 'something' }
+      it { expect(File.exists? cachefile).to be_truthy }
+    end
+  end
 
 
 end

@@ -5,9 +5,9 @@
 /coverage/
 /tmp
 
-spec/internal/tmp/translation_strings
-spec/internal/log/*
+/spec/internal/tmp/cache/
+/spec/internal/tmp/translation_strings
+/spec/internal/log/*
 
 /vendor/
 /.bundle/
-/spec/internal/tmp/cache/

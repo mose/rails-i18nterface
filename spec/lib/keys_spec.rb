@@ -3,16 +3,13 @@
 require 'spec_helper'
 
 describe RailsI18nterface::Keys do
-
   include RailsI18nterface::Utils
 
-  before(:each) do
-    @root_dir = File.expand_path(File.join('..', '..', '..', 'spec', 'internal'), __FILE__)
-    @keys = RailsI18nterface::Keys.new(@root_dir, :sv, :no)
-  end
+  let(:root_dir) { File.expand_path(File.join('..', '..', '..', 'spec', 'internal'), __FILE__) }
+  let(:keys) { RailsI18nterface::Keys.new(root_dir, :sv, :no) }
 
-  it 'extracts keys from I18n lookups in .rb, .html.erb, and .rhtml files' do
-    expected = [
+  describe '.files' do
+    let(:expected) { [
       'activerecord.attributes.article.active',
       'activerecord.attributes.article.body',
       'activerecord.attributes.article.created_at',
@@ -33,60 +30,61 @@ describe RailsI18nterface::Keys do
       'article.key6.one',
       'article.key6.other',
       'article.key6.zero',
-      'category_erb.key1',
       'category_html_erb.key1',
       'category_rhtml.key1',
       'js.alert',
       'title'
-    ]
-    expect(@keys.files.keys.sort).to eq expected
+    ] }
+    it 'extracts keys from I18n lookups in .rb, .html.erb, and .rhtml files' do
+      expect(keys.files.keys.sort).to eq expected
+    end
   end
 
-  it "sorts by keys" do
-    expect(@keys.sort_keys.last).to eq 'title'
+  describe "sorts by keys" do
+    it { expect(keys.sort_keys.last).to eq 'title' }
   end
 
-  it "sorts by translation" do
-    expect(@keys.sort_keys('text').last).to eq 'time.pm'
+  describe "sorts by translation" do
+    it { expect(keys.sort_keys('text').last).to eq 'time.pm' }
   end
 
-  it 'return a hash with I18n keys and file lists' do
-    expect(@keys.files[:'article.key3']).to eq ['app/models/article.rb']
+  describe 'return a hash with I18n keys and file lists' do
+    it { expect(keys.files[:'article.key3']).to eq ['app/models/article.rb'] }
   end
 
-  it 'reloads the translatable strings' do
-    size = @keys.all_keys.size
-    expect(@keys.reload(@root_dir).size).to be size
+  describe 'reloads the translatable strings' do
+    let(:size) { keys.all_keys.size }
+    it { expect(keys.reload(root_dir).size).to be size }
   end
 
   describe 'i18n_keys' do
-    before(:each) do
+    before do
       I18n.backend.send(:init_translations) unless I18n.backend.initialized?
     end
 
-    it 'should return all keys in the I18n backend translations hash' do
-      I18n.backend.should_receive(:translations).and_return(translations)
-      expect(@keys.i18n_keys :en).to eq ['articles.new.page_title', 'categories.flash.created', 'empty', 'home.about']
+    describe 'should return all keys in the I18n backend translations hash' do
+      before { allow(I18n.backend).to receive(:translations).and_return(translations) }
+      it { expect(keys.i18n_keys :en).to eq ['articles.new.page_title', 'categories.flash.created', 'empty', 'home.about'] }
     end
 
     describe 'untranslated_keys' do
-      before(:each) do
-        I18n.backend.stub!(:translations).and_return(translations)
-      end
-
-      it 'should return a hash with keys with missing translations in each locale' do
-        expected = {
+      let(:expected) {
+        {
           sv: ['articles.new.page_title', 'categories.flash.created', 'empty'],
           no: ['articles.new.page_title', 'categories.flash.created', 'empty', 'home.about']
         }
-        expect(@keys.untranslated_keys).to eq expected
+      }
+      before { allow(I18n.backend).to receive(:translations).and_return(translations) }
+
+      it 'should return a hash with keys with missing translations in each locale' do
+        expect(keys.untranslated_keys).to eq expected
       end
     end
 
     describe 'missing_keys' do
-      before(:each) do
-        @file_path = File.join(@root_dir, 'config', 'locales', 'en.yml')
-        yaml = RailsI18nterface::Yamlfile.new(@root_dir, :en)
+      let(:file_path) { File.join(root_dir, 'config', 'locales', 'en.yml') }
+      before do
+        yaml = RailsI18nterface::Yamlfile.new(root_dir, :en)
         yaml.write({
           en: {
             home: {
@@ -98,28 +96,28 @@ describe RailsI18nterface::Keys do
             }
           }
         })
-      end
-
-      after(:each) do
-        FileUtils.rm(@file_path) if File.exists? @file_path
-      end
-
-      it 'should return a hash with keys that are not in the locale file' do
-        @keys.stub!(:files).and_return({
+        allow(keys).to receive(:files).and_return({
           :'home.page_title' => 'app/views/home/index.rhtml',
           :'home.intro' => 'app/views/home/index.rhtml',
           :'home.signup' => 'app/views/home/_signup.rhtml',
-          :'about.index.page_title' => 'app/views/about/index.rhtml'
+          :'about.index.page_title' => 'app/views/about/index.rhtml'          
         })
-        expect(@keys.missing_keys.sort[0]).to eq "activerecord.attributes.article.active"
+      end
+
+      after(:each) do
+        FileUtils.rm(file_path) if File.exists? file_path
+      end
+
+      it 'should return a hash with keys that are not in the locale file' do
+        expect(keys.missing_keys.sort[0]).to eq "activerecord.attributes.article.active"
       end
     end
 
 
     describe 'translated_locales' do
-      before(:each) do
-        I18n.stub!(:default_locale).and_return(:en)
-        I18n.stub!(:available_locales).and_return([:sv, :no, :en, :root])
+      before do
+        allow(I18n).to receive(:default_locale).and_return(:en)
+        allow(I18n).to receive(:available_locales).and_return([:sv, :no, :en, :root])
       end
 
       it 'returns all avaiable except :root and the default' do

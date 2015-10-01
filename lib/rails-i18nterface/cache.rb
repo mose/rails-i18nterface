@@ -12,7 +12,7 @@ module RailsI18nterface
     end
 
     def cache_load(uri, options = {}, &process)
-      if File.file? uri
+      if File.exists? uri
         load uri
       elsif block_given?
         cache_save(yield(options), uri)

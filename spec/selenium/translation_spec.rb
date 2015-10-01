@@ -6,7 +6,7 @@ require 'selenium/sauce'
 describe 'translation' do
 
   it 'phase 1', js: true do
-    visit 'http://in.codegreenit.com:9090/translate'
+    visit 'http://localhost:3000/translate'
     expect(page.first(:xpath, "/html/body/div/div[2]/form/div[3]/div/div/span").text).to eq 'activerecord.attributes.article.active'
     link = page.first(:xpath, "/html/body/div/div/ul/li/span")
     link.click

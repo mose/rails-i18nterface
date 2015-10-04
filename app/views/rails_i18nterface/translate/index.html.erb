@@ -13,7 +13,8 @@
       <div class="center">
         <label>Show:</label> <%=  simple_filter(@show_filters).html_safe %>
         Found <strong><%= @total_entries %></strong> messages
-        <%= link_to "Reload messages", translate_reload_path(params) %>
+        <%= link_to "Reload messages", translate_reload_path %>
+        <%# link_to "Reload messages", translate_reload_path(params) %>
       </div>
     </h1>
     <% flash.each do |key, msg| %>

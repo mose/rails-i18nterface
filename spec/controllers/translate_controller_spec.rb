@@ -84,6 +84,7 @@ describe RailsI18nterface::TranslateController, :type => :controller do
 
     it 'has a default sort order by key' do
       get_page :index, per_page: 1
+      puts request.params
       expect(request.params[:sort_by]).to eq 'key'
     end
 

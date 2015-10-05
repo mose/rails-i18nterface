@@ -1,8 +1,9 @@
 # encoding: utf-8
 
+require 'coveralls'
+
 if ENV['COV']
   require 'simplecov'
-  require 'coveralls'
   SimpleCov.formatter = SimpleCov::Formatter::MultiFormatter[
     SimpleCov::Formatter::HTMLFormatter,
     Coveralls::SimpleCov::Formatter

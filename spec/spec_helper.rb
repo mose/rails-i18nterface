@@ -1,6 +1,11 @@
 # encoding: utf-8
 
-require 'coveralls'
+ENV['RAILS_ENV'] ||= 'test'
+$LOAD_PATH << File.expand_path('../../lib', __FILE__)
+
+require 'rubygems'
+require 'bundler'
+require 'combustion'
 
 if ENV['COV']
   require 'simplecov'
@@ -17,14 +22,10 @@ if ENV['COV']
     add_group 'Helpers', '/app/helpers/'
     add_group 'Lib', '/lib/'
   end
+else
+  require 'coveralls'
+  Coverall.wear!
 end
-
-ENV['RAILS_ENV'] ||= 'test'
-$LOAD_PATH << File.expand_path('../../lib', __FILE__)
-
-require 'rubygems'
-require 'bundler'
-require 'combustion'
 
 Bundler.require :default, :test
 

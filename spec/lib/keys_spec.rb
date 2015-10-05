@@ -30,7 +30,6 @@ describe RailsI18nterface::Keys do
       'article.key6.one',
       'article.key6.other',
       'article.key6.zero',
-      'category_erb.key1',
       'category_html_erb.key1',
       'category_rhtml.key1',
       'js.alert',
@@ -42,6 +41,7 @@ describe RailsI18nterface::Keys do
   end
 
   describe "sorts by keys" do
+    #before { allow(keys).to receive(:lookup).with('en', 'article.key6.zero').and_return('xxx') }
     it { expect(keys.sort_keys.last).to eq 'title' }
   end
 

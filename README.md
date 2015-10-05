@@ -1,12 +1,10 @@
 # Rails I18nterface
 
+[![Gem Version](https://badge.fury.io/rb/rails-i18nterface.png)](http://badge.fury.io/rb/rails-i18nterface)
 [![Dependency Status](https://gemnasium.com/mose/rails-i18nterface.png)](https://gemnasium.com/mose/rails-i18nterface)
 [![Build Status](https://secure.travis-ci.org/mose/rails-i18nterface.png?branch=master)](http://travis-ci.org/mose/rails-i18nterface)
 [![Coverage Status](https://coveralls.io/repos/mose/rails-i18nterface/badge.png?branch=master)](https://coveralls.io/r/mose/rails-i18nterface)
 [![Code Climate](https://codeclimate.com/github/mose/rails-i18nterface.png)](https://codeclimate.com/github/mose/rails-i18nterface)
-[![Gem Version](https://badge.fury.io/rb/rails-i18nterface.png)](http://badge.fury.io/rb/rails-i18nterface)
-[![Selenium Test Status](https://saucelabs.com/buildstatus/rails-i18nterface)](https://saucelabs.com/u/rails-i18nterface)
-[Changelog](https://github.com/mose/rails-i18nterface/blob/master/changelog.md)
 
 ![rails-i18nterface](http://mose.fr/rails-i18nterface.png)
 
@@ -106,9 +104,9 @@ Check the [Changelog](https://github.com/mose/rails-i18nterface/blob/master/chan
 ## License
 
 ```
-Copyright 2009 Peter Marklund, Joakim Westerlund, Claudius Coenen
-Copyright 2011 Larry Sprock, Artin Boghosain, Michal Hantl
-Copyright 2013 Mose
+Copyright 2009-2011 Peter Marklund, Joakim Westerlund, Claudius Coenen
+Copyright 2011-2013 Larry Sprock, Artin Boghosain, Michal Hantl
+Copyright 2013-2015 Mose
 
 Permission is hereby granted, free of charge, to any person obtaining
 a copy of this software and associated documentation files (the

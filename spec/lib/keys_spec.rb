@@ -30,6 +30,7 @@ describe RailsI18nterface::Keys do
       'article.key6.one',
       'article.key6.other',
       'article.key6.zero',
+      'category_erb.key1',
       'category_html_erb.key1',
       'category_rhtml.key1',
       'js.alert',

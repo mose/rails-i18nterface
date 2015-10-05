@@ -24,7 +24,7 @@ if ENV['COV']
   end
 else
   require 'coveralls'
-  Coverall.wear!
+  Coveralls.wear!
 end
 
 Bundler.require :default, :test

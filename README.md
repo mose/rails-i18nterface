@@ -61,12 +61,13 @@ Where `[:en]` and `[:ja, :es, :fr]` could be replaced by locale list of your cho
 
 ## Todo
 
-* fix the code smell reported by code climate (done)
-  * extract code from the controller to a lib (done)
-  * refactor the libs in a cleaner way (done)
-  * apply rubocop and follow his law (done)
-* remove those damn global variables (done)
-* extend testing to refactored libs (done)
+* <s>fix the code smell reported by code climate</s> (done)
+  * <s>extract code from the controller to a lib</s> (done)
+  * <s>refactor the libs in a cleaner way</s> (done)
+  * <s>apply rubocop and follow his law</s> (done)
+* <s>remove those damn global variables</s> (done)
+* <s>extend testing to refactored libs</s> (done)
+* add a way in the config to ignore some gem locales
 * make the application thread-safe
 * change navigation to an ajax-driven reload
 * add a way to gather .one and .other and .few under same translation line (not sure actually)

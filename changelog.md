@@ -3,6 +3,8 @@ Rails-i18nterface Changelog
 
 **Warning** All Dates are GMT+8 (Asia/Taipei)
 
+### v0.2.6 : wip
+
 ### v0.2.5 : 2015-12-24
 
 * fix sort order when ordered by text

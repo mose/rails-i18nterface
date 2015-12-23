@@ -3,13 +3,15 @@ Rails-i18nterface Changelog
 
 **Warning** All Dates are GMT+8 (Asia/Taipei)
 
-### v0.2.5 : wip
+### v0.2.5 : 2015-12-24
 
 * fix sort order when ordered by text
 * refactoring to make the view more viewable
 * added calls to http://saucelabs.com browsers testing
 * major refreshing in dependencies (2015)
 * drop support for ruby 1.9 (at least for development)
+* fix case when missing key is a symbol (bacosmin)
+* change pattern matching to include symbol when used as translation keys
 
 ### v0.2.4 : 2013-05-07
 

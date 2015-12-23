@@ -33,6 +33,7 @@ describe RailsI18nterface::Keys do
       'category_html_erb.key1',
       'category_rhtml.key1',
       'js.alert',
+      'symbol_key',
       'title'
     ] }
     it 'extracts keys from I18n lookups in .rb, .html.erb, and .rhtml files' do

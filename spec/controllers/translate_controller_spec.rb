@@ -94,9 +94,9 @@ describe RailsI18nterface::TranslateController, :type => :controller do
     end
 
     it 'can filter to see only the root items when using . as pattern' do
-      get_page :index, per_page: 1, key_pattern: '.', key_type: 'starts_with'
-      expect(assigns :total_entries).to be 1
-      expect(assigns(:keys).translations.map(&:key)).to eq ['title']
+      get_page :index, per_page: 2, key_pattern: '.', key_type: 'starts_with'
+      expect(assigns :total_entries).to be 2
+      expect(assigns(:keys).translations.map(&:key)).to eq ['symbol_key','title']
     end
 
     it 'accepts a key_pattern param with key_type=starts_with' do

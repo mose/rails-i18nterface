@@ -29,12 +29,13 @@ module RailsI18nterface
 
     def populate_keys(root_dir, file)
       files = {}
-      IO.read(file).scan(pattern).each do |key, count|
+      IO.read(file).scan(pattern2).each do |key, key2, count|
+        key = key || key2
         path = relative_path(root_dir, file)
         if count
           keys = [key + '.zero', key + '.one', key + '.other']
         else
-          keys = [key]
+          keys = [key.to_s]
         end
         keys.map(&:to_sym).each do |k|
           files[k] ||= []
@@ -44,12 +45,29 @@ module RailsI18nterface
       files
     end
 
+    # old pattern for reference
     def pattern
       /\b
         (?:I18n\.t|I18n\.translate|t)
         (?:\s+|\():?(?:'|")
           (\.?[a-z0-9_\.]+)
         (?:'|")
+        (?:\s*,\s*)?
+        (count:|:count\s*=>)?
+      /x
+    end
+
+    # also catch t(:symbol_keys)
+    def pattern2
+      /\b
+        (?:I18n\.t|I18n\.translate|t)
+        (?:\s+|\()(?:
+          :?(?:'|")
+            (\.?[a-z0-9_\.]+)
+          (?:'|")
+          |
+          (?::)([a-z0-9_]+)
+        )
         (?:\s*,\s*)?
         (count:|:count\s*=>)?
       /x

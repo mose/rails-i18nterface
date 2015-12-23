@@ -12,6 +12,7 @@ class Article
     'bla bla t("blubba bla") foobar'
     'bla bla t ' + "blubba bla" + ' foobar'
     I18n.t :'article.key6', :count => 3
+    I18n.t :symbol_key
 # rubocop : enable all
   end
 

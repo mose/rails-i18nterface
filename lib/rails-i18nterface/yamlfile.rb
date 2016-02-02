@@ -16,9 +16,13 @@ module RailsI18nterface
     end
 
     def write(hash)
+      write_raw(keys_to_yaml(hash))
+    end
+
+    def write_raw(yaml_string)
       FileUtils.mkdir_p File.dirname(@file_path)
       File.open(@file_path, 'w') do |file|
-        file.puts keys_to_yaml(hash)
+        file.puts yaml_string
       end
     end
 

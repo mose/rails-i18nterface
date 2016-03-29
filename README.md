@@ -107,7 +107,7 @@ Check the [Changelog](https://github.com/mose/rails-i18nterface/blob/master/chan
 ```
 Copyright 2009-2011 Peter Marklund, Joakim Westerlund, Claudius Coenen
 Copyright 2011-2013 Larry Sprock, Artin Boghosain, Michal Hantl
-Copyright 2013-2015 Mose
+Copyright 2013-2016 Mose
 
 Permission is hereby granted, free of charge, to any person obtaining
 a copy of this software and associated documentation files (the

@@ -1,10 +1,11 @@
 # Rails I18nterface
 
-[![Gem Version](https://badge.fury.io/rb/rails-i18nterface.png)](http://badge.fury.io/rb/rails-i18nterface)
-[![Dependency Status](https://gemnasium.com/mose/rails-i18nterface.png)](https://gemnasium.com/mose/rails-i18nterface)
-[![Build Status](https://secure.travis-ci.org/mose/rails-i18nterface.png?branch=master)](http://travis-ci.org/mose/rails-i18nterface)
-[![Coverage Status](https://coveralls.io/repos/mose/rails-i18nterface/badge.png?branch=master)](https://coveralls.io/r/mose/rails-i18nterface)
-[![Code Climate](https://codeclimate.com/github/mose/rails-i18nterface.png)](https://codeclimate.com/github/mose/rails-i18nterface)
+[![Gem Version](http://img.shields.io/gem/v/rails-i18nterface.svg)](https://rubygems.org/gems/rails-i18nterface)
+[![Downloads](http://img.shields.io/gem/dt/rails-i18nterface.svg)](https://rubygems.org/gems/rails-i18nterface)
+[![Dependency Status](https://img.shields.io/gemnasium/mose/rails-i18nterface.svg)](https://gemnasium.com/mose/rails-i18nterface)
+[![Build Status](http://img.shields.io/travis/mose/rails-i18nterface.svg)](http://travis-ci.org/mose/rails-i18nterface)
+[![Code Climate](http://img.shields.io/codeclimate/github/mose/rails-i18nterface.svg)](https://codeclimate.com/github/mose/rails-i18nterface)
+[![Code Coverage](http://img.shields.io/coveralls/mose/rails-i18nterface.svg)](https://coveralls.io/r/mose/rails-i18nterface)
 
 ![rails-i18nterface](http://mose.fr/rails-i18nterface.png)
 

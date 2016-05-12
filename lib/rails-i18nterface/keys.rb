@@ -21,10 +21,18 @@ module RailsI18nterface
 
     def apply_filters(params)
       params[:filter] ||= 'all'
+      remove_proc
       filter_by_translated(params[:filter]) if params[:filter] != 'all'
       filter_by_key_pattern(params[:key_type], params[:key_pattern]) unless params[:key_pattern].blank?
       filter_by_text_pattern(params[:text_type], params[:text_pattern]) unless params[:text_pattern].blank?
       sort_keys(params[:sort_by])
+    end
+
+    def remove_proc
+      @all_keys.reject! do |key|
+        lookup_key = lookup(@from_locale, key)
+        lookup_key.is_a? Proc
+      end
     end
 
     def filter_by_translated(filter)

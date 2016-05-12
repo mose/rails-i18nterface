@@ -5,7 +5,7 @@ module RailsI18nterface
 
     def remove_blanks(hash)
       hash.each do |k, v|
-        hash.delete k if !v || v == ''
+        hash.delete k if !v || v == '' || v.is_a?(Proc)
         if v.is_a? Hash
           remove_blanks v
           hash.delete k if v == {}

@@ -3,7 +3,9 @@ Rails-i18nterface Changelog
 
 **Warning** All Dates are GMT+8 (Asia/Taipei)
 
-### v0.2.6 : wip
+### v0.2.6 : 2016-05-12
+
+* fix case when using rails-i18n that uses a Proc for its pluralization system
 
 ### v0.2.5 : 2015-12-24
 

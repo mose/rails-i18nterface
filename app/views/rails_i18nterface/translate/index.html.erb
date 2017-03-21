@@ -1,4 +1,4 @@
-<%= form_tag(params, :method => :get, :name => 'filter_form') do %>
+<%= form_tag(@filter_params, :method => :get, :name => 'filter_form') do %>
   <%= hidden_field_tag(:filter, params[:filter]) %>
   <%= hidden_field_tag(:sort_by, params[:sort_by]) %>
   <div id="top">
@@ -30,7 +30,7 @@
     <%= select_tag(:text_type, options_for_select([['Text contains','contains'], ['Text equals','equals']], params[:text_type])) %>
     <%= text_field_tag(:text_pattern, params[:text_pattern], :size => 50, :id => "text_pattern_value", :class => "text-default") %>
 
-    <%= link_to "clear", params.merge({:text_pattern => nil, :key_pattern => nil}), class: 'btn' %>
+    <%= link_to "clear", @filter_params.to_h.merge({:text_pattern => nil, :key_pattern => nil}), class: 'btn' %>
     <%= submit_tag "Search" %>
     <%= link_to "Export language file", translate_export_path(:locale => @to_locale), class: 'btn sep' %>
   </div>

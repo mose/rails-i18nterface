@@ -3,6 +3,11 @@ Rails-i18nterface Changelog
 
 **Warning** All Dates are GMT+8 (Asia/Taipei)
 
+### v0.3.0 : wip
+
+* upgraded rspec
+* added strong params everywhere (finaly)
+
 ### v0.2.7 : 2017-03-21
 
 * added anti-CSRF protection in controller

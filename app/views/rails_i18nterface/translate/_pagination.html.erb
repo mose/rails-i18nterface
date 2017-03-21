@@ -58,10 +58,10 @@
 		  <% (1..n_pages).each do |page_number| %>
 		    <% if current_page == page_number %>
 		      <li class="selected">
-		      	<%= link_to(page_number, params.merge(:page => page_number), :title => "Page #{page_number}" ) %>
+		      	<%= link_to(page_number, @filter_params.to_h.merge(:page => page_number), :title => "Page #{page_number}" ) %>
 		      </li>
 		    <% else %>
-		      <li><%= link_to(page_number, params.merge(:page => page_number), :title => "Page #{page_number}") %></li>
+		      <li><%= link_to(page_number, @filter_params.to_h.merge(:page => page_number), :title => "Page #{page_number}") %></li>
 		    <% end %>
 		  <% end %>
 	  <% end %>

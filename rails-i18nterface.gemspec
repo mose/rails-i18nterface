@@ -22,8 +22,8 @@ Gem::Specification.new do |s|
 
   s.add_development_dependency "tzinfo", ">= 0.3.37"
   s.add_development_dependency "combustion", '~> 0.5.3'
-  s.add_development_dependency "rspec", '~> 3.3.0'
-  s.add_development_dependency "rspec-rails", '~> 3.3.3'
+  s.add_development_dependency "rspec", '~> 3.5.0'
+  s.add_development_dependency "rspec-rails", '~> 3.5.0'
   s.add_development_dependency "rspec-mocks"
   s.add_development_dependency "sprockets-rails"
   s.add_development_dependency "activemodel"
@@ -35,5 +35,6 @@ Gem::Specification.new do |s|
   s.add_development_dependency "coveralls"
   s.add_development_dependency "sauce", '~> 3.5.11'
   s.add_development_dependency "rest-client"
+  s.add_development_dependency "rails-controller-testing"
 
 end

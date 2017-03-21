@@ -7,6 +7,9 @@ require 'rubygems'
 require 'bundler'
 require 'combustion'
 
+require 'rails-controller-testing'
+Rails::Controller::Testing.install
+
 if ENV['COV']
   require 'simplecov'
   SimpleCov.formatter = SimpleCov::Formatter::MultiFormatter[
@@ -34,6 +37,7 @@ require 'capybara/rspec'
 Combustion.initialize! :action_controller, :action_view, :sprockets
 
 require 'rspec/rails'
+
 require 'capybara/rails'
 require 'rails-i18nterface'
 

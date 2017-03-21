@@ -11,7 +11,7 @@ module RailsI18nterface
         if label.to_s == params[param_name].to_s
           filter << "<i>#{label}</i>"
         else
-          link_params = params.merge(param_name.to_s => label)
+          link_params = @filter_params.to_h.merge(param_name.to_s => label)
           link_params.merge!('page' => nil) if param_name.to_s != 'page'
           filter << link_to(label, link_params)
         end

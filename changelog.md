@@ -3,6 +3,11 @@ Rails-i18nterface Changelog
 
 **Warning** All Dates are GMT+8 (Asia/Taipei)
 
+### v0.2.7 : 2017-03-21
+
+* added anti-CSRF protection in controller
+  cf https://www.sourceclear.com/blog/Rails-GEMS-Vulnerable-to-CSRF-Show-Vulnerability-Disclosure-in-Open-Source-Projects-Needs-a-Re-Think/
+
 ### v0.2.6 : 2016-05-12
 
 * fix case when using rails-i18n that uses a Proc for its pluralization system (thx @bacosmin and @mutil)

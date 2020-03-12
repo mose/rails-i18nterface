@@ -38,13 +38,12 @@ module RailsI18nterface
       force_init_translations
       flash[:notice] = 'Translations stored'
       reload
-      # redirect_to root_path(params.slice(:filter, :sort_by, :key_type, :key_pattern, :text_type, :text_pattern))
     end
 
     def reload
       @keys = RailsI18nterface::Keys.new(Rails.root, @from_locale, @to_locale)
       @keys.reload(Rails.root)
-      redirect_to root_path(filter_params)
+      redirect_to root_path(filter_params) and return
     end
 
     protected

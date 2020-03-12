@@ -329,16 +329,12 @@ div#searchbox input.text-default{
   border-radius: 4px;
   background-color: #eee;
   line-height: 16px;
-  box-shadow: inset -1px 1px 3px #fff, inset 1px -1px 3px #999;
-  text-shadow: -1px 1px 0px #fff;
 }
 .btn:hover {
-  box-shadow: inset -1px 1px 1px #fff, inset 1px -1px 1px #999;
   background: #ccc;
   color: #258;
 }
 .btn:active {
-  box-shadow: inset -1px 1px 1px #999, inset 1px -1px 1px #fff;
 }
 input[type=submit] {
   cursor: pointer;
@@ -350,16 +346,12 @@ input[type=submit] {
   line-height: 16px;
   border-radius: 4px;
   background-color: #eee;
-  box-shadow: inset -1px 1px 3px #fff, inset 1px -1px 3px #999;
-  text-shadow: -1px 1px 0px #fff;
 }
 input[type=submit]:hover {
-  box-shadow: inset -1px 1px 1px #fff, inset 1px -1px 1px #999;
   background: #ccc;
   color: #258;
 }
 input[type=submit]:active {
-  box-shadow: inset -1px 1px 1px #999, inset 1px -1px 1px #fff;
 }
 /*translation edit*/
 div.translations {
@@ -480,7 +472,9 @@ div.selected{
   padding: 4px;
   border: 1px solid #eee;
   border-radius: 3px;
-  font-size: 1.1em;
+}
+.long-translation .translation-text pre {
+  white-space: normal;
 }
 .long-translation .translation-textarea {
   float: left;

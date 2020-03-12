@@ -2,9 +2,7 @@
 
 [![Gem Version](http://img.shields.io/gem/v/rails-i18nterface.svg)](https://rubygems.org/gems/rails-i18nterface)
 [![Downloads](http://img.shields.io/gem/dt/rails-i18nterface.svg)](https://rubygems.org/gems/rails-i18nterface)
-[![Dependency Status](https://img.shields.io/gemnasium/mose/rails-i18nterface.svg)](https://gemnasium.com/mose/rails-i18nterface)
 [![Build Status](http://img.shields.io/travis/mose/rails-i18nterface.svg)](http://travis-ci.org/mose/rails-i18nterface)
-[![Code Climate](http://img.shields.io/codeclimate/github/mose/rails-i18nterface.svg)](https://codeclimate.com/github/mose/rails-i18nterface)
 [![Code Coverage](http://img.shields.io/coveralls/mose/rails-i18nterface.svg)](https://coveralls.io/r/mose/rails-i18nterface)
 
 ![rails-i18nterface](http://mose.fr/rails-i18nterface.png)
@@ -33,7 +31,7 @@ constraints AdminConstraint.new do
   end
 end
 # this second route will be then used if the user is not an admin
-get 'translate' => redirect do |p, req|
+get 'translate', to: redirect do |p, req|
   req.flash['error'] = I18n.t('errors.permission_denied')
   "/signin"
 end

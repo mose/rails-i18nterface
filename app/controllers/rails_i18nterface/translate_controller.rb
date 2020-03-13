@@ -36,6 +36,9 @@ module RailsI18nterface
       yaml = RailsI18nterface::Yamlfile.new(Rails.root, @to_locale)
       yaml.write_to_file
       force_init_translations
+      
+      RailsI18nterface::S3::Manager.new.export_locale(@to_locale.to_sym)
+
       flash[:notice] = 'Translations stored'
       reload
     end
